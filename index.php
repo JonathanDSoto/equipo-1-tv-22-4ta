@@ -8,5 +8,7 @@
 </head>
 <body>
     <h1>Equipo 1</h1>
+    <h2>prueba kugue</h2>
+    
 </body>
 </html>
