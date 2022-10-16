@@ -35,6 +35,8 @@ class AuthController
         $response = curl_exec($curl);
         curl_close($curl);
         $response = json_decode($response);
+
+
         if (isset($response->code) &&  $response->code > 0) {
             $_SESSION['id'] = $response->data->id;
             $_SESSION['name'] = $response->data->name;
@@ -43,9 +45,16 @@ class AuthController
             $_SESSION['token'] = $response->data->token;
             $_SESSION['email'] = $response->data->email;
 
-            header("Location:" . BASE_PATH . "produts/?msg");
+            $response = json_encode($response);
+            echo $response;
+
         } else {
-            header("Location:" . BASE_PATH . "produts/");
+            $response =[
+                "message" => "El usuario no existe",
+
+            ];
+            $response = json_encode($response);
+            echo $response;
         }
     }
 }
