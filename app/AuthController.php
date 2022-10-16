@@ -8,7 +8,7 @@ if (isset($_POST["action"]) && isset($_POST["email"])) {
             case 'access':
                 $authcontroller = new AuthController();
                 $authcontroller->login($_POST["email"], $_POST["password"]);
-                break;
+            break;
             
         }
     }
