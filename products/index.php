@@ -1,3 +1,8 @@
+<?php
+    include_once "../app/config.php";
+
+?>
+
 <!doctype html>
 <head>
     <title>Shop</title>
