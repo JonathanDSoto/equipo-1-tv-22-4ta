@@ -38,12 +38,12 @@
                                     <form action='<?= BASE_PATH ?>/app/AuthController.php' method="POST" id="login_form">
                                         <div class="mb-3">
                                             <label for="email" class="form-label text-white">e-mail</label>
-                                            <input type="text" class="form-control" name="email" id="email" placeholder="example@hotmail.com">
+                                            <input type="text" class="form-control" name="email" id="email" placeholder="example@hotmail.com" required>
                                         </div>
                                         <div class="mb-3">
-                                            <label class="form-label text-white" for="password-input">Password</label>
+                                            <label class="form-label text-white" for="password-input" >Password</label>
                                             <div class="position-relative auth-pass-inputgroup mb-3">
-                                                <input type="password" class="form-control pe-5 password-input" placeholder="*************" id="password" name="password">
+                                                <input type="password" class="form-control pe-5 password-input" placeholder="*************" id="password" name="password" required>
                                                 <button class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted shadow-none password-addon" type="button" id="password-addon"><i class="ri-eye-fill align-middle"></i></button>
                                             </div>
                                         </div>
@@ -80,6 +80,7 @@
             e.preventDefault();
 
             const data = new FormData();
+            ent =true;
             data.append("email", email.value);
             data.append("password", password.value);
             data.append("action", action.value);
@@ -93,11 +94,21 @@
                 "Content-Type": "multipart/form-data",
                 },
             }).then((response)=> {
-                if (response) {
-                    console.log(response.data.message);
+                if (response.data.code > 0) {
+                        Swal.fire({
+                        position: 'top-center',
+                        icon: 'success',
+                        title: 'Usuario verificado',
+                        showConfirmButton: false,
+                        timer: 1500
+                        })
+                        //carga de espera
+                        function greet() { // Aqui va la ruta que apunta al index de productos
+                            location.href = "productos/products.php";
+                        }
+                        setTimeout(greet, 1800);
 
-                    // Aqui va la ruta que apunta al index de productos
-                    location.href = "productos/products.php";
+                        //console.log(response.data.message);
 
                 } else {
                     console.log(response.message);
@@ -105,7 +116,7 @@
                     Swal.fire({
                         position: 'center',
                         icon: 'error',
-                        title: 'Wrong access',
+                        title: 'Correo o contraseña erroneos',
                         showConfirmButton: false,
                         timer: 1500
                     })
@@ -118,6 +129,8 @@
 
 
         });
+
+        
     </script>
 
 
