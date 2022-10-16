@@ -35,7 +35,7 @@
                                     <p class="text-light">Inicia sesion</p>
                                 </div>
                                 <div class="p-2 mt-4">
-                                    <form action="/app/AutController.php" method="POST" id="login_form">
+                                    <form action="app/AutController.php" method="POST" id="login_form">
                                         <div class="mb-3">
                                             <label for="email" class="form-label text-white">e-mail</label>
                                             <input type="text" class="form-control" id="email" placeholder="example@hotmail.com">
