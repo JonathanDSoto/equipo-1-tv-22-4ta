@@ -1,6 +1,6 @@
 <div class="app-menu navbar-menu">
             <!-- LOGO -->
-         
+            <html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg" >  
             <div id="scrollbar">
                 <div class="container-fluid">
                     <div id="two-column-menu">
