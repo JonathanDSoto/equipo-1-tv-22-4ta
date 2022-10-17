@@ -179,7 +179,7 @@ if (isset($response->code) && $response->code > 0) {
 
   }
 
-  public function putEdit(
+  public function editproducts(
     $name,
     $slug,
     $description,
