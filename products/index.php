@@ -77,10 +77,10 @@
                                                         <td>
                                                             <div class="d-flex gap-3">
                                                                 <div class="view">
-                                                                    <a href="" class="btn btn-info " data-bs-toggle="modal" data-bs-target="">Ver</a>
+                                                                    <a href="detalles.php?slug=<?= $product->slug ?>" class="btn btn-info " data-bs-toggle="modal" data-bs-target="">Ver</a>
                                                                 </div>
                                                                 <div class="edit">
-                                                                    <button class="btn btn-warning " data-bs-toggle="modal" data-bs-target="#updateProduct">Edit</button>
+                                                                    <button data-product='<?= json_encode($product) ?>' onclick="editar_producto(this)" class="btn btn-warning " data-bs-toggle="modal" data-bs-target="#añadirModal">Edit</button>
                                                                 </div>
                                                                 <div class="remove">
                                                                     <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="">Remove</button>
@@ -152,36 +152,6 @@
             </div>
         </div>
     </div>
-    
-     <!--Modal Modificar Product-->
-    <!-- <div class="modal fade" id="updateProduct" tabindex="-1" aria-labelledby="updateProduct" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Modificar Articulo</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form method="" action=""  enctype="multipart/form-data">
-                    <div class="modal-body">
-                        <span class="input-group-text" id="addon-wrapping">Nombre</span>
-                        <input type="text" id="name" name="name" class="form-control" placeholder="">
-                        <span class="input-group-text" id="addon-wrapping">Descripcion</span>
-                        <input type="text" id="description" name="description" class="form-control" placeholder="">
-                        <span class="input-group-text" id="addon-wrapping">Caracteristicas</span>
-                        <input type="text" id="features" name="features" class="form-control" placeholder="">
-                        <span class="input-group-text" id="addon-wrapping">Marca</span>
-                        <select class="form-select" aria-label="Default select example" id="brand_id" name="brand_id">
-                        <option selected>Seleccione una opcion</option>
-                        </select>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-primary">Editar</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div> -->
 
     <!-- JAVASCRIPT -->
     <?php include "../layouts/scripts.template.php" ?>

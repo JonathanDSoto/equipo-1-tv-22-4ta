@@ -1,5 +1,12 @@
 <?php
     include_once "../app/config.php";
+
+    include("../app/ProductController.php");
+
+    $slug = $_GET['slug'];
+
+    $productController = new ProductsController();
+    $product = $productController->details($slug);
   
 ?>
 <!doctype html>
@@ -62,7 +69,7 @@
                                     <div class="mt-xl-0 mt-5">
                                         <div class="d-flex">
                                             <div class="flex-grow-1">
-                                                <h4>Nombre del producto</h4>
+                                                <h4><?= $product->name ?></h4>
                                             </div>
                                         </div>
                                         <div class="row mt-4">

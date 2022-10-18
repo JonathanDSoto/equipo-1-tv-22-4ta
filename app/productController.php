@@ -124,7 +124,7 @@ public function details($slug) {
     $response = curl_exec($curl);
     curl_close($curl);
     $response = json_decode($response);
-    
+
     if(isset($response->code) && $response->code > 0) {
       header("Location:".BASE_PATH."products/index.php?modal=true");
     } else {
