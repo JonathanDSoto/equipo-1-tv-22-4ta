@@ -1,6 +1,6 @@
 <?php
     include_once "../app/config.php";
-
+  
 ?>
 <!doctype html>
 <head>
@@ -135,6 +135,8 @@
             </div>
         </div>
     </div>
+    <!-- Footer de la pagina -->
+    <?php include "../layouts/footer.template.php" ?>
     <!-- JAVASCRIPT -->
     <?php include "../layouts/scripts.template.php" ?>
 </body>

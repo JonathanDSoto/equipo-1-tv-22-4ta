@@ -1,8 +1,6 @@
 <?php
     include_once "../app/config.php";
-
 ?>
-
 <!doctype html>
 <head>
     <title>Shop</title>
@@ -23,14 +21,13 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                                <h4 class="mb-sm-0">Productos</h4>
+                                <h4 class="mb-sm-0">Usuarios</h4>
                                 <div class="page-title-right">
                                     <ol class="breadcrumb m-0">
                                         <li class="breadcrumb-item"><a href="">Home</a></li>
-                                        <li class="breadcrumb-item active">Productos</li>
+                                        <li class="breadcrumb-item active">Usuarios</li>
                                     </ol>
                                 </div>
-
                             </div>
                         </div>
                     </div>
@@ -39,7 +36,7 @@
                         <div class="col-lg-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <h4 class="card-title mb-0">Lista de productos</h4>
+                                    <h4 class="card-title mb-0">Lista de Usuarios</h4>
                                 </div><!-- end card header -->
 
                                 <div class="card-body">
@@ -47,7 +44,7 @@
                                         <div class="row g-4 mb-3">
                                             <div class="col-sm-auto">
                                                 <div>
-                                                    <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal" id="create-btn" data-bs-target="#añadirModal"><i class="ri-add-line align-bottom me-1"></i>Añadir Productos</button>
+                                                    <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal" id="create-btn" data-bs-target="#añadirModal"><i class="ri-add-line align-bottom me-1"></i>Añadir Usuario</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -56,9 +53,10 @@
                                                 <thead class="table-light">
                                                     <tr>
                                                         <th scope="col" style="width: 40px;">
-                                                        <th>Producto</th>
+                                                        <th>Avatar</th>
                                                         <th>Nombre</th>
-                                                        <th>Descripcion</th>
+                                                        <th>Apellidos</th>
+                                                        <th>Correo</th>
                                                         <th>Accion</th>
                                                         </th>
                                                     </tr>
@@ -66,12 +64,11 @@
                                                 <tbody class="list form-check-all">
                                                     <tr>
                                                         <th scope="row">
-                                                          
                                                         </th>
-
-                                                        <td class="customer_name"> <img class="rounded-2" style="width:200px; height:100px; " src="../public/assets/images/small/img-1.jpg" alt="Card image cap"></td>
-                                                        <td >Nombre del producto</td>
-                                                        <td >Descripcion</td>
+                                                        <td class="customer_name"> <img class="rounded-2" style="width:100px; height:100px; " src="../public/assets/images/users/avatar-8.jpg" alt="Card image cap"></td>
+                                                        <td >Nombre del usuario</td>
+                                                        <td >Apellidos del usuario</td>
+                                                        <td >Correo del usuario</td>
                                                         <td>
                                                             <div class="d-flex gap-3">
                                                                 <div class="view">
@@ -91,18 +88,14 @@
                                         </div>
                                     </div>
                                 </div><!-- end card -->
-                            </div>
-                            <!-- end col -->
-                        </div>
-                        <!-- end col -->
+                            </div>                   
+                        </div>        
                     </div>
-                    <!-- end row -->
-                    </div>
-                    <!-- end preloader-menu -->
+                  </div>
                 </div>
             </div>
-                <!-- Footer de la pagina -->
-                <?php include "../layouts/footer.template.php" ?>
+             <!-- Footer de la pagina -->
+            <?php include "../layouts/footer.template.php" ?>
         </div>
         <!-- end main content-->
     </div>
@@ -112,23 +105,19 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="añadirModalLabel"> Nuevo Producto </h5>
+                    <h5 class="modal-title" id="añadirModalLabel"> Nuevo Usuario </h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form method="" action="" enctype="multipart/form-data">
                     <div class="modal-body">
-                        <span class="input-group-text" id="addon-wrapping">Imagen del producto</span>
+                        <span class="input-group-text" id="img">Imagen del usuario</span>
                         <input type="file" name="img_producto">
-                        <span class="input-group-text" id="addon-wrapping">Nombre</span>
+                        <span class="input-group-text" id="name">Nombre</span>
                         <input type="text" id="name" name="name" class="form-control" placeholder="">
-                        <span class="input-group-text" id="addon-wrapping">Descripcion</span>
-                        <input type="text" id="description" name="description" class="form-control" placeholder="">
-                        <span class="input-group-text" id="addon-wrapping">Caracteristicas</span>
-                        <input type="text" id="features" name="features" class="form-control" placeholder="">
-                        <span class="input-group-text" id="addon-wrapping">Marca</span>
-                        <select class="form-select" aria-label="Default select example" id="brand_id" name="brand_id">
-                        <option selected>Seleccione una opcion</option>
-                        </select>
+                        <span class="input-group-text" id="last_name">Apellidos</span>
+                        <input type="text" id="last_name" name="last_name" class="form-control" placeholder="">
+                        <span class="input-group-text" id="email">Correo</span>
+                        <input type="text" id="email" name="email" class="form-control" placeholder="">             
                     </div>
                     <input type="hidden" name="action" value="create">
                     <div class="modal-footer">
@@ -149,17 +138,13 @@
                 </div>
                 <form method="" action=""  enctype="multipart/form-data">
                     <div class="modal-body">
-                        <span class="input-group-text" id="addon-wrapping">Nombre</span>
+                  
+                        <span class="input-group-text" id="name">Nombre</span>
                         <input type="text" id="name" name="name" class="form-control" placeholder="">
-                        <span class="input-group-text" id="addon-wrapping">Descripcion</span>
-                        <input type="text" id="description" name="description" class="form-control" placeholder="">
-                        <span class="input-group-text" id="addon-wrapping">Caracteristicas</span>
-                        <input type="text" id="features" name="features" class="form-control" placeholder="">
-                        <span class="input-group-text" id="addon-wrapping">Marca</span>
-                        <select class="form-select" aria-label="Default select example" id="brand_id" name="brand_id">
-                        <option selected>Seleccione una opcion</option>
-                        </select>
-                    </div>
+                        <span class="input-group-text" id="last_name">Apellidos</span>
+                        <input type="text" id="last_name" name="last_name" class="form-control" placeholder="">
+                        <span class="input-group-text" id="email">Correo</span>
+                        <input type="text" id="email" name="email" class="form-control" placeholder="">
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                         <button type="submit" class="btn btn-primary">Editar</button>
@@ -168,17 +153,7 @@
             </div>
         </div>
     </div>
-
-    <!--preloader-->
-    <div id="preloader">
-        <div id="status">
-            <div class="spinner-border text-primary avatar-sm" role="status">
-                <span class="visually-hidden">Loading...</span>
-            </div>
-        </div>
-    </div>
     <!-- JAVASCRIPT -->
     <?php include "../layouts/scripts.template.php" ?>
 </body>
-
 </html>
