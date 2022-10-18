@@ -1,7 +1,7 @@
     <!-- App favicon -->
     <link rel="shortcut icon" href="<?= BASE_PATH?>public/assets/images/favicon.ico">
     <!-- Layout config Js -->
-    <script src="<?= BASE_PATH?>public/assets/js/layout,js"></script>
+    <script src="<?= BASE_PATH?>public/assets/js/layout.js"></script>
     <!-- Bootstrap Css -->
     <link href="<?= BASE_PATH?>public/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <!-- Icons Css -->

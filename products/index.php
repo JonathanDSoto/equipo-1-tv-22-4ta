@@ -1,6 +1,5 @@
 <?php
     include_once "../app/config.php";
-
 ?>
 
 <!doctype html>
@@ -169,14 +168,6 @@
         </div>
     </div>
 
-    <!--preloader-->
-    <div id="preloader">
-        <div id="status">
-            <div class="spinner-border text-primary avatar-sm" role="status">
-                <span class="visually-hidden">Loading...</span>
-            </div>
-        </div>
-    </div>
     <!-- JAVASCRIPT -->
     <?php include "../layouts/scripts.template.php" ?>
 </body>

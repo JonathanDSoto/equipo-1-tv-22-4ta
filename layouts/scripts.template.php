@@ -20,8 +20,7 @@
     <script src="<?= BASE_PATH?>public/assets/libs/nouislider/nouislider.min.js"></script>
     <script src="<?= BASE_PATH?>public/assets/libs/wnumb/wNumb.min.js"></script>
     <script src="<?= BASE_PATH?>public/assets/js/pages/ecommerce-product-list.init.js"></script>
-
      <!-- nouisliderribute js -->
-    <script src="<?= BASE_PATH?>/public/assets/libs/nouislider/nouislider.min.js"></script>
+    <script src="<?= BASE_PATH?>public/assets/libs/nouislider/nouislider.min.js"></script>
     <script src="<?= BASE_PATH?>public/assets/libs/wnumb/wNumb.min.js"></script>
     
