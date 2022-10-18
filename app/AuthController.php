@@ -41,6 +41,7 @@ class AuthController
             $_SESSION['id'] = $response->data->id;
             $_SESSION['name'] = $response->data->name;
             $_SESSION['lastname'] = $response->data->lastname;
+            $_SESSION['role'] = $response->data->role;
             $_SESSION['avatar'] = $response->data->avatar;
             $_SESSION['token'] = $response->data->token;
             $_SESSION['email'] = $response->data->email;

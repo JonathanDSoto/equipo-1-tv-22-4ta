@@ -1,60 +1,45 @@
 <?php
+
 include_once "config.php";
 
 if (isset($_POST['action'])) {
-    if (isset($_POST['super_token']) && $_POST['super_token'] == $_SESSION['super_token']) {
-  switch ($_POST['action']) {
-    case 'create':
-      $name = strip_tags($_POST['name']);
-      $slug=preg_replace('/[^A-Za-z0-9-]+/', '-', $name);
-      $description = strip_tags($_POST['description']);
-      $features = strip_tags($_POST['features']);
-      $brand_id = strip_tags($_POST['brand_id']);
-      $img_producto = $_FILES['img_producto']['tmp_name'];
-      $productController = new ProductsController();
-      $productController -> createProduct(
-        $name,
-        $slug,
-        $description,
-        $features,
-        $brand_id,
-        $img_producto
-      );
-      break;
+  if (isset($_POST['super_token']) && $_POST['super_token'] == $_SESSION['super_token']) {
+    switch ($_POST['action']) {
+      case 'create':
+        $img_producto = $_FILES['img_producto']['tmp_name'];
+        $name = strip_tags($_POST['name']);
+        $slug = preg_replace('/[^A-Za-z0-9-]+/', '-', $name);
+        $description = strip_tags($_POST['description']);
+        $features = strip_tags($_POST['features']);
+        $brand_id = strip_tags($_POST['brand_id']);
+
+        $productController = new ProductsController();
+        $productController -> createProduct($name, $slug, $description, $features, $brand_id, $img_producto);
+
+        break;
       case 'delete':
         $id = strip_tags($_POST['id']);
 
         $productController = new ProductsController();
         $productController -> deleteProduct($id);
-    break;
-    case 'update':
-      
-      $name = strip_tags($_POST['name']);
-      $slug=preg_replace('/[^A-Za-z0-9-]+/', '-', $name);
-      $description = strip_tags($_POST['description']);
-      $features = strip_tags($_POST['features']);
-      $brand_id = strip_tags($_POST['brand_id']);
-      $id = strip_tags($_POST['id']);
-      $productController = new ProductsController();
-      $productController -> editproducts(
-        $name,
-        $slug,
-        $description,
-        $features,
-        $brand_id,
-        $id
-        
- 
-      );
-  
-  break;
+        break;
+      case 'update':
+        $name = strip_tags($_POST['name']);
+        $slug=preg_replace('/[^A-Za-z0-9-]+/', '-', $name);
+        $description = strip_tags($_POST['description']);
+        $features = strip_tags($_POST['features']);
+        $brand_id = strip_tags($_POST['brand_id']);
+        $id = strip_tags($_POST['id']);
+        $productController = new ProductsController();
+        $productController -> editproducts($name, $slug, $description, $features, $brand_id, $id);
+        break;
+    }
   }
 }
-}
-class ProductsController
-{
-  public function getProducts()
-  {
+
+class ProductsController {
+  public function getProducts() {
+
     $curl = curl_init();
     curl_setopt_array($curl, array(
       CURLOPT_URL => 'https://crud.jonathansoto.mx/api/products',
@@ -71,15 +56,18 @@ class ProductsController
     ));
 
     $response = curl_exec($curl);
-
     curl_close($curl);
     $response = json_decode($response);
+
     if (isset($response->code) && $response->code > 0) {
       return $response->data;
+    } else {
+      return array();
     }
+
   }
 
-public function details($slug){
+public function details($slug) {
 
   $curl = curl_init();
   curl_setopt_array($curl, array(
@@ -96,59 +84,54 @@ public function details($slug){
   ),
   ));
 
-$response = curl_exec($curl);
+  $response = curl_exec($curl);
 
-curl_close($curl);
+  curl_close($curl);
 
-$response = json_decode($response);
-if (isset($response->code) && $response->code > 0) {
-  return $response->data;
+  $response = json_decode($response);
+  
+  if (isset($response->code) && $response->code > 0) {
+    return $response->data;
+  }
 }
-}
 
 
 
-  public function createProduct(
-    $name,
-    $slug,
-    $description,
-    $features,
-    $brand_id,
-    $img_producto
-  )  {
+  public function createProduct($name, $slug, $description, $features, $brand_id, $img_producto) {
+
     $curl = curl_init();
-        curl_setopt_array($curl, array(
-        CURLOPT_URL => 'https://crud.jonathansoto.mx/api/products',
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_ENCODING => '',
-        CURLOPT_MAXREDIRS => 10,
-        CURLOPT_TIMEOUT => 0,
-        CURLOPT_FOLLOWLOCATION => true,
-        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-        CURLOPT_CUSTOMREQUEST => 'POST',
-        CURLOPT_POSTFIELDS => array(
-        'name' => $name,
-        'slug' => $slug,
-        'description' => $description,
-        'features' => $features,
-        'brand_id' => $brand_id,
-        'cover'=> new CURLFILE($img_producto)),
-        CURLOPT_HTTPHEADER => array(
-            'Authorization: Bearer ' .$_SESSION['token'],
-        ),
-        ));
-        $response = curl_exec($curl);
-        curl_close($curl);
-        $response = json_decode($response);
-        if( isset($response->code) &&  $response->code > 0) 
-        {
-            header ("Location:../product");
-        } 
-        else
-        {
-            header ("Location:../product?error=true");
-        }
+
+    curl_setopt_array($curl, array(
+    CURLOPT_URL => 'https://crud.jonathansoto.mx/api/products',
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_ENCODING => '',
+    CURLOPT_MAXREDIRS => 10,
+    CURLOPT_TIMEOUT => 0,
+    CURLOPT_FOLLOWLOCATION => true,
+    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+    CURLOPT_CUSTOMREQUEST => 'POST',
+    CURLOPT_POSTFIELDS => array(
+    'name' => $name,
+    'slug' => $slug,
+    'description' => $description,
+    'features' => $features,
+    'brand_id' => $brand_id,
+    'cover'=> new CURLFILE($img_producto)),
+    CURLOPT_HTTPHEADER => array(
+        'Authorization: Bearer ' .$_SESSION['token'],
+    ),
+    ));
+    $response = curl_exec($curl);
+    curl_close($curl);
+    $response = json_decode($response);
+    
+    if(isset($response->code) && $response->code > 0) {
+      header("Location:".BASE_PATH."products/index.php?modal=true");
+    } else {
+      header("Location:".BASE_PATH."products/index.php?modal=false");
     }
+
+  }
   
     public function deleteProduct($id) {
       $curl = curl_init();

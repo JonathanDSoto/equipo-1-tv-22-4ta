@@ -1,5 +1,14 @@
 <?php
     include_once "../app/config.php";
+    include("../app/productController.php");
+    include("../app/BrandController.php");
+
+    $productsController = new ProductsController();
+    $products = $productsController->getProducts();
+
+    $brandsController = new BrandsController();
+    $brands = $brandsController->getBrands();
+
 ?>
 
 <!doctype html>
@@ -25,7 +34,7 @@
                                 <h4 class="mb-sm-0">Productos</h4>
                                 <div class="page-title-right">
                                     <ol class="breadcrumb m-0">
-                                        <li class="breadcrumb-item"><a href="">Home</a></li>
+                                        <li class="breadcrumb-item"><a href="<?= BASE_PATH . 'products' ?>">Home</a></li>
                                         <li class="breadcrumb-item active">Productos</li>
                                     </ol>
                                 </div>
@@ -56,21 +65,15 @@
                                                     <tr>
                                                         <th scope="col" style="width: 40px;">
                                                         <th>Producto</th>
-                                                        <th>Nombre</th>
-                                                        <th>Descripcion</th>
-                                                        <th>Accion</th>
+                                                        <th>Acción</th>
                                                         </th>
                                                     </tr>
                                                 </thead>
                                                 <tbody class="list form-check-all">
+                                                    <?php foreach($products as $product): ?>
                                                     <tr>
-                                                        <th scope="row">
-                                                          
-                                                        </th>
-
-                                                        <td class="customer_name"> <img class="rounded-2" style="width:200px; height:100px; " src="../public/assets/images/small/img-1.jpg" alt="Card image cap"></td>
-                                                        <td >Nombre del producto</td>
-                                                        <td >Descripcion</td>
+                                                        <td class="customer_name"> <img class="rounded-2" style="width:200px; height:100px; " src="<?= $product->cover; ?>" alt="Card image cap"></td>
+                                                        <td ><?= $product->name ?></td>
                                                         <td>
                                                             <div class="d-flex gap-3">
                                                                 <div class="view">
@@ -85,6 +88,7 @@
                                                             </div>
                                                         </td>
                                                     </tr>
+                                                    <?php endforeach; ?>
                                                 </tbody>
                                             </table>           
                                         </div>
@@ -112,24 +116,34 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="añadirModalLabel"> Nuevo Producto </h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form method="" action="" enctype="multipart/form-data">
+                <form method="POST" action="<?= BASE_PATH?>app/productController.php" enctype="multipart/form-data">
                     <div class="modal-body">
                         <span class="input-group-text" id="addon-wrapping">Imagen del producto</span>
-                        <input type="file" name="img_producto">
+                        <input type="file" name="img_producto" accept="image/*">
+
                         <span class="input-group-text" id="addon-wrapping">Nombre</span>
                         <input type="text" id="name" name="name" class="form-control" placeholder="">
+
                         <span class="input-group-text" id="addon-wrapping">Descripcion</span>
                         <input type="text" id="description" name="description" class="form-control" placeholder="">
+
                         <span class="input-group-text" id="addon-wrapping">Caracteristicas</span>
                         <input type="text" id="features" name="features" class="form-control" placeholder="">
+                        
                         <span class="input-group-text" id="addon-wrapping">Marca</span>
                         <select class="form-select" aria-label="Default select example" id="brand_id" name="brand_id">
-                        <option selected>Seleccione una opcion</option>
+                            <?php foreach($brands as $brand): ?>
+                                <option value="<?= $brand->id ?>"><?= $brand->name ?></option>
+                            <?php endforeach; ?>
                         </select>
                     </div>
+
                     <input type="hidden" name="action" value="create">
+                    <input type="hidden" name="id" value="id_product">
+                    <input type="hidden" name="super_token" value="<?= $_SESSION['super_token'] ?>">
+
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                         <button type="submit" class="btn btn-primary">Guardar cambios</button>
@@ -138,8 +152,9 @@
             </div>
         </div>
     </div>
+    
      <!--Modal Modificar Product-->
-    <div class="modal fade" id="updateProduct" tabindex="-1" aria-labelledby="updateProduct" aria-hidden="true">
+    <!-- <div class="modal fade" id="updateProduct" tabindex="-1" aria-labelledby="updateProduct" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -166,10 +181,13 @@
                 </form>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <!-- JAVASCRIPT -->
     <?php include "../layouts/scripts.template.php" ?>
+    <script>
+
+    </script>
 </body>
 
 </html>
