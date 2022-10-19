@@ -54,7 +54,7 @@ $product = $productController->details($slug);
                                             <div class="swiper product-thumbnail-slider p-2 rounded bg-light">
                                                 <div class="swiper-wrapper">
                                                     <div class="swiper-slide">
-                                                        <img src="../public/assets/images/products/img-8.png" alt="" class="img-fluid d-block" />
+                                                        <img src="<?= $product->cover; ?>" alt="" class="img-fluid d-block" />
                                                     </div>
                                                 </div>
                                             </div>
@@ -65,7 +65,7 @@ $product = $productController->details($slug);
                                         <div class="mt-xl-0 mt-5">
                                             <div class="d-flex">
                                                 <div class="flex-grow-1">
-                                                    <h4>Nombre del producto</h4>
+                                                    <h4><?= $product->name ?></h4>
                                                 </div>
                                             </div>
                                             <div class="row mt-4">
@@ -121,17 +121,19 @@ $product = $productController->details($slug);
                                             <!-- end row -->
                                             <div class="mt-4 text-muted">
                                                 <h5 class="fs-14">Descripcion :</h5>
-                                                <p>Aqui va toda la descripcion del producto</p>
+                                                <p><?= $product->description ?></p>
                                             </div>
 
                                             <div class="mt-4 text-muted">
                                                 <h5 class="fs-14">Caracteristicas</h5>
-                                                <p>Aqui va las caracteristicas del producto</p>
+                                                <p><?= $product->features ?></p>
                                             </div>
 
                                             <div class="mt-4 text-muted">
                                                 <h5 class="fs-14">Categoria</h5>
-                                                <p>Aqui va la categoria del producto</p>
+                                                <?php  foreach($product->categories as $c): ?>
+                                                    <p><?= $c->name; ?></p>
+                                                <?php  endforeach; ?>
                                             </div>
 
                                             <div class="mt-4 text-muted">
