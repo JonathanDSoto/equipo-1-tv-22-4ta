@@ -77,13 +77,15 @@
                                                         <td>
                                                             <div class="d-flex gap-3">
                                                                 <div class="view">
-                                                                    <a href="detalles.php?slug=<?= $product->slug ?>" class="btn btn-info " data-bs-toggle="modal" data-bs-target="">Ver</a>
+                                                                    <a href="detalles.php?slug=<?= $product->slug ?>" class="btn btn-info">Ver</a>
                                                                 </div>
                                                                 <div class="edit">
                                                                     <button data-product='<?= json_encode($product) ?>' onclick="editar_producto(this)" class="btn btn-warning " data-bs-toggle="modal" data-bs-target="#añadirModal">Edit</button>
                                                                 </div>
                                                                 <div class="remove">
-                                                                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="">Remove</button>
+                                                                    <button class="btn btn-danger" onclick="eliminar(<?= $product->id ?>)">Remove</button>
+                                                                    <input type="hidden" id="super_token" value="<?= $_SESSION['super_token']?>">
+												                    <input type="hidden" id="bp" value="<?= BASE_PATH ?>">
                                                                 </div>
                                                             </div>
                                                         </td>
@@ -121,7 +123,7 @@
                 <form method="POST" action="<?= BASE_PATH?>app/productController.php" enctype="multipart/form-data">
                     <div class="modal-body">
                         <span class="input-group-text" id="addon-wrapping">Imagen del producto</span>
-                        <input type="file" name="img_producto" accept="image/*">
+                        <input type="file" id="img_product" name="img_producto" accept="image/*">
 
                         <span class="input-group-text" id="addon-wrapping">Nombre</span>
                         <input type="text" id="name" name="name" class="form-control" placeholder="">
@@ -140,8 +142,8 @@
                         </select>
                     </div>
 
-                    <input type="hidden" name="action" value="create">
-                    <input type="hidden" name="id" value="id_product">
+                    <input type="hidden" name="action" id="action" value="create">
+                    <input type="hidden" name="id" id="id_product">
                     <input type="hidden" name="super_token" value="<?= $_SESSION['super_token'] ?>">
 
                     <div class="modal-footer">
@@ -157,6 +159,69 @@
     <?php include "../layouts/scripts.template.php" ?>
     <script>
 
+
+        // Funcion para mostrar modales en base al GET obtenido
+        // modal = true - modal = false
+
+        function eliminar(id) {	
+            
+            console.log("eliminar")
+            console.log(id)
+            
+            swal({
+                title: "Are you sure?",
+                text: "Once deleted, you will not be able to recover this imaginary file!",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((willDelete) => {
+                if (willDelete) {
+
+                let super_token = document.getElementById('super_token').value;
+                let base_path = document.getElementById('bp').value;
+
+                var bodyFormData = new FormData();
+                bodyFormData.append('id', id);
+                bodyFormData.append('action', 'delete');
+                bodyFormData.append('sprtoken', super_token);
+
+                axios.post('../app/ProductController.php', bodyFormData)
+                .then(function (response) {
+
+                    if (response.data) {
+                        swal("Poof! Your imaginary file has been deleted!", {
+                            icon: "success",
+                        });
+                        location.href = base_path+'products'
+                    } else {
+                        swal("Error", {
+                            icon: "error",
+                        });;
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+
+                } else {
+                swal("Your imaginary file is safe!");
+                }
+            });
+        }
+
+        function editar_producto(target) {
+
+            let product = JSON.parse( target.dataset.product )
+
+            document.getElementById('id_product').value = product.id
+            document.getElementById('name').value = product.name
+            document.getElementById('description').value = product.description
+            document.getElementById('features').value = product.features
+            document.getElementById('brand_id').value = product.brand_id
+            document.getElementById('action').value = 'update'
+
+        }
     </script>
 </body>
 

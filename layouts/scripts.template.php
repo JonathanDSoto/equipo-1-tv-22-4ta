@@ -23,4 +23,5 @@
      <!-- nouisliderribute js -->
     <script src="<?= BASE_PATH?>public/assets/libs/nouislider/nouislider.min.js"></script>
     <script src="<?= BASE_PATH?>public/assets/libs/wnumb/wNumb.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     
