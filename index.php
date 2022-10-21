@@ -1,9 +1,10 @@
 <?php
     include_once "app/config.php";
+
 ?>
 
 <!doctype html>
-<html lang="en"></html>
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,16 +13,11 @@
     <?php include "layouts/head.template.php"?>
 </head>
 <body>
-    
     <div class="auth-page-wrapper pt-6 " >
-        <!-- auth page bg -->
-        <!-- se agrego el height 100%-->
         <div class="auth-one-bg-position auth-one-bg" id="auth-particles" style="height: 100%;">
             <div class="bg-overlay">
             </div>
         </div>  
-        <!-- auth page content -->
-        <!--se agrego m-0 vh-100  row  align-items-center -->
         <div class="auth-page-content m-0 vh-100  row  align-items-center">
             <div class="container">
                 <!-- end row -->
@@ -34,7 +30,7 @@
                                     <p class="text-light">Inicia sesion</p>
                                 </div>
                                 <div class="p-2 mt-4">
-                                    <form action='<?= BASE_PATH ?>/app/AuthController.php' method="POST" id="login_form">
+                                    <form action='<?= BASE_PATH ?>auth' method="POST" id="login_form">
                                         <div class="mb-3">
                                             <label for="email" class="form-label text-white">e-mail</label>
                                             <input type="text" class="form-control" name="email" id="email" placeholder="example@hotmail.com" required>
@@ -54,17 +50,12 @@
                                     </form>
                                 </div>
                             </div>
-                            <!-- end card body -->
                         </div>
-                        <!-- end card -->
                     </div>
                 </div>
-                <!-- end row -->
             </div>
-            <!-- end container -->
         </div>
     </div>
-    <!-- end auth-page-wrapper -->
     <!-- JAVASCRIPT -->
     <?php include "layouts/scripts.template.php" ?>
     <script>
@@ -131,7 +122,4 @@
 
         
     </script>
-
-
 </body>
-</html>

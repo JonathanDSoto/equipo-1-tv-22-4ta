@@ -27,23 +27,20 @@ $product = $productController->details($slug);
     <div class="main-content">
         <div class="page-content">
             <div class="container-fluid">
-
-                <!-- start page title -->
                 <div class="row">
                     <div class="col-12">
                         <div class="page-title-box d-sm-flex align-items-center justify-content-between">
                             <h4 class="mb-sm-0">Detalle de producto</h4>
-
                             <div class="page-title-right">
                                 <ol class="breadcrumb m-0">
-                                    <li class="breadcrumb-item"><a href="">Productos</a></li>
+                                    <li class="breadcrumb-item"><a href="<?= BASE_PATH . "products/" ?>">Productos</a></li>
                                     <li class="breadcrumb-item active">Product Details</li>
                                 </ol>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- end page title -->
+
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="card">
@@ -52,15 +49,12 @@ $product = $productController->details($slug);
                                     <div class="col-xl-4 col-md-8 mx-auto">
                                         <div class="product-img-slider sticky-side-div">
                                             <div class="swiper product-thumbnail-slider p-2 rounded bg-light">
-                                                <div class="swiper-wrapper">
-                                                    <div class="swiper-slide">
-                                                        <img src="<?= $product->cover; ?>" alt="" class="img-fluid d-block" />
-                                                    </div>
+                                                <div class="swiper-slide">
+                                                    <img src="<?= $product->cover; ?>" alt="" class="img-fluid d-block" />
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- end col -->
                                     <div class="col-xl-8">
                                         <div class="mt-xl-0 mt-5">
                                             <div class="d-flex">
@@ -84,7 +78,7 @@ $product = $productController->details($slug);
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <!-- end col -->
+                                            
                                                 <div class="col-lg-3 col-sm-6">
                                                     <div class="p-2 border border-dashed rounded">
                                                         <div class="d-flex align-items-center">
@@ -100,7 +94,7 @@ $product = $productController->details($slug);
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <!-- end col -->
+   
                                                 <div class="col-lg-3 col-sm-6">
                                                     <div class="p-2 border border-dashed rounded">
                                                         <div class="d-flex align-items-center">
@@ -116,9 +110,9 @@ $product = $productController->details($slug);
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <!-- end col -->
+                                            
                                             </div>
-                                            <!-- end row -->
+                                       
                                             <div class="mt-4 text-muted">
                                                 <h5 class="fs-14">Descripcion :</h5>
                                                 <p><?= $product->description ?></p>
@@ -131,35 +125,112 @@ $product = $productController->details($slug);
 
                                             <div class="mt-4 text-muted">
                                                 <h5 class="fs-14">Categoria</h5>
-                                                <?php  foreach($product->categories as $c): ?>
+                                                <?php foreach ($product->categories as $c) : ?>
                                                     <p><?= $c->name; ?></p>
-                                                <?php  endforeach; ?>
+                                                <?php endforeach; ?>
                                             </div>
 
                                             <div class="mt-4 text-muted">
                                                 <h5 class="fs-14">Marca</h5>
                                                 <p>Aqui va el nombre de la marca del producto</p>
                                             </div>
-
-                                            <!-- product-content -->
                                         </div>
                                     </div>
-                                    <!-- end col -->
-                                </div>
-                                <!-- end row -->
-                            </div>
-                            <!-- end card body -->
-                        </div>
-                        <!-- end card -->
-                    </div>
-                    <!-- end col -->
-                </div>
-                <!-- end row -->
+                                    <h5 class="fs-14">Presentaciones</h5>
+                                    <div class="card-body">
+                                        <div id="customerList">
+                                            <div class="row g-4 mb-3">
 
+                                                <div class="d-flex justify-content-end ">
+                                                    <button type="button" class="btn btn-success add-btn " style="margin-right: 85px;" data-bs-toggle="modal" id="create-btn" data-bs-target="#añadirModal"><i class="ri-add-line align-bottom me-1"></i>Añadir presentacion</button>
+                                                </div>
+
+                                            </div>
+                                            <div class="table-responsive table-card mt-3 mb-1">
+                                                <div class="mt-4 text-muted">
+                                                </div>
+                                                <table class="table align-middle table-nowrap" id="customerTable">
+                                                    <thead class="table-light">
+                                                        <tr>
+                                                            <th scope="col" style="width: 40px;">
+                                                            <th>Imagen</th>
+                                                            <th>Nombre</th>
+                                                            <th>Status</th>
+                                                            <th>Monto</th>
+                                                            <th>Accion</th>
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody class="list form-check-all">
+                                                        <tr>
+                                                            <th scope="row">
+                                                            </th>
+                                                            <td class="customer_name"> <img class="rounded-2" style="width:150px; height:70px; " src="../public/assets/images/cama.jpg" alt="Card image cap"></td>
+                                                            <td>Descripcion del producto</td>
+                                                            <td>Estatus del producto</td>
+                                                            <td>Precio del producto</td>
+                                                            <td>
+                                                                <div class="d-flex gap-3">
+                                                                    <div class="view">
+                                                                        <a href="" class="btn btn-info " data-bs-toggle="modal" data-bs-target=""> <i class="bx bx-show"></i></a>
+                                                                    </div>
+                                                                    <div class="edit">
+                                                                        <button class="btn btn-warning " data-bs-toggle="modal" data-bs-target="#añadirModal"><i class="ri-edit-2-line"></i></button>
+                                                                    </div>
+                                                                    <div class="remove">
+                                                                        <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target=""><i class="bx bx-trash-alt"></i></button>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <!-- container-fluid -->
         </div>
-        <!-- End Page-content -->
+        </div>
+        <!--Modal Alta Presentaciones-->
+        <div class="modal fade" id="añadirModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="añadirModalLabel"> Datos de la presentacion</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form method="" action="" enctype="multipart/form-data">
+                        <div class="modal-body">
+                            <span class="input-group-text" id="description">Descripcion</span>
+                            <input type="text" id="description" name="description" class="form-control" placeholder="">
+                            <span class="input-group-text" id="code">Codigo</span>
+                            <input type="text" id="code" name="code" class="form-control" placeholder="">
+                            <span class="input-group-text" id="estatus">Estado del producto</span>
+                            <input type="text" id="estatus" name="estatus" class="form-control" placeholder="">
+                            <span class="input-group-text" id="stock">cantidad de productos</span>
+                            <input type="text" id="stock" name="stock" class="form-control" placeholder="">
+                            <span class="input-group-text" id="stock_min">cantidad de productos minimo</span>
+                            <input type="text" id="stock_min" name="stock_min" class="form-control" placeholder="">
+                            <span class="input-group-text" id="stock_max">cantidad de productos maximo</span>
+                            <input type="text" id="stock_max" name="stock_max" class="form-control" placeholder="">
+                            
+                        </div>
+                        <input type="hidden" name="action" value="create">
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+ 
+
         <!-- Footer de la pagina -->
         <?php include "../layouts/footer.template.php" ?>
         <!-- JAVASCRIPT -->

@@ -1,0 +1,11 @@
+Options +FollowSymLinks -MultiViews
+RewriteEngine on
+
+#RULES
+RewriteRule ^auth$ app/AuthController.php
+RewriteRule ^prod$ app/productController.php
+RewriteRule ^brand$ app/BrandController.php
+RewriteRule ^conf$ app/config.php
+RewriteRule ^users/$ app/UsersController.php
+RewriteRule ^products/$ products/index.php
+RewriteRule ^prod/([a-zA-Z0-9-]*)$ products/detalles.php?slug=$1
