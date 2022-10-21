@@ -2,9 +2,7 @@
 
 include_once "config.php";
 
-
 if (isset($_POST['action'])) {
-
   if (isset($_POST['super_token']) ||
       isset($_POST['sprtoken']) && 
       $_POST['super_token'] == $_SESSION['super_token'] || 

@@ -8,7 +8,6 @@
 
     $brandsController = new BrandsController();
     $brands = $brandsController->getBrands();
-
 ?>
 
 <!doctype html>
@@ -163,10 +162,7 @@
         // Funcion para mostrar modales en base al GET obtenido
         // modal = true - modal = false
 
-        function eliminar(id) {	
-            
-            console.log("eliminar")
-            console.log(id)
+        function eliminar(id) {
             
             swal({
                 title: "Are you sure?",

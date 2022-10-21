@@ -1,5 +1,10 @@
 <?php
     include_once "../app/config.php";
+    include("../app/UsersController.php");
+
+    $id_usuario = $_GET['id'];
+    $userController = new UsersController();
+    $user = $userController->DetailsUser($id_usuario);
 ?>
 <!doctype html>
 <head>
@@ -32,14 +37,14 @@
                     <div class="row g-4">
                         <div class="col-auto">
                             <div class="avatar-lg">
-                                <img src="../public/assets/images/users/avatar-8.jpg" alt="user-img" class="img-thumbnail rounded-circle" />
+                                <img src="<?= $user->avatar ?>" alt="user-img" class="img-thumbnail rounded-circle" />
                             </div>
                         </div>
                         <!--end col-->
                         <div class="col">
                             <div class="p-2">
-                                <h3 class="text-white mb-1">Nombre del usuario</h3>
-                                <p class="text-white-75">Rol del usuario</p>
+                                <h3 class="text-white mb-1"><?= $user->name ?></h3>
+                                <p class="text-white-75"><?= $user->role ?></p>
                             </div>
                         </div>
                         <!--end col-->           
@@ -67,24 +72,23 @@
                                                             <tbody>
                                                                 <tr>
                                                                     <th class="ps-0" scope="row">Nombre:</th>
-                                                                    <td class="text-muted">Nombre de usuario usuario</td>
+                                                                    <td class="text-muted"><?= $user->name ?></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <th class="ps-0" scope="row">Apellidos :</th>
-                                                                    <td class="text-muted">Apellidos del usuario</td>
+                                                                    <td class="text-muted"><?= $user->lastname ?></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <th class="ps-0" scope="row">E-mail :</th>
-                                                                    <td class="text-muted">Correo del usuario</td>
+                                                                    <td class="text-muted"><?= $user->email ?></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <th class="ps-0" scope="row">Creado por :</th>
-                                                                    <td class="text-muted">Nombre del que creo el usuario
-                                                                    </td>
+                                                                    <td class="text-muted"><?= $user->created_by ?></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <th class="ps-0" scope="row">Se unio:</th>
-                                                                    <td class="text-muted">Fecha de cuando se unio</td>
+                                                                    <td class="text-muted"><?= $user->created_at ?></td>
                                                                 </tr>
                                                             </tbody>
                                                         </table>
