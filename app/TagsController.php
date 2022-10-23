@@ -39,7 +39,7 @@ if (isset($_POST['action'])) {
             case 'specifict':
                 $id = strip_tags($_POST['id']);
                 $tagsController = new TagsController();
-                $tagsController->GetSpecificTags($id);
+                $tagsController->GetSpecifictTags($id);
                 break;
         }
     }
@@ -184,3 +184,4 @@ class TagsController
         }
     }
 }
+
