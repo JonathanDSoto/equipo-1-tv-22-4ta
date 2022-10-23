@@ -14,10 +14,9 @@ if (isset($_POST["action"]) && isset($_POST["email"])) {
     }
 }
 
-class AuthController
-{ //INICIO DE LOGIN 
-    public function login($email, $password)
-    {
+class AuthController {
+    
+    public function login($email, $password) {
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
@@ -58,8 +57,8 @@ class AuthController
             echo $response;
         }
     }
-    public function logout()
-    {
+
+    public function logout() {
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
@@ -86,4 +85,5 @@ class AuthController
             header("location:".BASE_PATH."index");
         }
     }
+
 }

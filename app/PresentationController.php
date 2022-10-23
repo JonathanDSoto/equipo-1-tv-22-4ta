@@ -46,6 +46,7 @@ if (isset($_POST['action'])) {
     }
 }
 class PresentationController {
+
     public function GetPresentation($id) {
         $curl = curl_init();
 
@@ -165,10 +166,7 @@ class PresentationController {
         }
     }
 
-    public function EditPresentationPreci(
-        $id,
-        $amount
-    ) {
+    public function EditPresentationPreci($id, $amount) {
 
         $curl = curl_init();
 
@@ -226,4 +224,5 @@ class PresentationController {
             return false;
         }
     }
+    
 }

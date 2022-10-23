@@ -62,10 +62,9 @@ if (isset($_POST['action'])) {
         }
     }
 }
-class UsersController
-{
-    public function getUsers()
-    {
+class UsersController {
+    
+    public function getUsers() {
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
@@ -93,8 +92,7 @@ class UsersController
         }
     }
 
-    public function DetailsUser($id)
-    {
+    public function DetailsUser($id) {
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
@@ -121,8 +119,7 @@ class UsersController
         }
     }
 
-    public function NewUser($name, $lastname, $email, $phone_number, $created_by, $password, $img_usuario) 
-    {
+    public function NewUser($name, $lastname, $email, $phone_number, $created_by, $password, $img_usuario) {
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
@@ -167,8 +164,7 @@ class UsersController
         }
     }
 
-    public function EditUser($name,$lastname,$email,$created_by,$password,$id) 
-    {
+    public function EditUser($name,$lastname,$email,$created_by,$password,$id) {
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
@@ -204,8 +200,7 @@ class UsersController
         }
     }
 
-    public function DeleteUser($id)
-    {
+    public function DeleteUser($id) {
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
@@ -234,8 +229,7 @@ class UsersController
         }
     }
 
-    public function EditPhoto($id, $img_User) 
-    {
+    public function EditPhoto($id, $img_User) {
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
@@ -263,4 +257,5 @@ class UsersController
             header("location:" . BASE_PATH . "index");
         }
     }
+
 }
