@@ -3,7 +3,7 @@ RewriteEngine on
 
 #RULES
 RewriteRule ^auth$ app/AuthController.php
-RewriteRule ^prod$ app/productController.php
+RewriteRule ^prod$ app/ProductController.php
 RewriteRule ^brand$ app/BrandController.php
 RewriteRule ^conf$ app/config.php
 RewriteRule ^users/$ app/UsersController.php
