@@ -113,12 +113,12 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="añadirModalLabel"> Nuevo Usuario </h5>
+                    <h5 class="modal-title" id="añadirModalLabel"> Datos del usuario</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form method="POST" action="<?= BASE_PATH?>users/" enctype="multipart/form-data" id="user_form">
                     <div class="modal-body">
-                        <span class="input-group-text" id="label_img">Imagen del usuario</span>
+                    <span class="input-group-text" id="label_img">Imagen del usuario</span>
                         <input type="file" id="img_usuario" name="img_usuario" accept="image/*">
 
                         <span class="input-group-text">Nombre</span>
