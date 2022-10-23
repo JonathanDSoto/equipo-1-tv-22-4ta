@@ -1,9 +1,8 @@
-<html  data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg" ></html>
-<div class="app-menu navbar-menu">
+<div class="app-menu navbar-menu lg data-layout-vertical bg-dark">
     <!-- LOGO -->
     <div id="scrollbar">
         <div class="container-fluid">
-            <ul class="navbar-nav" id="navbar-nav">
+            <ul class="navbar-nav " id="navbar-nav">
                 <li class="menu-title"><span data-key="t-menu">Menu</span></li>
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="../products/index.php" role="button" aria-expanded="false" aria-controls="sidebarApps">
@@ -31,7 +30,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="../cupones/index.php" role="button" aria-expanded="false" aria-controls="sidebarApps">
+                    <a class="nav-link menu-link" href="../ordenes/index.php" role="button" aria-expanded="false" aria-controls="sidebarApps">
                         <i class="bx bxs-receipt"></i> <span data-key="t-apps">Ordenes</span>
                     </a>
                 </li>

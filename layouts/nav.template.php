@@ -1,27 +1,24 @@
 <div id="layout-wrapper">
     <header id="page-topbar">
-    <div class="layout-width">
-        <div class="navbar-header">
-                <!-- BOTON FULL SCREEN-->
-                <div class="ms-5 header-item d-none d-sm-flex">
+        <div class="layout-width">
+            <div class="navbar-header">
+                <!-- BOTON FULL SCREEN Y MODO NOCHE-->
+                <div class="ms-1 header-item flex">
                     <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle shadow-none" data-toggle="fullscreen">
                         <i class='bx bx-fullscreen fs-22'></i>
                     </button>
-                </div>
-                <!-- BOTON MODO NOCHE MODO DIA-->
-                <div class="ms-1 header-item d-none d-sm-flex">
                     <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle light-dark-mode shadow-none">
                         <i class='bx bx-moon fs-22'></i>
                     </button>
                 </div>
-                  <!-- IMAGEN Y BOTON DE PERFIL DE USUARIO-->
+                <!-- IMAGEN Y BOTON DE PERFIL DE USUARIO-->
                 <div class="dropdown ms-sm-3 header-item topbar-user">
                     <button type="button" class="btn shadow-none" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="d-flex align-items-center">
                             <img class="rounded-circle header-profile-user" src="../public/assets/images/users/avatar-1.jpg" alt="Header Avatar">
                             <span class="d-flex flex-column text-start ms-xl-2">
-                            <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text"><?= $_SESSION['name'] . " " . $_SESSION['lastname'] ?></span>
-                            <span class="text-muted"><?= $_SESSION['role']?></span>
+                                <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text"><?= $_SESSION['name'] . " " . $_SESSION['lastname'] ?></span>
+                                <span class="text-muted"><?= $_SESSION['role'] ?></span>
                             </span>
                         </span>
                     </button>
@@ -33,5 +30,5 @@
                 </div>
             </div>
         </div>
-    </div>
+</div>
 </header>
