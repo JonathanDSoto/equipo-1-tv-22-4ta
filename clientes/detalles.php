@@ -17,12 +17,7 @@ include_once "../app/config.php";
     <?php include "../layouts/nav.template.php" ?>
     <!-- SIDEBAR -->
     <?php include "../layouts/side.template.php" ?>
-
-    <!-- ============================================================== -->
-    <!-- TODO EL CONTENIDO -->
-    <!-- ============================================================== -->
     <div class="main-content">
-
         <div class="page-content">
             <div class="container-fluid">
                 <div class="profile-foreground position-relative mx-n4 mt-n4">
@@ -44,15 +39,11 @@ include_once "../app/config.php";
                                 <p class="text-white-75">Nivel del cliente:</p>
                             </div>
                         </div>
-                        <!--end col-->
                     </div>
-                    <!--end row-->
                 </div>
-
                 <div class="row">
                     <div class="col-lg-12">
                         <div>
-                            <!-- Tab panes -->
                             <div class="tab-content pt-4 text-muted">
                                 <div class="tab-pane active" id="overview-tab" role="tabpanel">
                                     <div class="row">
@@ -85,6 +76,13 @@ include_once "../app/config.php";
                                                             </tbody>
                                                         </table>
                                                         <h5 class="card-title mb-3">Direccion</h5>
+                                                        <div class="col-sm-auto">
+
+                                                            <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal" id="create-btn" data-bs-target="#añadirModal"><i class="ri-add-line align-bottom me-1"></i>Añadir direccion</button>
+                                                            <button class="btn btn-warning " data-bs-toggle="modal" data-bs-target="#añadirModal">Editar</button>
+                                                            <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="">Remover</button>
+                                                        </div>
+
                                                         <table class="table table-borderless mb-0">
                                                             <tbody>
                                                                 <tr>
@@ -173,25 +171,68 @@ include_once "../app/config.php";
                                                             </tbody>
                                                         </table>
                                                     </div>
-                                                </div><!-- end card body -->
-                                            </div><!-- end card -->
+                                                </div>
+                                            </div>
 
-                                            <!--end card-->
+                                       
                                         </div>
-                                    </div><!-- end card body -->
-                                </div><!-- end card -->
-                            </div><!-- end col -->
-                        </div><!-- end row -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <!--end col-->
+              
                 </div>
-                <!--end row-->
+            
             </div>
-            <!--end col-->
+         
         </div>
-        <!--end row-->
+       
     </div>
-    <!--end card-body-->
+    <div class="modal fade" id="añadirModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="añadirModalLabel"> Datos de la direccion</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="" action="" enctype="multipart/form-data">
+                    <div class="modal-body">
+                        <span class="input-group-text" id="description">Calle y numero</span>
+                        <input type="text" id="description" name="description" class="form-control" placeholder="">
+                        <span class="input-group-text" id="code">Codigo postal</span>
+                        <input type="text" id="code" name="code" class="form-control" placeholder="">
+                        <span class="input-group-text" id="estatus">Ciudad</span>
+                        <input type="text" id="estatus" name="estatus" class="form-control" placeholder="">
+                        <span class="input-group-text" id="stock">Provincia</span>
+                        <input type="text" id="stock" name="stock" class="form-control" placeholder="">
+                    </div>
+                    <input type="hidden" name="action" value="create">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Modal ELIMINAR -->
+    <div aria-hidden="true" class="modal fade flip" id="deleteOrder" tabindex="-1">
+									<div class="modal-dialog modal-dialog-centered">
+										<div class="modal-content">
+											<div class="modal-body p-5 text-center">
+												<div class="mt-4 text-center">
+													<h4>¿Estas seguro de eliminar esta orden?</h4>
+													<p class="text-muted fs-15 mb-4">Eliminar esta orden borrara sus datos de la base de datos</p>
+													<div class="hstack gap-2 justify-content-center remove">
+														<button class="btn btn-link link-success fw-medium text-decoration-none" data-bs-dismiss="modal" id="deleteRecord-close"><i class="ri-close-line me-1 align-middle"></i> Close</button> <button class="btn btn-danger" id="delete-record">Yes, Delete It</button>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+   
     <?php include "../layouts/footer.template.php" ?>
     <!-- JAVASCRIPT -->
     <?php include "../layouts/scripts.template.php" ?>

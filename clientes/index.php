@@ -109,18 +109,11 @@
                         <span class="input-group-text" id="name">Nombre Completo</span>
                         <input type="text" id="name" name="name" class="form-control" placeholder="">
                         <span class="input-group-text" id="email">Correo</span>
-                        <input type="text" id="email" name="email" class="form-control" placeholder="">       
+                        <input type="text" id="email" name="email" class="form-control" placeholder="">  
+                        <span class="input-group-text" id="password">Contraseña</span>
+                        <input type="text" id="password" name="password" class="form-control" placeholder="">       
                         <span class="input-group-text" id="phone_number">Numero de telefono</span>
-                        <input type="text" id="phone_number" name="phone_number" class="form-control" placeholder="">  
-                        <h5 class="modal-title">Direccion</h5>
-                        <span class="input-group-text" id="street_and_use_number">Calle</span>
-                        <input type="text" id="street_and_use_number" name="street_and_use_number" class="form-control" placeholder="">
-                        <span class="input-group-text" id="postal_code">Codigo postal</span>
-                        <input type="text" id="postal_code" name="postal_code" class="form-control" placeholder="">
-                        <span class="input-group-text" id="city">Ciudad</span>
-                        <input type="text" id="city" name="city" class="form-control" placeholder="">
-                        <span class="input-group-text" id="province">Provincia</span>
-                        <input type="text" id="province" name="province" class="form-control" placeholder="">     
+                        <input type="text" id="phone_number" name="phone_number" class="form-control" placeholder="">       
                     </div>
                     <input type="hidden" name="action" value="create">
                     <div class="modal-footer">
