@@ -78,6 +78,9 @@ class CouponesController
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array(
+                'Authorization: Bearer ' . $_SESSION['token'],
+            ),
         ));
 
         $response = curl_exec($curl);
@@ -102,6 +105,9 @@ class CouponesController
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array(
+                'Authorization: Bearer ' . $_SESSION['token'],
+            ),
         ));
 
         $response = curl_exec($curl);
@@ -142,6 +148,9 @@ class CouponesController
                 'max_uses' => $max_uses, 'count_uses' => '0', 'valid_only_first_purchase' => '1',
                 'status' => '1'
             ),
+            CURLOPT_HTTPHEADER => array(
+                'Authorization: Bearer ' . $_SESSION['token'],
+            ),
         ));
 
         $response = curl_exec($curl);
@@ -177,6 +186,10 @@ class CouponesController
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'PUT',
             CURLOPT_POSTFIELDS => 'name=' . $name . '&code=' . $code . '&percentage_discount=' . $percentage_discount . '&min_amount_required=' . $min_amount_required . '&min_product_required=1&start_date=' . $start_date . '&end_date=' . $end_date . '&max_uses=' . $max_uses . '&count_uses=0&valid_only_first_purchase=1&status=1&id=' . $id,
+            CURLOPT_HTTPHEADER => array(
+                'Authorization: Bearer ' . $_SESSION['token'],
+                'Content-Type: application/x-www-form-urlencoded'
+            ),
         ));
 
         $response = curl_exec($curl);
@@ -203,6 +216,9 @@ class CouponesController
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'DELETE',
+            CURLOPT_HTTPHEADER => array(
+                'Authorization: Bearer ' . $_SESSION['token'],
+            ),
         ));
 
         $response = curl_exec($curl);

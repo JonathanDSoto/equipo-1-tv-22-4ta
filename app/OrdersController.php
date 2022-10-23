@@ -81,6 +81,9 @@ class OrdersController
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array(
+                'Authorization: Bearer ' . $_SESSION['token'],
+            ),
         ));
 
         $response = curl_exec($curl);
@@ -108,6 +111,9 @@ class OrdersController
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array(
+                'Authorization: Bearer ' . $_SESSION['token'],
+            ),
         ));
 
         $response = curl_exec($curl);
@@ -133,6 +139,9 @@ class OrdersController
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array(
+                'Authorization: Bearer ' . $_SESSION['token'],
+            ),
         ));
 
         $response = curl_exec($curl);
@@ -157,7 +166,7 @@ class OrdersController
         $presentations2,
         $presentations3,
         $presentations4
-    ) //imcompleto
+    )
     {
         $curl = curl_init();
 
@@ -176,6 +185,9 @@ class OrdersController
                 'order_status_id' => $order_status_id, 'payment_type_id' => $payment_type_id, 'coupon_id' => $coupon_id,
                 'presentations[0][id]' => $presentations, 'presentations[0][quantity]' => $presentations2,
                 'presentations[1][id]' => $presentations3, 'presentations[1][quantity]' => $presentations4
+            ),
+            CURLOPT_HTTPHEADER => array(
+                'Authorization: Bearer ' . $_SESSION['token'],
             ),
         ));
 
@@ -205,7 +217,12 @@ class OrdersController
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'PUT',
             CURLOPT_POSTFIELDS => 'id=' . $id . '&order_status_id=' . $order_status_id,
-        ));
+            CURLOPT_HTTPHEADER => array(
+                'Authorization: Bearer ' . $_SESSION['token'],
+                'Content-Type: application/x-www-form-urlencoded'
+              ),
+            ));
+            
 
         $response = curl_exec($curl);
 
@@ -231,6 +248,9 @@ class OrdersController
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'DELETE',
+            CURLOPT_HTTPHEADER => array(
+                'Authorization: Bearer ' . $_SESSION['token'],
+            ),
         ));
 
         $response = curl_exec($curl);

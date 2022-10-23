@@ -41,6 +41,11 @@ if (isset($_POST['action'])) {
                 );
 
                 break;
+                case 'specifict': 
+                    $id = strip_tags($_POST['id']);
+                    $categorieController = new CategorieController();
+                    $categorieController->GetSpecifictCategorie($id);
+                    break;
         }
     }
 }
@@ -93,6 +98,9 @@ class CategorieController
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'POST',
             CURLOPT_POSTFIELDS => array('name' => $name, 'description' => $description, 'slug' => $slug, 'category_id' => $category_id),
+            CURLOPT_HTTPHEADER => array(
+                'Authorization: Bearer ' . $_SESSION['token'],
+            ),
         ));
 
         $response = curl_exec($curl);
@@ -153,7 +161,11 @@ class CategorieController
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'PUT',
             CURLOPT_POSTFIELDS => 'id=' . $id . '&name=' . $name . '&description=' . $description . '&slug=' . $slug . '&category_id=' . $category_id,
-        ));
+            CURLOPT_HTTPHEADER => array(
+                'Authorization: Bearer ' . $_SESSION['token'],
+                'Content-Type: application/x-www-form-urlencoded'
+              ),
+            ));
 
         $response = curl_exec($curl);
 
@@ -195,4 +207,4 @@ class CategorieController
         }
     }
 }
-//listoo
+

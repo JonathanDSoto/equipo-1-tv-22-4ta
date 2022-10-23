@@ -59,7 +59,11 @@ class TagsController
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array(
+                'Authorization: Bearer ' . $_SESSION['token'],
+            ),
         ));
+     
 
         $response = curl_exec($curl);
 
@@ -83,6 +87,9 @@ class TagsController
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array(
+                'Authorization: Bearer ' . $_SESSION['token'],
+            ),
         ));
 
         $response = curl_exec($curl);
@@ -113,6 +120,9 @@ class TagsController
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'POST',
             CURLOPT_POSTFIELDS => array('name' => $name, 'description' => $description, 'slug' => $slug),
+            CURLOPT_HTTPHEADER => array(
+                'Authorization: Bearer ' . $_SESSION['token'],
+            ),
         ));
 
         $response = curl_exec($curl);
@@ -144,7 +154,11 @@ class TagsController
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'PUT',
             CURLOPT_POSTFIELDS => 'name=' . $name . '&description=' . $description . '&slug=' . $slug . '&id=' . $id,
-        ));
+            CURLOPT_HTTPHEADER => array(
+                'Authorization: Bearer ' . $_SESSION['token'],
+                'Content-Type: application/x-www-form-urlencoded'
+              ),
+            ));
 
         $response = curl_exec($curl);
 
@@ -171,6 +185,9 @@ class TagsController
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'DELETE',
+            CURLOPT_HTTPHEADER => array(
+                'Authorization: Bearer ' . $_SESSION['token'],
+            ),
         ));
 
         $response = curl_exec($curl);

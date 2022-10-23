@@ -2,10 +2,12 @@
 include_once "config.php";
 
 if (isset($_POST['action'])) {
-    if (isset($_POST['super_token']) ||
-      isset($_POST['sprtoken']) && 
-      $_POST['super_token'] == $_SESSION['super_token'] || 
-      $_POST['sprtoken'] == $_SESSION['super_token'])  {
+    if (
+        isset($_POST['super_token']) ||
+        isset($_POST['sprtoken']) &&
+        $_POST['super_token'] == $_SESSION['super_token'] ||
+        $_POST['sprtoken'] == $_SESSION['super_token']
+    ) {
         switch ($_POST['action']) {
             case 'create':
                 $name = strip_tags($_POST['name']);
@@ -20,6 +22,18 @@ if (isset($_POST['action'])) {
                     $password,
                     $phone_number,
                     $is_suscribed
+                );
+                break;
+            case 'delete':
+                $id = strip_tags($_POST['id']);
+                $clientsController = new ClientsController();
+                $clientsController->DeleteClient($id);
+                break;
+            case 'create':
+                $id = strip_tags($_POST['id']);
+                $clientsController = new ClientsController();
+                $clientsController->SpecifictClient(
+                    $id
                 );
                 break;
             case 'update':
@@ -58,7 +72,8 @@ class ClientsController
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'GET',
             CURLOPT_HTTPHEADER => array(
-                'Authorization: Bearer ' . $_SESSION['token'],),
+                'Authorization: Bearer ' . $_SESSION['token'],
+            ),
         ));
 
         $response = curl_exec($curl);
@@ -68,7 +83,6 @@ class ClientsController
         $response = json_decode($response);
         if (isset($response->code) && $response->code > 0) {
             return $response->data;
-            //falta direccion
         }
     }
 
@@ -98,7 +112,6 @@ class ClientsController
         $response = json_decode($response);
         if (isset($response->code) && $response->code > 0) {
             return $response->data;
-            //falta direccion
         }
     }
 
