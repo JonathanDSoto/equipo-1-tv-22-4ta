@@ -1,9 +1,13 @@
 <?php
     include_once "../app/config.php";
     include("../app/CategorieController.php");
+    include("../app/BrandController.php");
 
     $categoriesController = new CategorieController();
     $categories = $categoriesController->GetCategories();
+
+    $brandsController = new BrandsController();
+    $brands = $brandsController->getBrands();
 
 ?>
 <!doctype html>
@@ -122,25 +126,28 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody class="list form-check-all">
-                                                    <tr>
-                                                        <th scope="row">
-                                                        </th>
-                                                        <td >Nombre de la marca</td>
-                                                     
-                                                        <td>
-                                                            <div class="d-flex gap-3">
-                                                                <div class="view">
-                                                                    <a href="" class="btn btn-info " data-bs-toggle="modal" data-bs-target="">Ver</a>
+                                                    <?php foreach ($brands as $brand): ?>
+                                                        <tr>
+                                                            <th scope="row">
+                                                            </th>
+                                                            <td ><?= $brand->name ?></td>
+                                                            <td>
+                                                                <div class="d-flex gap-3">
+                                                                    <div class="view">
+                                                                        <a href="" class="btn btn-info " data-bs-toggle="modal" data-bs-target="">Ver</a>
+                                                                    </div>
+                                                                    <div class="edit">
+                                                                        <button class="btn btn-warning " data-bs-toggle="modal" data-bs-target="#añadirModal">Edit</button>
+                                                                    </div>
+                                                                    <div class="remove">
+                                                                        <button class="btn btn-danger" onclick="eliminar_brand(<?= $brand->id ?>)">Remove</button>
+                                                                        <input type="hidden" id="super_token" value="<?= $_SESSION['super_token']?>">
+												                        <input type="hidden" id="bp" value="<?= BASE_PATH ?>">
+                                                                    </div>
                                                                 </div>
-                                                                <div class="edit">
-                                                                    <button class="btn btn-warning " data-bs-toggle="modal" data-bs-target="#añadirModal">Edit</button>
-                                                                </div>
-                                                                <div class="remove">
-                                                                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="">Remove</button>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
+                                                            </td>
+                                                        </tr>
+                                                    <?php endforeach; ?>
                                                 </tbody>
                                             </table>           
                                         </div>
@@ -241,9 +248,45 @@
                         <button type="submit" class="btn btn-primary">Guardar cambios</button>
                     </div>
                 </form>
-            </div>s
+            </div>
         </div>
     </div>
+    <!--Modal Alta Categoria y Editar-->
+    <div class="modal fade" id="añadirModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="añadirModalLabel"> Introduzca los datos</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="POST" action="<?= BASE_PATH?>app/BrandController.php" enctype="multipart/form-data" id="brands_form">
+                    <div class="modal-body">
+
+                        <span class="input-group-text">Nombre</span>
+                        <input type="text" id="name" name="name" class="form-control">
+
+                        <span class="input-group-text">Descripción</span>
+                        <input type="text" id="description" name="description" class="form-control">
+
+                        <span class="input-group-text">Id Categoría</span>
+                        <input type="text" id="category_id" name="category_id" class="form-control">
+
+                    </div>
+
+                    <input type="hidden" name="action" id="action" value="create">
+                    <input type="hidden" name="id" id="id" value="<?= $categorie->id ?>">
+                    <input type="hidden" name="super_token" id="super_token" value="<?= $_SESSION['super_token'] ?>">
+                    
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <!-- JAVASCRIPT -->
     <?php include "../layouts/scripts.template.php" ?>
     <script>
@@ -376,6 +419,51 @@
             action.value = 'update'
 
         }
+
+        function eliminar_brand(id) {
+            
+            swal({
+                title: "Are you sure?",
+                text: "Once deleted, you will not be able to recover this imaginary file!",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((willDelete) => {
+                if (willDelete) {
+
+                let super_token = document.getElementById('super_token').value;
+                let base_path = document.getElementById('bp').value;
+
+                var bodyFormData = new FormData();
+                bodyFormData.append('id', id);
+                bodyFormData.append('action', 'delete');
+                bodyFormData.append('sprtoken', super_token);
+
+                axios.post('../app/BrandController.php', bodyFormData)
+                .then(function (response) {
+
+                    if (response.data) {
+                        swal("Poof! Your imaginary file has been deleted!", {
+                            icon: "success",
+                        });
+                        location.href = base_path+"catalogos/index.php"
+                    } else {
+                        swal("Error", {
+                            icon: "error",
+                        });;
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+
+                } else {
+                swal("Your imaginary file is safe!");
+                }
+            });
+        }
+
     </script>
 </body>
 </html>

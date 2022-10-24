@@ -37,6 +37,7 @@ if (isset($_POST['action'])) {
                 break;
             case 'delete':
                 $id = strip_tags($_POST['id']);
+
                 $brandsController = new BrandsController();
                 $brandsController->DeleteBrand($id);
                 break;
@@ -48,11 +49,9 @@ if (isset($_POST['action'])) {
         }
     }
 }
-class BrandsController
-{
+class BrandsController {
 
-    public function getBrands()
-    {
+    public function getBrands() {
 
         $curl = curl_init();
 
@@ -78,6 +77,7 @@ class BrandsController
         if (isset($response->code) && $response->code > 0) {
             return $response->data;
         }
+
     }
 
     public function SpecifictBrand($id)
@@ -107,6 +107,7 @@ class BrandsController
             return $response->data;
         }
     }
+
     public function CreateBrand(
         $name,
         $description,
@@ -172,8 +173,7 @@ class BrandsController
             header("location:" . BASE_PATH . "index");
         }
     }
-    public function DeleteBrand($id)
-    {
+    public function DeleteBrand($id) {
 
         $curl = curl_init();
 
@@ -200,5 +200,6 @@ class BrandsController
         } else {
             return false;
         }
+        
     }
 }
