@@ -21,7 +21,6 @@ if (isset($_POST['action'])) {
                 $presentationController->CreatePresentation($description, $code, $weight_in_grams, $cover, $stock, $stock_min, $stock_max, $product_id);
                 break;
             case 'update':
-
                 $description = strip_tags($_POST['description']);
                 $code = strip_tags($_POST['code']);
                 $weight_in_grams = strip_tags($_POST['weight']);
