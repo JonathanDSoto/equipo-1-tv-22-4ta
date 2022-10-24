@@ -82,7 +82,7 @@ class AuthController {
         if (isset($response->code) &&  $response->code > 0) {
             $_SESSION = array();
             session_destroy();
-            header("location:".BASE_PATH."index");
+            header("location:".BASE_PATH);
         }
     }
 

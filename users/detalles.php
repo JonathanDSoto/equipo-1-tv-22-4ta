@@ -5,6 +5,7 @@ include("../app/UsersController.php");
 $id_usuario = $_GET['id'];
 $userController = new UsersController();
 $user = $userController->DetailsUser($id_usuario);
+
 ?>
 <!doctype html>
 <head>
@@ -32,9 +33,8 @@ $user = $userController->DetailsUser($id_usuario);
                     <div class="row g-4">
                         <div class="col-auto">
                             <div class="avatar-lg">
-                                <button type="button" class="btn rounded-pill btn-info waves-effect waves-light " style="margin-top:50px; position:absolute; margin-left:60px"  data-bs-toggle="modal" data-bs-target="#editarImagen"> <i class="ri-camera-fill"></i></button>
+                                <button type="button" class="btn rounded-pill btn-info waves-effect waves-light " style="margin-top:50px; position:absolute; margin-left:60px"  data-bs-toggle="modal" data-bs-target="#editarImagen"><i class="ri-camera-fill"></i></button>
                                 <img src="<?= $user->avatar ?>" alt="user-img" class="img-thumbnail rounded-circle" />
-
                             </div>
                         </div>
                         <div class="col">
@@ -103,14 +103,18 @@ $user = $userController->DetailsUser($id_usuario);
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="editarImagen">Selecciona una imagen</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form method="" action="" enctype="multipart/form-data">
+                <form method="POST" action="<?= BASE_PATH?>users/" enctype="multipart/form-data">
                     <div class="modal-body">
-                        <span class="input-group-text" id="name">Imagen</span>
-                        <input type="file" id="name" name="name" class="form-control" placeholder=""> 
+                        <span class="input-group-text">Imagen</span>
+                        <input type="file" name="img_user" accept="image/*">
                     </div>
-                    <input type="hidden" name="action" value="create">
+                    
+                    <input type="hidden" name="action" value="updatephoto">
+                    <input type="hidden" name="id" value="<?= $user->id ?>">
+                    <input type="hidden" name="super_token" id="super_token" value="<?= $_SESSION['super_token'] ?>">
+
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                         <button type="submit" class="btn btn-primary">Guardar cambios</button>
@@ -122,5 +126,4 @@ $user = $userController->DetailsUser($id_usuario);
     <?php include "../layouts/footer.template.php" ?>
     <?php include "../layouts/scripts.template.php" ?>
 </body>
-
 </html>

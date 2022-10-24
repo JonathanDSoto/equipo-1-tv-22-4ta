@@ -206,8 +206,11 @@ $presentation = $presentationController->GetPresentation($product->id);
                         <span class="input-group-text">Peso(g)</span>
                         <input type="text" id="weight" name="weight" class="form-control">
                         
-                        <span class="input-group-text" id="status_label">Estado</span>
-                        <input type="text" id="status" name="status" class="form-control">
+                        <span class="input-group-text" id="estado_label">Estado de la paz</span>
+                        <input type="text" id="estado" name="status" class="form-control">
+
+                        <span class="input-group-text" id="price_label">Precio de la presentación</span>
+                        <input type="text" id="price" name="amount" class="form-control">
 
                         <span class="input-group-text">Cantidad de productos</span>
                         <input type="text" id="stock" name="stock" class="form-control">
@@ -242,9 +245,6 @@ $presentation = $presentationController->GetPresentation($product->id);
     <?php include "../layouts/scripts.template.php" ?>
     <script>
 
-        // Funcion para mostrar modales en base al GET obtenido
-        // modal = true - modal = false
-
         let create_btn = document.getElementById("create-btn")
         let form = document.getElementById("presentation_form")
         let label_cover = document.getElementById('label_img')
@@ -261,84 +261,140 @@ $presentation = $presentationController->GetPresentation($product->id);
         let super_token = document.getElementById("super_token")
         let slug = document.getElementById("slug")
 
-        let status_label = document.getElementById("status_label")
-        let status = document.getElementById("status")
+        let status_label = document.getElementById("estado_label")
+        let status = document.getElementById("estado")
+
+        let price_label = document.getElementById("price_label")
+        let price = document.getElementById("price")
 
         create_btn.addEventListener("click", () => {
             label_cover.style.display = "block"
             cover.style.display = "block"
             status_label.style.display = "none"
             status.style.display = "none"
+            price_label.style.display = "none"
+            price.style.display = "none"
         })
         
         form.addEventListener("submit", (e) => {
             e.preventDefault();
             
-            const data = new FormData();
-            data.append("cover", cover.files[0]);
-            data.append("description", description.value);
-            data.append("code", code.value);
-            data.append("weight", weight.value);
-            data.append("stock", stock.value);
-            data.append("stock_min", stock_min.value);
-            data.append("stock_max", stock_max.value);
-            data.append("action", action.value);
-            data.append("product_id", product_id.value);
-            data.append("super_token", super_token.value);
-            data.append("status", status.value);
-            data.append("presentation_id", presentation_id.value);
-            data.append("slug", slug.value);
+            if (price.value != "") {
+                console.log("Entro")
+                action.value = 'update_amount'
 
-            axios({
-                method: "POST",
-                url: "../app/PresentationController.php",
-                data,
-                headers: {
-                "Content-Type": "multipart/form-data",
-                },
-            }).then((response)=> {
+                const data = new FormData();
+                data.append("amount", price.value);
+                data.append("action", action.value);
+                data.append("presentation_id", presentation_id.value);
+                data.append("super_token", super_token.value);
 
-                if (response.data.code > 0) {
+                axios({
+                    method: "POST",
+                    url: "../app/PresentationController.php",
+                    data,
+                    headers: {
+                    "Content-Type": "multipart/form-data",
+                    },
+                }).then((response)=> {
+
+                    if (response.data) {
+                            Swal.fire({
+                            position: 'top-center',
+                            icon: 'success',
+                            title: 'Precio actualizado con exito',
+                            showConfirmButton: false,
+                            timer: 1500
+                            })
+                            function greet() {
+                                location.href = "detalles.php?slug=" + slug.value
+                            }
+                            setTimeout(greet, 1800);
+                    } else {
+                        console.log(response.message);
+
                         Swal.fire({
-                        position: 'top-center',
-                        icon: 'success',
-                        title: 'Presentacion creada con exito',
-                        showConfirmButton: false,
-                        timer: 1500
+                            position: 'center',
+                            icon: 'error',
+                            title: 'Error',
+                            showConfirmButton: false,
+                            timer: 1500
                         })
-                        function greet() {
-                            location.href = "detalles.php?slug=" + slug.value
-                        }
-                        setTimeout(greet, 1800);
-                } else if (response.message != "") {
+                    } 
+                }).catch((error) => {
+                    if (error.response) {
+                        console.log(error.message);
+                    }
+                });
+
+            } else {
+                const data = new FormData();
+                data.append("cover", cover.files[0]);
+                data.append("description", description.value);
+                data.append("code", code.value);
+                data.append("weight", weight.value);
+                data.append("stock", stock.value);
+                data.append("stock_min", stock_min.value);
+                data.append("stock_max", stock_max.value);
+                data.append("action", action.value);
+                data.append("product_id", product_id.value);
+                data.append("super_token", super_token.value);
+                data.append("status", status.value);
+                data.append("presentation_id", presentation_id.value);
+                data.append("slug", slug.value);
+    
+                
+    
+                axios({
+                    method: "POST",
+                    url: "../app/PresentationController.php",
+                    data,
+                    headers: {
+                    "Content-Type": "multipart/form-data",
+                    },
+                }).then((response)=> {
+    
+                    if (response.data.code > 0) {
+                            Swal.fire({
+                            position: 'top-center',
+                            icon: 'success',
+                            title: 'Presentacion creada con exito',
+                            showConfirmButton: false,
+                            timer: 1500
+                            })
+                            function greet() {
+                                location.href = "detalles.php?slug=" + slug.value
+                            }
+                            setTimeout(greet, 1800);
+                    } else if (response.message != "") {
+                            Swal.fire({
+                            position: 'top-center',
+                            icon: 'success',
+                            title: 'Presentacion actualizada exitosamente',
+                            showConfirmButton: false,
+                            timer: 1500
+                            })
+                            function greet() {
+                                location.href = "detalles.php?slug=" + slug.value
+                            }
+                            setTimeout(greet, 1800); 
+                    } else {
+                        console.log(response.message);
+    
                         Swal.fire({
-                        position: 'top-center',
-                        icon: 'success',
-                        title: 'Presentacion actualizada exitosamente',
-                        showConfirmButton: false,
-                        timer: 1500
+                            position: 'center',
+                            icon: 'error',
+                            title: 'Error',
+                            showConfirmButton: false,
+                            timer: 1500
                         })
-                        function greet() {
-                            location.href = "detalles.php?slug=" + slug.value
-                        }
-                        setTimeout(greet, 1800); 
-                } else {
-                    console.log(response.message);
-
-                    Swal.fire({
-                        position: 'center',
-                        icon: 'error',
-                        title: 'Error',
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
-                } 
-            }).catch((error) => {
-                if (error.response) {
-                    console.log(error.message);
-                }
-            });
-
+                    } 
+                }).catch((error) => {
+                    if (error.response) {
+                        console.log(error.message);
+                    }
+                });
+            }
 
         });
 
@@ -393,6 +449,8 @@ $presentation = $presentationController->GetPresentation($product->id);
             cover.style.display = "none"
             status_label.style.display = "block"
             status.style.display = "block"
+            price_label.style.display = "block"
+            price.style.display = "block"
 
             let presentation = JSON.parse( target.dataset.presentation )
 
@@ -405,6 +463,7 @@ $presentation = $presentationController->GetPresentation($product->id);
             stock_max.value = presentation.stock_max
             product_id.value = presentation.product_id
             presentation_id.value = presentation.id
+            price.value = presentation.current_price.amount
             action.value = 'update'
 
         }

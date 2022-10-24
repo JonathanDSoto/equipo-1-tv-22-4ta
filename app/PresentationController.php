@@ -36,6 +36,13 @@ if (isset($_POST['action'])) {
                 $presentationController = new PresentationController();
                 $presentationController->EditPresentation($description, $code, $weight_in_grams, $status, $stock, $stock_min, $stock_max, $product_id, $presentation_id, $slug);
                 break;
+            case 'update_amount':
+                $amount = strip_tags($_POST['amount']);
+                $presentation_id = strip_tags($_POST['presentation_id']);
+
+                $presentationController = new PresentationController();
+                $presentationController->EditPresentationPreci($presentation_id, $amount);
+                break;
             case 'delete':
                 $id = strip_tags($_POST['id']);
         
@@ -119,7 +126,7 @@ class PresentationController {
         }
     }
 
-    public function EditPresentation($description, $code, $weight_in_grams, $status, $stock, $stock_min, $stock_max, $product_id, $presentation_id, $slug) {
+    public function EditPresentation($description, $code, $weight_in_grams, $status, $stock, $stock_min, $stock_max, $product_id, $presentation_id) {
 
         $curl = curl_init();
 
@@ -159,14 +166,13 @@ class PresentationController {
         } else {
             $response = [
                 "message" => "Error al editar la presentación",
-
             ];
             $response = json_encode($response);
             echo $response;
         }
     }
 
-    public function EditPresentationPreci($id, $amount) {
+    public function EditPresentationPreci($presentation_id, $amount) {
 
         $curl = curl_init();
 
@@ -179,7 +185,9 @@ class PresentationController {
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'PUT',
-            CURLOPT_POSTFIELDS => 'id=' . $id . '&amount=' . $amount,
+            CURLOPT_POSTFIELDS => 
+            'id=' . $presentation_id . 
+            '&amount=' . $amount,
             CURLOPT_HTTPHEADER => array(
                 'Authorization: Bearer ' . $_SESSION['token'],
                 'Content-Type: application/x-www-form-urlencoded'
@@ -191,9 +199,16 @@ class PresentationController {
         curl_close($curl);
         echo $response;
         $response = json_decode($response);
-        if (isset($response->code) &&  $response->code > 0) {
 
-            header("location:" . BASE_PATH . "index");
+        if (isset($response->code) &&  $response->code > 0) {
+            $response = json_encode($response);
+            echo $response;
+        } else {
+            $response = [
+                "message" => "Error al actualizar el precio de la presentación",
+            ];
+            $response = json_encode($response);
+            echo $response;
         }
     }
 
