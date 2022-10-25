@@ -52,7 +52,7 @@
                                             </div>
                                         </div>
                                         <div class="table-responsive table-card mt-3 mb-1">
-                                            <table class="table align-middle table-nowrap" id="customerTable">
+                                            <table class="table align-middle table-nowrap" id="categoriesTable">
                                                 <thead class="table-light">
                                                     <tr>
                                                         <th scope="col" style="width: 40px;">
@@ -105,18 +105,17 @@
                                 <div class="card-header">
                                     <h4 class="card-title mb-0">Lista de marcas</h4>
                                 </div><!-- end card header -->
-
                                 <div class="card-body">
                                     <div id="customerList">
                                         <div class="row g-4 mb-3">
                                             <div class="col-sm-auto">
                                                 <div>
-                                                    <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal" id="create-btn" data-bs-target="#añadirModal"><i class="ri-add-line align-bottom me-1"></i>Añadir Marca</button>
+                                                    <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal" id="create-btn" data-bs-target="#añadirBrandModal"><i class="ri-add-line align-bottom me-1"></i>Añadir Marca</button>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="table-responsive table-card mt-3 mb-1">
-                                            <table class="table align-middle table-nowrap" id="customerTable">
+                                            <table class="table align-middle table-nowrap" id="brandTable">
                                                 <thead class="table-light">
                                                     <tr>
                                                         <th scope="col" style="width: 40px;">
@@ -134,10 +133,12 @@
                                                             <td>
                                                                 <div class="d-flex gap-3">
                                                                     <div class="view">
-                                                                        <a href="" class="btn btn-info " data-bs-toggle="modal" data-bs-target="">Ver</a>
+                                                                        <a href="" class="btn btn-info ">Ver</a>
                                                                     </div>
                                                                     <div class="edit">
-                                                                        <button class="btn btn-warning " data-bs-toggle="modal" data-bs-target="#añadirModal">Edit</button>
+                                                                        <button data-marca='<?= json_encode($brand) ?>' onclick="editar_marca(this)" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#añadirBrandModal">
+                                                                            <i class="ri-edit-2-line"></i>
+                                                                        </button>
                                                                     </div>
                                                                     <div class="remove">
                                                                         <button class="btn btn-danger" onclick="eliminar_brand(<?= $brand->id ?>)">Remove</button>
@@ -251,30 +252,27 @@
             </div>
         </div>
     </div>
-    <!--Modal Alta Categoria y Editar-->
-    <div class="modal fade" id="añadirModal">
+    <!--Modal Alta Marca y Editar-->
+    <div class="modal fade" id="añadirBrandModal">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="añadirModalLabel"> Introduzca los datos</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title" id="añadirModalLabel"> Introduzca los datos de la marca</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form method="POST" action="<?= BASE_PATH?>app/BrandController.php" enctype="multipart/form-data" id="brands_form">
                     <div class="modal-body">
 
                         <span class="input-group-text">Nombre</span>
-                        <input type="text" id="name" name="name" class="form-control">
+                        <input type="text" id="brand_name" name="name" class="form-control">
 
                         <span class="input-group-text">Descripción</span>
-                        <input type="text" id="description" name="description" class="form-control">
-
-                        <span class="input-group-text">Id Categoría</span>
-                        <input type="text" id="category_id" name="category_id" class="form-control">
+                        <input type="text" id="brand_description" name="description" class="form-control">
 
                     </div>
 
                     <input type="hidden" name="action" id="action" value="create">
-                    <input type="hidden" name="id" id="id" value="<?= $categorie->id ?>">
+                    <input type="hidden" name="brand_id" id="brand_id" value="<?= $brand->id ?>">
                     <input type="hidden" name="super_token" id="super_token" value="<?= $_SESSION['super_token'] ?>">
                     
 
@@ -291,16 +289,26 @@
     <?php include "../layouts/scripts.template.php" ?>
     <script>
 
-        let create_categorie_btn = document.getElementById("create-btn")
         let categories_form = document.getElementById("categories_form")
-        
+        let brands_form = document.getElementById("brands_form")
+        let tags_form = document.getElementById("tags_form")
+
+        // Categoríes
         let name = document.getElementById("name")
         let description = document.getElementById("description")
         let category_id = document.getElementById("category_id")
         let action = document.getElementById("action")
         let id = document.getElementById("id")
+
+        // Brands
+        let brand_name = document.getElementById("brand_name")
+        let brand_description = document.getElementById("brand_description")
+        let brand_id = document.getElementById("brand_id")
+        
         let super_token = document.getElementById("super_token")
 
+        
+        // C A T E G O R I E S
         categories_form.addEventListener("submit", (e) => {
             e.preventDefault();
             
@@ -419,6 +427,118 @@
             action.value = 'update'
 
         }
+        
+        // B R A N D S
+        brands_form.addEventListener("submit", (e) => {
+            e.preventDefault();
+
+            if (action.value == "update") {
+                const data = new FormData();
+                data.append("brand_name", brand_name.value);
+                data.append("brand_description", brand_description.value);
+                data.append("brand_id", brand_id.value);
+                data.append("action", action.value);
+                data.append("super_token", super_token.value);
+
+                axios({
+                    method: "POST",
+                    url: "../app/BrandController.php",
+                    data,
+                    headers: {
+                    "Content-Type": "multipart/form-data",
+                    },
+                }).then((response)=> {
+
+                    if (response.data.code > 0) {
+                        Swal.fire({
+                            position: 'top-center',
+                            icon: 'success',
+                            title: 'Marca actualizada con éxito',
+                            showConfirmButton: false,
+                            timer: 1500
+                            })
+                            function greet() {
+                                location.href = "index.php"
+                            }
+                            setTimeout(greet, 1800);                
+                    } else {
+                        console.log(response.message);
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'error',
+                            title: 'Error',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                    } 
+                }).catch((error) => {
+                    if (error.response) {
+                        console.log(error.message);
+                    }
+                });
+
+            } else {
+                console.log(action.value)
+                
+                const data = new FormData();
+                data.append("brand_name", brand_name.value);
+                data.append("brand_description", brand_description.value);
+                data.append("brand_id", brand_id.value);
+                data.append("action", action.value);
+                data.append("super_token", super_token.value);
+    
+                axios({
+                    method: "POST",
+                    url: "../app/BrandController.php",
+                    data,
+                    headers: {
+                    "Content-Type": "multipart/form-data",
+                    },
+                }).then((response)=> {
+    
+                    if (response.data.code > 0) {
+                            Swal.fire({
+                            position: 'top-center',
+                            icon: 'success',
+                            title: 'Marca creada con éxito',
+                            showConfirmButton: false,
+                            timer: 1500
+                            })
+                            function greet() {
+                                location.href = "index.php"
+                            }
+                            setTimeout(greet, 1800);
+                    } else {
+                        console.log(response.message);
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'error',
+                            title: 'Error',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                    } 
+                }).catch((error) => {
+                    if (error.response) {
+                        console.log(error.message);
+                    }
+                });
+            }
+
+
+
+        });
+
+        function editar_marca(target) {
+
+            let brands = JSON.parse( target.dataset.marca )
+
+            brand_name.value = brands.name
+            brand_description.value = brands.description 
+            brand_id.value = brands.id
+            action.value = 'update'
+
+        }
 
         function eliminar_brand(id) {
             
@@ -463,6 +583,14 @@
                 }
             });
         }
+
+        // T A G S
+        
+
+        $(document).ready(function () {
+            $('#categoriesTable').DataTable();
+            $('#brandTable').DataTable();
+        });
 
     </script>
 </body>

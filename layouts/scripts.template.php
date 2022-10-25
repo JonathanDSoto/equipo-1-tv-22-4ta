@@ -24,4 +24,6 @@
     <script src="<?= BASE_PATH?>public/assets/libs/nouislider/nouislider.min.js"></script>
     <script src="<?= BASE_PATH?>public/assets/libs/wnumb/wNumb.min.js"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
     
