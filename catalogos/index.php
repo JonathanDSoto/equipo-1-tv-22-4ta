@@ -23,7 +23,7 @@
     <?php include "../layouts/nav.template.php" ?>
     <!-- SIDEBAR -->
     <?php include "../layouts/side.template.php" ?>
-    <div class="main-content">
+        <div class="main-content">
             <div class="page-content">
                 <div class="container-fluid">
                     <!-- start page title -->
@@ -58,7 +58,7 @@
                                                         <th scope="col" style="width: 40px;">
         
                                                         <th>Nombre</th>
-                                                        <th>Accion</th>
+                                                        <th class="d-flex justify-content-end" style=" padding-right: 85px;">Accion</th>
                                                         </th>
                                                     </tr>
                                                 </thead>
@@ -70,7 +70,7 @@
                                                         <td ><?= $categorie->name ?></td>
                                                      
                                                         <td>
-                                                            <div class="d-flex gap-3">
+                                                            <div class="d-flex gap-3 edit justify-content-end me-3">
                                                                 <div class="view">
                                                                 <a href="detalles_presentacion.php?id=<?= $categorie->id ?>" class="btn btn-info">
                                                                     <i class="bx bx-show"></i>
@@ -120,7 +120,7 @@
                                                     <tr>
                                                         <th scope="col" style="width: 40px;">
                                                         <th>Nombre</th>
-                                                        <th>Accion</th>
+                                                        <th class="d-flex justify-content-end" style=" padding-right: 85px;">Accion</th>
                                                         </th>
                                                     </tr>
                                                 </thead>
@@ -131,9 +131,9 @@
                                                             </th>
                                                             <td ><?= $brand->name ?></td>
                                                             <td>
-                                                                <div class="d-flex gap-3">
+                                                                <div class="d-flex gap-3 edit justify-content-end me-3">
                                                                     <div class="view">
-                                                                        <a href="" class="btn btn-info ">Ver</a>
+                                                                        <a href="" class="btn btn-info "><i class="bx bx-show"></i></a>
                                                                     </div>
                                                                     <div class="edit">
                                                                         <button data-marca='<?= json_encode($brand) ?>' onclick="editar_marca(this)" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#añadirBrandModal">
@@ -141,7 +141,7 @@
                                                                         </button>
                                                                     </div>
                                                                     <div class="remove">
-                                                                        <button class="btn btn-danger" onclick="eliminar_brand(<?= $brand->id ?>)">Remove</button>
+                                                                        <button class="btn btn-danger" onclick="eliminar_brand(<?= $brand->id ?>)"><i class="bx bx-trash-alt"></i></button>
                                                                         <input type="hidden" id="super_token" value="<?= $_SESSION['super_token']?>">
 												                        <input type="hidden" id="bp" value="<?= BASE_PATH ?>">
                                                                     </div>
@@ -158,7 +158,7 @@
                         </div>        
                     </div>
                      <!-- Tags -->
-                    <div class="row">
+                     <div class="row">
                         <div class="col-lg-12">
                             <div class="card">
                                 <div class="card-header">
@@ -169,40 +169,39 @@
                                         <div class="row g-4 mb-3">
                                             <div class="col-sm-auto">
                                                 <div>
-                                                    <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal" id="create-btn" data-bs-target="#añadirModal"><i class="ri-add-line align-bottom me-1"></i>Añadir tag</button>
+                                                    <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal" id="create-btn" data-bs-target="#añadirBrandModal"><i class="ri-add-line align-bottom me-1"></i>Añadir tag</button>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="table-responsive table-card mt-3 mb-1">
-                                            <table class="table align-middle table-nowrap" id="customerTable">
+                                            <table class="table align-middle table-nowrap" id="tagTable">
                                                 <thead class="table-light">
                                                     <tr>
                                                         <th scope="col" style="width: 40px;">
                                                         <th>Nombre</th>
-                                                        <th>Accion</th>
+                                                        <th class="d-flex justify-content-end" style=" padding-right: 85px;">Accion</th>
                                                         </th>
                                                     </tr>
                                                 </thead>
                                                 <tbody class="list form-check-all">
-                                                    <tr>
-                                                        <th scope="row">
-                                                        </th>
-                                                        <td >Nombre del tag</td>
-                                                     
-                                                        <td>
-                                                            <div class="d-flex gap-3">
-                                                                <div class="view">
-                                                                    <a href="" class="btn btn-info " data-bs-toggle="modal" data-bs-target="">Ver</a>
+                                                        <tr>
+                                                            <th scope="row">
+                                                            </th>
+                                                            <td >Nombre del tag</td>
+                                                            <td>
+                                                                <div class="d-flex gap-3 edit justify-content-end me-3">
+                                                                    <div class="view">
+                                                                    <a href="" class="btn btn-info" data-bs-toggle="modal" data-bs-target=""><i class="bx bx-show"></i></a>
+                                                                    </div>
+                                                                    <div class="edit">
+                                                                    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#añadirModal"><i class="ri-edit-2-line"></i></button>
+                                                                    </div>
+                                                                    <div class="remove">
+                                                                    <button class="btn btn-danger" ><i class="bx bx-trash-alt"></i></button>  
+                                                                    </div>
                                                                 </div>
-                                                                <div class="edit">
-                                                                    <button class="btn btn-warning " data-bs-toggle="modal" data-bs-target="#añadirModal">Edit</button>
-                                                                </div>
-                                                                <div class="remove">
-                                                                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="">Remove</button>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
+                                                            </td>
+                                                        </tr>
                                                 </tbody>
                                             </table>           
                                         </div>
@@ -210,7 +209,7 @@
                                 </div>
                             </div>                   
                         </div>        
-                    </div>
+                    </div>                                   
                 </div>
             </div>
         </div>
