@@ -8,6 +8,12 @@ if (isset($_POST['action'])) {
     $_POST['super_token'] == $_SESSION['super_token'] || 
     $_POST['sprtoken'] == $_SESSION['super_token']) {
         switch ($_POST['action']) {
+            case 'detail':
+                $id = strip_tags($_POST['id']);
+
+                $usersController = new UsersController();
+                $usersController->DetailsUser($id);
+                break;
             case 'create':
                 $name = strip_tags($_POST['name']);
                 $lastname = strip_tags($_POST['last_name']);
@@ -15,7 +21,6 @@ if (isset($_POST['action'])) {
                 $phone_number = strip_tags($_POST['phone_number']);
                 $created_by = strip_tags($_POST['created_by_user']);
                 $password = strip_tags($_POST['password']);
-
                 $img_usuario = $_FILES['img_user']['tmp_name'];
 
                 $usersController = new UsersController();
@@ -28,40 +33,27 @@ if (isset($_POST['action'])) {
                 $created_by = strip_tags($_POST['created_by']);
                 $password = strip_tags($_POST['password']);
                 $id = strip_tags($_POST['id']);
+
                 $usersController = new UsersController();
-                $usersController->EditUser(
-                    $name,
-                    $lastname,
-                    $email,
-                    $created_by,
-                    $password,
-                    $id
-                );
+                $usersController->EditUser($name, $lastname, $email, $created_by, $password, $id);
                 break;
+                case 'delete':
+                    $id = strip_tags($_POST['id']);
+    
+                    $usersController = new UsersController();
+                    $usersController->DeleteUser($id);
+                    break;
             case 'updatephoto':
                 $id = strip_tags($_POST['id']);
-                $img_User = $_FILES['img_usuario']['tmp_name'];
+                $img_usuario = $_FILES['img_user']['tmp_name'];
+                
                 $usersController = new UsersController();
-                $usersController->EditPhoto(
-                    $id,
-                    $img_User
-                );
-                break;
-            case 'delete':
-                $id = strip_tags($_POST['id']);
-
-                $usersController = new UsersController();
-                $usersController->DeleteUser($id);
-                break;
-            case 'detail':
-                $id = strip_tags($_POST['id']);
-
-                $usersController = new UsersController();
-                $usersController->DetailsUser($id);
+                $usersController->EditPhoto($id, $img_usuario);
                 break;
         }
     }
 }
+
 class UsersController {
     
     public function getUsers() {
@@ -135,7 +127,7 @@ class UsersController {
                 'name' => $name, 
                 'lastname' => $lastname, 
                 'email' => $email, 
-                'phone_number' => $phone_number, 
+                'phone_number' => $phone_number,
                 'created_by' => $created_by, 
                 'role' => 'Administrador', 
                 'password' => $password,
@@ -229,7 +221,7 @@ class UsersController {
         }
     }
 
-    public function EditPhoto($id, $img_User) {
+    public function EditPhoto($id, $img_usuario) {
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
@@ -241,7 +233,10 @@ class UsersController {
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'POST',
-            CURLOPT_POSTFIELDS => array('id' => $id, 'profile_photo_file' => new CURLFILE($img_User)),
+            CURLOPT_POSTFIELDS => array(
+                'id' => $id, 
+                'profile_photo_file' => new CURLFILE($img_usuario)
+            ),
             CURLOPT_HTTPHEADER => array(
                 'Authorization: Bearer ' . $_SESSION['token'],
 
@@ -249,12 +244,11 @@ class UsersController {
         ));
 
         $response = curl_exec($curl);
-
         curl_close($curl);
         echo $response;
         $response = json_decode($response);
         if (isset($response->code) &&  $response->code > 0) {
-            header("location:" . BASE_PATH . "index");
+            header("location:" . BASE_PATH . "users/detalles.php?id=" . $id);
         }
     }
 
