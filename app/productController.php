@@ -169,12 +169,15 @@ class ProductsController {
     $response = json_decode($response);
     
     if(isset($response->code) && $response->code > 0) {
-      header("Location:".BASE_PATH."products/index.php?modal=true");
+
+        header("Location:".BASE_PATH."products/index.php?modal=true");
+      
     } else {
+
       header("Location:".BASE_PATH."products/index.php?modal=false");
     }
   }
-
+     
   public function deleteProduct($id) {
     $curl = curl_init();
 
@@ -208,3 +211,4 @@ class ProductsController {
   }
 
 }
+?>

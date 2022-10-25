@@ -119,22 +119,22 @@
                     <h5 class="modal-title" id="añadirModalLabel"> Nuevo Producto </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form method="POST" action="<?= BASE_PATH?>app/productController.php" enctype="multipart/form-data">
+                <form method="POST" action="<?= BASE_PATH?>app/productController.php" enctype="multipart/form-data" >
                     <div class="modal-body">
                         <span class="input-group-text" id="addon-wrapping">Imagen del producto</span>
-                        <input type="file" id="img_product" name="img_producto" accept="image/*">
+                        <input type="file" id="img_product" name="img_producto" accept="image/*" required >
 
                         <span class="input-group-text" id="addon-wrapping">Nombre</span>
-                        <input type="text" id="name" name="name" class="form-control" placeholder="">
+                        <input type="text" id="name" name="name" class="form-control" placeholder="Max 300 caracteres..." required pattern="(?=. * \[A-Za-z0-9]) .{3,20}"  >
 
                         <span class="input-group-text" id="addon-wrapping">Descripcion</span>
-                        <input type="text" id="description" name="description" class="form-control" placeholder="">
+                        <input type="text" id="description" name="description" class="form-control" placeholder="..." required  pattern="(?=. * \[A-Za-z0-9]) .{3,20}" >
 
                         <span class="input-group-text" id="addon-wrapping">Caracteristicas</span>
-                        <input type="text" id="features" name="features" class="form-control" placeholder="">
+                        <input type="text" id="features" name="features" class="form-control" placeholder="..."  required  pattern="(?=. * \[A-Za-z0-9]) .{3,20}" >
                         
                         <span class="input-group-text" id="addon-wrapping">Marca</span>
-                        <select class="form-select" aria-label="Default select example" id="brand_id" name="brand_id">
+                        <select class="form-select" aria-label="Default select example" id="brand_id" name="brand_id" required > 
                             <?php foreach($brands as $brand): ?>
                                 <option value="<?= $brand->id ?>"><?= $brand->name ?></option>
                             <?php endforeach; ?>
@@ -153,17 +153,63 @@
             </div>
         </div>
     </div>
-
+      
     <!-- JAVASCRIPT -->
     <?php include "../layouts/scripts.template.php" ?>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <script>
 
 
         // Funcion para mostrar modales en base al GET obtenido
         // modal = true - modal = false
-
-        function eliminar(id) {
+    
+        function getQueryVariable(variable) {
+        var query = window.location.search.substring(1);
+        var vars = query.split("&");
+        for (let i = 0; i < vars.length; i++) {
+            let pair = vars[i].split("=");
+            if (pair[0].toUpperCase() == variable.toUpperCase()) {
+            return pair[1];
+            }
+        }
+        return null;
+        } 
+        
+        $(document).ready(function() {
+            if (getQueryVariable("modal") == "true") {
+                Swal.fire({
+                position: 'top-center',
+                icon: 'success',
+                title: 'Producto registrado con exito',
+                showConfirmButton: false,
+                timer: 1500
+                })
+                function tiempo() { // Aqui va la ruta que apunta al index de productos
+                    location.href = "index.php";
+                }
+                setTimeout(tiempo, 1500);
+            }
+            if(getQueryVariable("modal") == "false"){
+                Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Algo salio mal, no se puedo agregar el producto!',
+                
+                })
+                function tiempo() { // Aqui va la ruta que apunta al index de productos
+                    location.href = "index.php";
+                }
+                setTimeout(tiempo, 1500);
+            }
+        
+        });
             
+            
+        
+        
+        function eliminar(id) {
+
             swal({
                 title: "Are you sure?",
                 text: "Once deleted, you will not be able to recover this imaginary file!",
