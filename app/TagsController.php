@@ -8,46 +8,39 @@ if (isset($_POST['action'])) {
     $_POST['sprtoken'] == $_SESSION['super_token'])  {
         switch ($_POST['action']) {
             case 'create':
-                $name = strip_tags($_POST['name']);
+                $name = strip_tags($_POST['tag_name']);
+                $description = strip_tags($_POST['tag_description']);
                 $slug = preg_replace('/[^A-Za-z0-9-]+/', '-', $name);
-                $description = strip_tags($_POST['description']);
+
                 $tagsController = new TagsController();
-                $tagsController->CreateTags(
-                    $name,
-                    $description,
-                    $slug
-                );
-                break;
-            case 'delete':
-                $id = strip_tags($_POST['id']);
-                $tagsController = new TagsController();
-                $tagsController->DeleteTags($id);
+                $tagsController->CreateTags($name, $description, $slug);
                 break;
             case 'update':
-                $name = strip_tags($_POST['name']);
+                $name = strip_tags($_POST['tag_name']);
+                $description = strip_tags($_POST['tag_description']);
                 $slug = preg_replace('/[^A-Za-z0-9-]+/', '-', $name);
-                $description = strip_tags($_POST['description']);
-                $id = strip_tags($_POST['id']);
+                $id = strip_tags($_POST['tag_id']);
+
                 $tagsController = new TagsController();
-                $tagsController->EditTags(
-                    $name,
-                    $description,
-                    $slug,
-                    $id
-                );
+                $tagsController->EditTags($name, $description, $slug, $id);
                 break;
             case 'specifict':
                 $id = strip_tags($_POST['id']);
                 $tagsController = new TagsController();
                 $tagsController->GetSpecifictTags($id);
                 break;
+            case 'delete':
+                $id = strip_tags($_POST['id']);
+
+                $tagsController = new TagsController();
+                $tagsController->DeleteTags($id);
+                break;
         }
     }
 }
-class TagsController
-{
-    public function GetTags()
-    {
+class TagsController {
+
+    public function GetTags() {
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
@@ -68,14 +61,13 @@ class TagsController
         $response = curl_exec($curl);
 
         curl_close($curl);
-        echo $response;
         $response = json_decode($response);
         if (isset($response->code) && $response->code > 0) {
             return $response->data;
         }
     }
-    public function GetSpecifictTags($id)
-    {
+
+    public function GetSpecifictTags($id) {
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
@@ -93,20 +85,15 @@ class TagsController
         ));
 
         $response = curl_exec($curl);
-
         curl_close($curl);
-        echo $response;
+
         $response = json_decode($response);
         if (isset($response->code) && $response->code > 0) {
             return $response->data;
         }
     }
 
-    public function CreateTags(
-        $name,
-        $description,
-        $slug
-    ) {
+    public function CreateTags($name, $description, $slug) {
 
         $curl = curl_init();
 
@@ -119,20 +106,33 @@ class TagsController
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'POST',
-            CURLOPT_POSTFIELDS => array('name' => $name, 'description' => $description, 'slug' => $slug),
+            CURLOPT_POSTFIELDS => array(
+                'name' => $name, 
+                'description' => $description, 
+                'slug' => $slug
+            ),
             CURLOPT_HTTPHEADER => array(
                 'Authorization: Bearer ' . $_SESSION['token'],
             ),
         ));
 
         $response = curl_exec($curl);
-
         curl_close($curl);
-        echo $response;
         $response = json_decode($response);
-        if (isset($response->code) &&  $response->code > 0) {
 
-            header("location:" . BASE_PATH . "index");
+        if (isset($response->code) &&  $response->code > 0) {
+            $response = json_encode([
+                $response,
+                "update" => false
+            ]);
+            echo $response;
+        } else {
+
+            $response = [
+                "message" => "Error al crear la etiqueta",
+            ];
+            $response = json_encode($response);
+            echo $response;
         }
     }
 
@@ -161,13 +161,22 @@ class TagsController
             ));
 
         $response = curl_exec($curl);
-
         curl_close($curl);
-        echo $response;
         $response = json_decode($response);
-        if (isset($response->code) &&  $response->code > 0) {
 
-            header("location:" . BASE_PATH . "index");
+        if (isset($response->code) &&  $response->code > 0) {
+            $response = json_encode([
+                $response,
+                "update" => true
+            ]);
+            echo $response;
+        } else {
+
+            $response = [
+                "message" => "Error al actualizar la etiqueta",
+            ];
+            $response = json_encode($response);
+            echo $response;
         }
     }
 

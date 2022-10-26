@@ -108,11 +108,11 @@ class CategorieController {
         }
     }
 
-    public function GetSpecifictCategorie() {
+    public function GetSpecifictCategorie($category_id) {
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://crud.jonathansoto.mx/api/categories/1',
+            CURLOPT_URL => 'https://crud.jonathansoto.mx/api/categories/' . $category_id,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,

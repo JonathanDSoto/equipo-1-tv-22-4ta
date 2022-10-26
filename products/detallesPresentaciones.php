@@ -109,8 +109,8 @@ if (is_null($presentation->current_price->amount)) {
 												<p><?= $presentation->status ?></p>
 											</div>
 											<div class="mt-4 text-muted">
-												<h5 class="fs-14"><?= $presentation->stock ?></h5>
-												<p></p>
+												<h5 class="fs-14">Stock:</h5>
+												<p><?= $presentation->stock ?></p>
 											</div>
 											<div class="mt-4 text-muted">
 												<h5 class="fs-14">Stock minimo:</h5>
