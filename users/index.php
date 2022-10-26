@@ -137,10 +137,10 @@
                         <input type="text" id="phone_number" name="phone_number" class="form-control">
 
                         <span class="input-group-text" id="label_rol">Rol</span>
-                        <input type="text" id="rol" class="form-control">
+                        <input type="text" id="rol" name="rol" class="form-control">
 
                         <span class="input-group-text" id="label_created">Creado por</span>
-                        <input type="text" id="created_by" class="form-control">
+                        <input type="text" id="created_by" name="created_by" class="form-control">
 
                     </div>
 
@@ -197,12 +197,12 @@
             ent = true;
             data.append("img_user", img_usuario.files[0]);
             data.append("name", name.value);
-            data.append("last_name", last_name.value);
+            data.append("lastname", last_name.value);
             data.append("email", email.value);
             data.append("password", password.value);
             data.append("phone_number", phone_number.value);
-            data.append("id_user", id_user.value);
-            data.append("created_by_user", created_by_user.value);
+            data.append("id", id_user.value);
+            data.append("created_by", created_by_user.value);
             data.append("action", action.value);
             data.append("super_token", super_token.value);
 
@@ -214,20 +214,33 @@
                 "Content-Type": "multipart/form-data",
                 },
             }).then((response)=> {
-                if (response.data.code > 0) {
-                        Swal.fire({
+                let res = JSON.stringify(response)
+				res = JSON.parse(res)
+
+                if (res.data[0].code > 0 && res.data.update == false) {
+                    Swal.fire({
                         position: 'top-center',
                         icon: 'success',
                         title: 'Usuario creado',
                         showConfirmButton: false,
                         timer: 1500
-                        })
-                        function greet() {
-                            location.href = "index.php";
-                        }
-                        setTimeout(greet, 1800);
-
-
+                    })
+                    function greet() {
+                        location.href = "index.php";
+                    }
+                    setTimeout(greet, 1800);
+                } else if (res.data[0].code > 0 && res.data.update) {
+                    Swal.fire({
+                        position: 'top-center',
+                        icon: 'success',
+                        title: 'Usuario actualizado',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                    function greet() {
+                        location.href = "index.php";
+                    }
+                    setTimeout(greet, 1800);
                 } else {
                     console.log(response.message);
 
@@ -249,9 +262,6 @@
         });
 
         function eliminar(id) {
-            
-            console.log("eliminar")
-            console.log(id)
             
             swal({
                 title: "Are you sure?",
@@ -278,7 +288,7 @@
                         swal("Poof! Your imaginary file has been deleted!", {
                             icon: "success",
                         });
-                        location.href = base_path+'users'
+                        location.href = base_path+'users/index.php'
                     } else {
                         swal("Error", {
                             icon: "error",

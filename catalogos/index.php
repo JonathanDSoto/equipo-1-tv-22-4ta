@@ -47,7 +47,7 @@
                                         <div class="row g-4 mb-3">
                                             <div class="col-sm-auto">
                                                 <div>
-                                                    <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal" id="create-btn" data-bs-target="#añadirModal"><i class="ri-add-line align-bottom me-1"></i>Añadir categoria</button>
+                                                    <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal" id="add-category-btn" data-bs-target="#añadirModal"><i class="ri-add-line align-bottom me-1"></i>Añadir categoria</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -305,12 +305,17 @@
         let brand_id = document.getElementById("brand_id")
         
         let super_token = document.getElementById("super_token")
-
         
+        let add_category = document.getElementById("add-category-btn")
+
+        add_category.addEventListener("click", () => {
+            categories_form.reset();
+        })
+
         // C A T E G O R I E S
         categories_form.addEventListener("submit", (e) => {
             e.preventDefault();
-            
+
             const data = new FormData();
             data.append("name", name.value);
             data.append("description", description.value);
