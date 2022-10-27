@@ -76,15 +76,30 @@
             data.append("action", action.value);
             data.append("super_token", super_token.value);
 
-            axios({
-                method: "POST",
-                url: "app/AuthController.php",
-                data,
-                headers: {
-                "Content-Type": "multipart/form-data",
-                },
-            }).then((response)=> {
-                if (response.data.code > 0) {
+            var valid =/^\w+@alu+.uabcs.+mx+$/
+            //console.log(valid.test(email.value));
+            
+            if(!valid.test(email.value)){
+                Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: 'Correo o contraseña erroneos',
+                        showConfirmButton: false,
+                        timer: 1500
+                })
+                ent = false;
+            }
+            if(ent){
+                axios({
+                    method: "POST",
+                    url: "app/AuthController.php",
+                    data,
+                    headers: {
+                    "Content-Type": "multipart/form-data",
+                    },
+                }).then((response)=> {   
+                    if(response.data.code > 0){
+                        
                         Swal.fire({
                         position: 'top-center',
                         icon: 'success',
@@ -94,28 +109,31 @@
                         })
                         //carga de espera
                         function greet() { // Aqui va la ruta que apunta al index de productos
-                            location.href = "product/";
+                            location.href = "products/";
                         }
                         setTimeout(greet, 1800);
-
+    
                         //console.log(response.data.message);
-
-                } else {
-                    console.log(response.message);
-
-                    Swal.fire({
-                        position: 'center',
-                        icon: 'error',
-                        title: 'Correo o contraseña erroneos',
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
-                } 
-            }).catch((error) => {
-                if (error.response) {
-                    console.log(error.message);
-                }
-            });
+    
+                        
+                    }
+                    else {
+                        console.log(response.message);
+    
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'error',
+                            title: 'Error  404 en respuesta',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                    } 
+                }).catch((error) => {
+                    if (error.response) {
+                        console.log(error.message);
+                    }
+                });
+            }
 
 
         });

@@ -176,7 +176,7 @@
         } 
 
 
-        var validarRe = /^[a-zA-Z0-9\_\-]$/ ;                   
+        var validarRe = /^[a-zA-Z0-9\_\-]+$/ ;                   
         var nam = document.getElementById('name');
         var des = document.getElementById('description');
         var fea = document.getElementById('features');
