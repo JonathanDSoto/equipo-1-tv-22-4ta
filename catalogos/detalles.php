@@ -1,5 +1,25 @@
 <?php
 include_once "../app/config.php";
+include("../app/CategorieController.php");
+include("../app/BrandController.php");
+include("../app/TagsController.php");
+
+
+$type = $_GET['type'];
+
+if ($type == "categoria") {
+	$id_categoria = $_GET['id'];
+	$categoryController = new CategorieController();
+	$response = $categoryController->GetSpecifictCategorie($id_categoria);
+} else if ($type == "marca") {
+	$id_marca = $_GET['id'];
+	$brandsController = new BrandsController();
+	$response = $brandsController->SpecifictBrand($id_marca);
+} else if ($type == "etiqueta") {
+	$id_etiqueta = $_GET['id'];
+	$tagsController = new TagsController();
+	$response = $tagsController->GetSpecifictTags($id_etiqueta);
+}
 
 ?>
 <!DOCTYPE html>
@@ -33,11 +53,11 @@ include_once "../app/config.php";
 				</div>
 				<div class="mt-4 text-muted">
 					<h5 class="fs-14">Nombre del catalogo :</h5>
-					<p>Nombre</p>
+					<p><?= $response->name ?></p>
 				</div>
 				<div class="mt-4 text-muted">
 					<h5 class="fs-14">Descripcion:</h5>
-					<p>Descripcion del catalaogo</p>
+					<p><?= $response->description ?></p>
 				</div>
 				<div class="row">
 					<div class="col-lg-12">
@@ -56,14 +76,16 @@ include_once "../app/config.php";
 												</tr>
 											</thead>
 											<tbody>
-												<tr>
-													<td><img alt="Card image cap" class="rounded-2" src="../public/assets/images/cama.jpg" style="width:200px; height:100px;"></td>
-													<td>Aqui va el nombre del producto</td>
-													<td>Descripcion del producto</td>
-													<td>
-														<a class="btn btn-info" href="">Ver</a>
-													</td>
-												</tr>
+												<?php foreach ($response->products as $p): ?>
+													<tr>
+														<td><img alt="Card image cap" class="rounded-2" src="<?= $p->cover ?>" style="width:200px; height:100px;"></td>
+														<td><?= $p->name ?></td>
+														<td><?= $p->description ?></td>
+														<td>
+															<a class="btn btn-info" href="../products/detalles.php?slug=<?= $p->slug ?>">Ver</a>
+														</td>
+													</tr>
+												<?php endforeach; ?>
 											</tbody>
 										</table>
 									</div>
