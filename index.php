@@ -94,7 +94,7 @@
                         })
                         //carga de espera
                         function greet() { // Aqui va la ruta que apunta al index de productos
-                            location.href = "products/index.php";
+                            location.href = "product/";
                         }
                         setTimeout(greet, 1800);
 

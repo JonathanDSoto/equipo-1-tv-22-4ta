@@ -2,10 +2,20 @@ Options +FollowSymLinks -MultiViews
 RewriteEngine on
 
 #RULES
+RewriteRule ^presentacion$ app/PresentationController.php
 RewriteRule ^auth$ app/AuthController.php
 RewriteRule ^prod$ app/ProductController.php
 RewriteRule ^brand$ app/BrandController.php
 RewriteRule ^conf$ app/config.php
+RewriteRule ^product/$ products/index.php
 RewriteRule ^users/$ app/UsersController.php
-RewriteRule ^products/$ products/index.php
+RewriteRule ^cupones/$ cupones/index.php
+RewriteRule ^ordenes/$ ordenes/index.php
+RewriteRule ^usuarios/$ users/index.php
+RewriteRule ^clientes/$ clientes/index.php
+RewriteRule ^catalogos/$ catalogos/index.php
+
+#DETALLES
 RewriteRule ^prod/([a-zA-Z0-9-]*)$ products/detalles.php?slug=$1
+RewriteRule ^user/([a-zA-Z0-9-]*)$ users/detalles.php?id=$1
+RewriteRule ^presentacion/([a-zA-Z0-9-]*)$ products/detallesPresentaciones.php?id=$1
