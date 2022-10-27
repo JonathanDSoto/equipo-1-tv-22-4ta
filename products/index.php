@@ -115,23 +115,23 @@
     <div class="modal fade" id="añadirModal">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header">  
                     <h5 class="modal-title" id="añadirModalLabel"> Nuevo Producto </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form method="POST" action="<?= BASE_PATH?>app/productController.php" enctype="multipart/form-data" >
+                <form method="POST" action="<?= BASE_PATH?>app/productController.php" enctype="multipart/form-data" id="formu" >
                     <div class="modal-body">
                         <span class="input-group-text" id="addon-wrapping">Imagen del producto</span>
-                        <input type="file" id="img_product" name="img_producto" accept="image/*" required >
+                        <input type="file" id="img_product" name="img_producto" accept="image/*"  >
 
                         <span class="input-group-text" id="addon-wrapping">Nombre</span>
-                        <input type="text" id="name" name="name" class="form-control" placeholder="Max 300 caracteres..." required pattern="(?=. * \[A-Za-z0-9]) .{3,20}"  >
+                        <input type="text" id="name" name="name" class="form-control" placeholder="..." required   >
 
                         <span class="input-group-text" id="addon-wrapping">Descripcion</span>
-                        <input type="text" id="description" name="description" class="form-control" placeholder="..." required  pattern="(?=. * \[A-Za-z0-9]) .{3,20}" >
+                        <input type="text" id="description" name="description" class="form-control" placeholder="..." required   >
 
                         <span class="input-group-text" id="addon-wrapping">Caracteristicas</span>
-                        <input type="text" id="features" name="features" class="form-control" placeholder="..."  required  pattern="(?=. * \[A-Za-z0-9]) .{3,20}" >
+                        <input type="text" id="features" name="features" class="form-control" placeholder="..."  required   >
                         
                         <span class="input-group-text" id="addon-wrapping">Marca</span>
                         <select class="form-select" aria-label="Default select example" id="brand_id" name="brand_id" required > 
@@ -160,21 +160,40 @@
 
     <script>
 
-
         // Funcion para mostrar modales en base al GET obtenido
         // modal = true - modal = false
-    
+       
         function getQueryVariable(variable) {
-        var query = window.location.search.substring(1);
-        var vars = query.split("&");
-        for (let i = 0; i < vars.length; i++) {
-            let pair = vars[i].split("=");
-            if (pair[0].toUpperCase() == variable.toUpperCase()) {
-            return pair[1];
+            var query = window.location.search.substring(1);
+            var vars = query.split("&");
+            for (let i = 0; i < vars.length; i++) {
+                let pair = vars[i].split("=");
+                if (pair[0].toUpperCase() == variable.toUpperCase()) {
+                return pair[1];
+                }
             }
-        }
-        return null;
+            return null;
         } 
+
+
+        var validarRe = /^[a-zA-Z0-9\_\-]$/ ;                   
+        var nam = document.getElementById('name');
+        var des = document.getElementById('description');
+        var fea = document.getElementById('features');
+        
+        function validarRe() {
+            if(!validarRe.test(des.value)){
+                Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Something went wrong!',
+                footer: '<a href="">Why do I have this issue?</a>'
+                })
+            }
+
+            
+            
+        }
         
         $(document).ready(function() {
             if (getQueryVariable("modal") == "true") {
@@ -203,11 +222,13 @@
                 setTimeout(tiempo, 1500);
             }
         
-        });
-            
-            
+        });      
         
         
+        
+        
+
+
         function eliminar(id) {
 
             swal({
