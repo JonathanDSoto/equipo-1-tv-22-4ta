@@ -76,7 +76,6 @@ class CouponesController {
         ));
 
         $response = curl_exec($curl);
-
         curl_close($curl);
         $response = json_decode($response);
 
@@ -86,8 +85,8 @@ class CouponesController {
 
     }
 
-    public function GetSpecifictCoupones($id)
-    {
+    public function GetSpecifictCoupones($id) {
+
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
@@ -105,13 +104,13 @@ class CouponesController {
         ));
 
         $response = curl_exec($curl);
-
         curl_close($curl);
-        echo $response;
         $response = json_decode($response);
+
         if (isset($response->code) && $response->code > 0) {
             return $response->data;
         }
+
     }
 
     public function CreateCoupones($name, $code, $percentage_discount, $min_amount_required, $min_product_required, $start_date, $end_date, $max_uses, $valid) {
@@ -163,6 +162,7 @@ class CouponesController {
             $response = json_encode($response);
             echo $response;
         }
+
     }
 
     public function EditCoupones($name, $code, $percentage_discount, $min_amount_required, $min_product_required, $start_date, $end_date, $max_uses, $count_uses, $valid, $status, $coupon_id) {
@@ -215,10 +215,10 @@ class CouponesController {
             $response = json_encode($response);
             echo $response;
         }
+
     }
 
-    public function DeleteCoupones($id)
-    {
+    public function DeleteCoupones($id) {
 
         $curl = curl_init();
 
@@ -240,10 +240,12 @@ class CouponesController {
 
         curl_close($curl);
         $response = json_decode($response);
+
         if (isset($response->code) &&  $response->code > 0) {
             return true;
         } else {
             return false;
         }
+
     }
 }

@@ -1,5 +1,12 @@
 <?php
     include_once "../app/config.php";
+	include("../app/CouponesController.php");
+	
+	$id = $_GET['id'];
+
+    $couponesController = new CouponesController();
+    $coupon = $couponesController->GetSpecifictCoupones($id);
+
 ?>
 <!DOCTYPE html>
 <head>
@@ -45,39 +52,51 @@
 															<tbody>
 																<tr>
 																	<th class="ps-0" scope="row">Nombre:</th>
-																	<td class="text-muted">Nombre del cupon</td>
+																	<td class="text-muted"><?= $coupon->name ?></td>
 																</tr>
 																<tr>
 																	<th class="ps-0" scope="row">Codigo:</th>
-																	<td class="text-muted">Codigo del cupon</td>
+																	<td class="text-muted"><?= $coupon->code ?></td>
 																</tr>
 																<tr>
 																	<th class="ps-0" scope="row">Porcentaje de descuento:</th>
-																	<td class="text-muted">%Porcentaje de descuento del cupon</td>
+																	<td class="text-muted">%<?= $coupon->percentage_discount ?></td>
 																</tr>
 																<tr>
 																	<th class="ps-0" scope="row">Minimo de monto requerido:</th>
-																	<td class="text-muted">mino de monto para que el cupon sea valido</td>
+																	<td class="text-muted"><?= $coupon->min_amount_required ?></td>
 																</tr>
 																<tr>
-																	<th class="ps-0" scope="row">Comienzo del cupon:</th>
-																	<td class="text-muted">Fecha de cuando inicio a ser valido el cupon</td>
+																	<th class="ps-0" scope="row">Minimo de producto requerido:</th>
+																	<td class="text-muted"><?= $coupon->min_product_required ?></td>
 																</tr>
 																<tr>
-																	<th class="ps-0" scope="row">Caducidad del cupon:</th>
-																	<td class="text-muted">Fecha de cuando deja de ser valido el cupon</td>
+																	<th class="ps-0" scope="row">Comienzo del cupón:</th>
+																	<td class="text-muted"><?= $coupon->start_date ?></td>
+																</tr>
+																<tr>
+																	<th class="ps-0" scope="row">Caducidad del cupón:</th>
+																	<td class="text-muted"><?= $coupon->end_date ?></td>
 																</tr>
 																<tr>
 																	<th class="ps-0" scope="row">Maximo de usos:</th>
-																	<td class="text-muted">Cuantas veces se puede usar el cupon</td>
+																	<td class="text-muted"><?= $coupon->max_uses ?></td>
 																</tr>
 																<tr>
 																	<th class="ps-0" scope="row">Usos:</th>
-																	<td class="text-muted">Cuantas veces se a usado el cupon</td>
+																	<td class="text-muted"><?= $coupon->count_uses ?></td>
 																</tr>
 																<tr>
-																	<th class="ps-0" scope="row">Tipo de cupon:</th>
-																	<td class="text-muted">Que tipo de cupon es</td>
+																	<th class="ps-0" scope="row">¿Valido solo la primera compra?:</th>
+																	<td class="text-muted"><?= $coupon->valid_only_first_purchase ?></td>
+																</tr>
+																<tr>
+																	<th class="ps-0" scope="row">Estado del cupón:</th>
+																	<td class="text-muted"><?= $coupon->status ?></td>
+																</tr>
+																<tr>
+																	<th class="ps-0" scope="row">Tipo de cupón:</th>
+																	<td class="text-muted"><?= $coupon->couponable_type ?></td>
 																</tr>
 															</tbody>
 														</table>
@@ -109,13 +128,15 @@
 																</tr>
 															</thead>
 															<tbody>
-																<tr>
-																	<td>#IDPRODUCTO</td>
-																	<td>Nombre del cliente</td>
-																	<td>Estado de la orden</td>
-																	<td>$MONTO</td>
-																	<td>Metodo de pago</td>
-																</tr>
+																<?php foreach ($coupon->orders as $c): ?>
+																	<tr>
+																		<td><?= $c->id ?></td>
+																		<td><?= $c->client_id ?></td>
+																		<td><?= $c->order_status_id ?></td>
+																		<td><?= $c->total ?></td>
+																		<td><?= $c->payment_type_id ?></td>
+																	</tr>
+																<?php endforeach; ?>
 															</tbody>
 														</table>
 													</div>

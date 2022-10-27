@@ -51,7 +51,7 @@
                                         <div class="card-footer">
                                             <!-- Border Buttons -->
                                             <div class="hstack flex-wrap gap-2 mb-3 mb-lg-0">
-                                                <a href="detalles.php?slug=<?= $coupon->id ?>" class="btn btn-success btn-border">Ver</a>
+                                                <a href="detalles.php?id=<?= $coupon->id ?>" class="btn btn-success btn-border">Ver</a>
 
                                                 <button data-coupon='<?= json_encode($coupon) ?>' onclick="editar_cupon(this)" class="btn btn-warning btn-border" data-bs-target="#añadirCouponModal" data-bs-toggle="modal" id="edit-btn">Editar</button> 
 
