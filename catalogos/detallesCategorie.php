@@ -1,5 +1,11 @@
 <?php
 include_once "../app/config.php";
+include("../app/CategorieController.php");
+
+$category_id = $_GET['id'];
+
+$categoryController = new CategorieController();
+$category = $categoryController->GetSpecifictCategorie($category_id);
 
 ?>
 <!DOCTYPE html>

@@ -16,10 +16,10 @@ if (isset($_POST['action'])) {
                 break;
             case 'create':
                 $name = strip_tags($_POST['name']);
-                $lastname = strip_tags($_POST['last_name']);
+                $lastname = strip_tags($_POST['lastname']);
                 $email = strip_tags($_POST['email']);
                 $phone_number = strip_tags($_POST['phone_number']);
-                $created_by = strip_tags($_POST['created_by_user']);
+                $created_by = strip_tags($_POST['created_by']);
                 $password = strip_tags($_POST['password']);
                 $img_usuario = $_FILES['img_user']['tmp_name'];
 
@@ -144,12 +144,15 @@ class UsersController {
         $response = json_decode($response);
 
         if (isset($response->code) &&  $response->code > 0) {
-            $response = json_encode($response);
+            $response = json_encode([
+                $response,
+                "update" => false
+            ]);
             echo $response;
         } else {
-            $response =[
-                "message" => "Error al crear el usuario",
 
+            $response = [
+                "message" => "Error al crear el usuario",
             ];
             $response = json_encode($response);
             echo $response;
@@ -182,13 +185,22 @@ class UsersController {
         ));
 
         $response = curl_exec($curl);
-
         curl_close($curl);
-        echo $response;
         $response = json_decode($response);
-        if (isset($response->code) &&  $response->code > 0) {
 
-            header("location:" . BASE_PATH . "index");
+        if (isset($response->code) &&  $response->code > 0) {
+            $response = json_encode([
+                $response,
+                "update" => true
+            ]);
+            echo $response;
+        } else {
+
+            $response = [
+                "message" => "Error al actualizar el usuario",
+            ];
+            $response = json_encode($response);
+            echo $response;
         }
     }
 

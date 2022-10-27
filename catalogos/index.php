@@ -2,12 +2,16 @@
     include_once "../app/config.php";
     include("../app/CategorieController.php");
     include("../app/BrandController.php");
+    include("../app/TagsController.php");
 
     $categoriesController = new CategorieController();
     $categories = $categoriesController->GetCategories();
 
     $brandsController = new BrandsController();
     $brands = $brandsController->getBrands();
+
+    $tagsController = new TagsController();
+    $tags = $tagsController->GetTags();
 
 ?>
 <!doctype html>
@@ -47,7 +51,7 @@
                                         <div class="row g-4 mb-3">
                                             <div class="col-sm-auto">
                                                 <div>
-                                                    <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal" id="create-btn" data-bs-target="#añadirModal"><i class="ri-add-line align-bottom me-1"></i>Añadir categoria</button>
+                                                    <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal" id="add-category-btn" data-bs-target="#añadirModal"><i class="ri-add-line align-bottom me-1"></i>Añadir categoria</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -72,7 +76,7 @@
                                                         <td>
                                                             <div class="d-flex gap-3 edit justify-content-end me-3">
                                                                 <div class="view">
-                                                                <a href="detalles_presentacion.php?id=<?= $categorie->id ?>" class="btn btn-info">
+                                                                <a href="detallesCategorie.php?id=<?= $categorie->id ?>" class="btn btn-info">
                                                                     <i class="bx bx-show"></i>
                                                                 </a>
                                                                 </div>
@@ -110,7 +114,7 @@
                                         <div class="row g-4 mb-3">
                                             <div class="col-sm-auto">
                                                 <div>
-                                                    <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal" id="create-btn" data-bs-target="#añadirBrandModal"><i class="ri-add-line align-bottom me-1"></i>Añadir Marca</button>
+                                                    <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal" id="add-brand-btn" data-bs-target="#añadirBrandModal"><i class="ri-add-line align-bottom me-1"></i>Añadir Marca</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -169,7 +173,7 @@
                                         <div class="row g-4 mb-3">
                                             <div class="col-sm-auto">
                                                 <div>
-                                                    <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal" id="create-btn" data-bs-target="#añadirBrandModal"><i class="ri-add-line align-bottom me-1"></i>Añadir tag</button>
+                                                    <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal" id="add-tag-btn" data-bs-target="#añadirTagModal"><i class="ri-add-line align-bottom me-1"></i>Añadir tag</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -184,24 +188,30 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody class="list form-check-all">
+                                                    <?php foreach ($tags as $tag): ?>
                                                         <tr>
                                                             <th scope="row">
                                                             </th>
-                                                            <td >Nombre del tag</td>
+                                                            <td ><?= $tag->name ?></td>
                                                             <td>
                                                                 <div class="d-flex gap-3 edit justify-content-end me-3">
                                                                     <div class="view">
-                                                                    <a href="" class="btn btn-info" data-bs-toggle="modal" data-bs-target=""><i class="bx bx-show"></i></a>
+                                                                        <a href="" class="btn btn-info "><i class="bx bx-show"></i></a>
                                                                     </div>
                                                                     <div class="edit">
-                                                                    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#añadirModal"><i class="ri-edit-2-line"></i></button>
+                                                                        <button data-tag='<?= json_encode($tag) ?>' onclick="editar_tag(this)" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#añadirTagModal">
+                                                                            <i class="ri-edit-2-line"></i>
+                                                                        </button>
                                                                     </div>
                                                                     <div class="remove">
-                                                                    <button class="btn btn-danger" ><i class="bx bx-trash-alt"></i></button>  
+                                                                        <button class="btn btn-danger" onclick="eliminar_tag(<?= $tag->id ?>)"><i class="bx bx-trash-alt"></i></button>
+                                                                        <input type="hidden" id="super_token" value="<?= $_SESSION['super_token']?>">
+												                        <input type="hidden" id="bp" value="<?= BASE_PATH ?>">
                                                                     </div>
                                                                 </div>
                                                             </td>
                                                         </tr>
+                                                    <?php endforeach; ?>
                                                 </tbody>
                                             </table>           
                                         </div>
@@ -283,6 +293,37 @@
             </div>
         </div>
     </div>
+    <!--Modal Alta Etiqueta y Editar-->
+    <div class="modal fade" id="añadirTagModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="añadirModalLabel"> Introduzca los datos de la etiqueta</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="POST" action="<?= BASE_PATH?>app/TagsController.php" enctype="multipart/form-data" id="tags_form">
+                    <div class="modal-body">
+
+                        <span class="input-group-text">Nombre</span>
+                        <input type="text" id="tag_name" name="name" class="form-control">
+
+                        <span class="input-group-text">Descripción</span>
+                        <input type="text" id="tag_description" name="description" class="form-control">
+
+                    </div>
+
+                    <input type="hidden" name="action" id="action" value="create">
+                    <input type="hidden" name="tag_id" id="tag_id" value="<?= $tag->id ?>">
+                    <input type="hidden" name="super_token" id="super_token" value="<?= $_SESSION['super_token'] ?>">
+                    
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
     <!-- JAVASCRIPT -->
     <?php include "../layouts/scripts.template.php" ?>
@@ -303,14 +344,33 @@
         let brand_name = document.getElementById("brand_name")
         let brand_description = document.getElementById("brand_description")
         let brand_id = document.getElementById("brand_id")
+
+        let tag_name = document.getElementById("tag_name")
+        let tag_description = document.getElementById("tag_description")
+        let tag_id = document.getElementById("tag_id")
         
         let super_token = document.getElementById("super_token")
-
         
+        let add_category = document.getElementById("add-category-btn")
+        let add_brand = document.getElementById("add-brand-btn")
+        let add_tag = document.getElementById("add-tag-btn")
+
+        add_category.addEventListener("click", () => {
+            categories_form.reset();
+        })
+
+        add_brand.addEventListener("click", () => {
+            brands_form.reset();
+        })
+
+        add_tag.addEventListener("click", () => {
+            tags_form.reset();
+        })
+
         // C A T E G O R I E S
         categories_form.addEventListener("submit", (e) => {
             e.preventDefault();
-            
+
             const data = new FormData();
             data.append("name", name.value);
             data.append("description", description.value);
@@ -584,11 +644,130 @@
         }
 
         // T A G S
+        tags_form.addEventListener("submit", (e) => {
+            e.preventDefault();
+
+            const data = new FormData();
+            data.append("tag_name", tag_name.value);
+            data.append("tag_description", tag_description.value);
+            data.append("tag_id", tag_id.value);
+            data.append("action", action.value);
+            data.append("super_token", super_token.value);
+
+            axios({
+                method: "POST",
+                url: "../app/TagsController.php",
+                data,
+                headers: {
+                "Content-Type": "multipart/form-data",
+                },
+            }).then((response)=> {
+
+                let res = JSON.stringify(response)
+                res = JSON.parse(res)
+
+                if (res.data[0].code > 0 && res.data.update == false) {
+                    Swal.fire({
+                    position: 'top-center',
+                    icon: 'success',
+                    title: 'Etiqueta añadida con exito',
+                    showConfirmButton: false,
+                    timer: 1500
+                    })
+                    function greet() {
+                        location.href = "index.php"
+                    }
+                    setTimeout(greet, 1800);
+                } else if (res.data[0].code > 0 && res.data.update) {
+                    Swal.fire({
+                    position: 'top-center',
+                    icon: 'success',
+                    title: 'Etiqueta actualizada con exito',
+                    showConfirmButton: false,
+                    timer: 1500
+                    })
+                    function greet() {
+                        location.href = "index.php"
+                    }
+                    setTimeout(greet, 1800);
+                } else {
+                    console.log(response.message);
+
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: 'Error',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                } 
+            }).catch((error) => {
+                if (error.response) {
+                    console.log(error.message);
+                }
+            });
         
+        });
+
+        function editar_tag(target) {
+
+            let tag = JSON.parse( target.dataset.tag )
+
+            tag_name.value = tag.name
+            tag_description.value = tag.description 
+            tag_id.value = tag.id
+            action.value = 'update'
+
+        }
+
+        function eliminar_tag(id) {
+            
+            swal({
+                title: "Are you sure?",
+                text: "Once deleted, you will not be able to recover this imaginary file!",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((willDelete) => {
+                if (willDelete) {
+
+                let super_token = document.getElementById('super_token').value;
+                let base_path = document.getElementById('bp').value;
+
+                var bodyFormData = new FormData();
+                bodyFormData.append('id', id);
+                bodyFormData.append('action', 'delete');
+                bodyFormData.append('sprtoken', super_token);
+
+                axios.post('../app/TagsController.php', bodyFormData)
+                .then(function (response) {
+
+                    if (response.data) {
+                        swal("Poof! Your imaginary file has been deleted!", {
+                            icon: "success",
+                        });
+                        location.href = "index.php"
+                    } else {
+                        swal("Error", {
+                            icon: "error",
+                        });;
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+
+                } else {
+                swal("Your imaginary file is safe!");
+                }
+            });
+        }
 
         $(document).ready(function () {
             $('#categoriesTable').DataTable();
             $('#brandTable').DataTable();
+            $('#tagTable').DataTable();
         });
 
     </script>

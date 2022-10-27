@@ -150,7 +150,7 @@ $presentation = $presentationController->GetPresentation($product->id);
                                                                 <td>
                                                                     <div class="d-flex gap-3">
                                                                         <div class="view">
-                                                                            <a href="detalles_presentacion.php?id=<?= $p->id ?>" class="btn btn-info">
+                                                                            <a href="detallesPresentaciones.php?id=<?= $p->id ?>" class="btn btn-info">
                                                                                 <i class="bx bx-show"></i>
                                                                             </a>
                                                                         </div>

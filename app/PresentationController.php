@@ -35,12 +35,13 @@ if (isset($_POST['action'])) {
                 $presentationController = new PresentationController();
                 $presentationController->EditPresentation($description, $code, $weight_in_grams, $status, $stock, $stock_min, $stock_max, $product_id, $presentation_id, $slug);
                 break;
-            case 'update_amount':
+            case 'create_amount':
                 $amount = strip_tags($_POST['amount']);
+                $flag = strip_tags($_POST['flag']);
                 $presentation_id = strip_tags($_POST['presentation_id']);
 
                 $presentationController = new PresentationController();
-                $presentationController->EditPresentationPreci($presentation_id, $amount);
+                $presentationController->EditPresentationPreci($presentation_id, $flag, $amount);
                 break;
             case 'delete':
                 $id = strip_tags($_POST['id']);
@@ -74,6 +75,35 @@ class PresentationController {
 
         curl_close($curl);
         $response = json_decode($response);
+
+        if (isset($response->code) && $response->code > 0) {
+            return $response->data;
+        }
+    }
+
+    public function GetPresentationSpecific($id_presentation) {
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+        CURLOPT_URL => 'https://crud.jonathansoto.mx/api/presentations/' . $id_presentation,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => '',
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 0,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => 'GET',
+        CURLOPT_HTTPHEADER => array(
+            'Authorization: Bearer ' . $_SESSION['token'],
+        ),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+        $response = json_decode($response);
+
         if (isset($response->code) && $response->code > 0) {
             return $response->data;
         }
@@ -171,7 +201,7 @@ class PresentationController {
         }
     }
 
-    public function EditPresentationPreci($presentation_id, $amount) {
+    public function EditPresentationPreci($presentation_id, $flag, $amount) {
 
         $curl = curl_init();
 
@@ -196,19 +226,41 @@ class PresentationController {
         $response = curl_exec($curl);
 
         curl_close($curl);
-        echo $response;
         $response = json_decode($response);
 
-        if (isset($response->code) &&  $response->code > 0) {
-            $response = json_encode($response);
-            echo $response;
+        if ($flag == false) {
+            if (isset($response->code) &&  $response->code > 0) {
+                $response = json_encode([
+                    $response,
+                    "update" => true
+                ]);
+                echo $response;
+            } else {
+
+                $response = [
+                    "message" => "Error al actualizar el precio de la presentación",
+                ];
+                $response = json_encode($response);
+                echo $response;
+            }
         } else {
-            $response = [
-                "message" => "Error al actualizar el precio de la presentación",
-            ];
-            $response = json_encode($response);
-            echo $response;
+            if (isset($response->code) &&  $response->code > 0) {
+                $response = json_encode([
+                    $response,
+                    "update" => false
+                ]);
+                echo $response;
+            } else {
+
+                $response = [
+                    "message" => "Error al actualizar el precio de la presentación",
+                ];
+                $response = json_encode($response);
+                echo $response;
+            }
         }
+
+
     }
 
     public function DeletePresentation($id) {
