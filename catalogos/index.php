@@ -76,7 +76,7 @@
                                                         <td>
                                                             <div class="d-flex gap-3 edit justify-content-end me-3">
                                                                 <div class="view">
-                                                                <a href="detallesCategorie.php?id=<?= $categorie->id ?>" class="btn btn-info">
+                                                                <a href="detalles.php?id=<?= $categorie->id ?>&type=categoria" class="btn btn-info">
                                                                     <i class="bx bx-show"></i>
                                                                 </a>
                                                                 </div>
@@ -137,7 +137,7 @@
                                                             <td>
                                                                 <div class="d-flex gap-3 edit justify-content-end me-3">
                                                                     <div class="view">
-                                                                        <a href="" class="btn btn-info "><i class="bx bx-show"></i></a>
+                                                                        <a href="detalles.php?id=<?= $brand->id ?>&type=marca" class="btn btn-info "><i class="bx bx-show"></i></a>
                                                                     </div>
                                                                     <div class="edit">
                                                                         <button data-marca='<?= json_encode($brand) ?>' onclick="editar_marca(this)" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#añadirBrandModal">
@@ -196,7 +196,7 @@
                                                             <td>
                                                                 <div class="d-flex gap-3 edit justify-content-end me-3">
                                                                     <div class="view">
-                                                                        <a href="" class="btn btn-info "><i class="bx bx-show"></i></a>
+                                                                        <a href="detalles.php?id=<?= $tag->id ?>&type=etiqueta" class="btn btn-info "><i class="bx bx-show"></i></a>
                                                                     </div>
                                                                     <div class="edit">
                                                                         <button data-tag='<?= json_encode($tag) ?>' onclick="editar_tag(this)" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#añadirTagModal">

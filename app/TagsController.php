@@ -41,6 +41,7 @@ if (isset($_POST['action'])) {
 class TagsController {
 
     public function GetTags() {
+
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
@@ -59,15 +60,17 @@ class TagsController {
      
 
         $response = curl_exec($curl);
-
         curl_close($curl);
         $response = json_decode($response);
+
         if (isset($response->code) && $response->code > 0) {
             return $response->data;
         }
+
     }
 
     public function GetSpecifictTags($id) {
+
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
@@ -86,11 +89,12 @@ class TagsController {
 
         $response = curl_exec($curl);
         curl_close($curl);
-
         $response = json_decode($response);
+        
         if (isset($response->code) && $response->code > 0) {
             return $response->data;
         }
+
     }
 
     public function CreateTags($name, $description, $slug) {
@@ -134,9 +138,11 @@ class TagsController {
             $response = json_encode($response);
             echo $response;
         }
+
     }
 
     public function EditTags($name, $description, $slug, $id) {
+
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
@@ -177,10 +183,10 @@ class TagsController {
             $response = json_encode($response);
             echo $response;
         }
+
     }
 
-    public function DeleteTags($id)
-    {
+    public function DeleteTags($id) {
 
         $curl = curl_init();
 
@@ -207,6 +213,7 @@ class TagsController {
         } else {
           return false;
         }
+
     }
 }
 
