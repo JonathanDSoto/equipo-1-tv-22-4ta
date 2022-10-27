@@ -20,6 +20,21 @@ if (isset($_POST['action'])) {
                 $presentationController = new PresentationController();
                 $presentationController->CreatePresentation($description, $code, $weight_in_grams, $cover, $stock, $stock_min, $stock_max, $product_id);
                 break;
+            case 'update':
+                $description = strip_tags($_POST['description']);
+                $code = strip_tags($_POST['code']);
+                $weight_in_grams = strip_tags($_POST['weight']);
+                $status = strip_tags($_POST['status']);
+                $stock = strip_tags($_POST['stock_min']);
+                $stock_min = strip_tags($_POST['stock_min']);
+                $stock_max = strip_tags($_POST['stock_max']);
+                $product_id = strip_tags($_POST['product_id']);
+                $presentation_id = strip_tags($_POST['presentation_id']);
+                $slug = strip_tags($_POST['slug']);
+
+                $presentationController = new PresentationController();
+                $presentationController->EditPresentation($description, $code, $weight_in_grams, $status, $stock, $stock_min, $stock_max, $product_id, $presentation_id, $slug);
+                break;
             case 'create_amount':
                 $amount = strip_tags($_POST['amount']);
                 $flag = strip_tags($_POST['flag']);

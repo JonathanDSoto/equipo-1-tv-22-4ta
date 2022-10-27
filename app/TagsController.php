@@ -136,12 +136,7 @@ class TagsController {
         }
     }
 
-    public function EditTags(
-        $name,
-        $description,
-        $slug,
-        $id
-    ) {
+    public function EditTags($name, $description, $slug, $id) {
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
@@ -153,7 +148,11 @@ class TagsController {
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'PUT',
-            CURLOPT_POSTFIELDS => 'name=' . $name . '&description=' . $description . '&slug=' . $slug . '&id=' . $id,
+            CURLOPT_POSTFIELDS => 
+                'name=' . $name . 
+                '&description=' . $description . 
+                '&slug=' . $slug . 
+                '&id=' . $id,
             CURLOPT_HTTPHEADER => array(
                 'Authorization: Bearer ' . $_SESSION['token'],
                 'Content-Type: application/x-www-form-urlencoded'
