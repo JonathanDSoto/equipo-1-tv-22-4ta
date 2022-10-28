@@ -1,5 +1,12 @@
 <?php
 include_once "../app/config.php";
+include ("../app/ClientsController.php");
+
+$id = $_GET['id'];
+
+$clientsController = new ClientsController();
+$client = $clientsController->SpecifictClient($id);
+
 ?>
 <!doctype html>
 
@@ -27,16 +34,11 @@ include_once "../app/config.php";
                 </div>
                 <div class="pt-4 ">
                     <div class="row g-4">
-                        <div class="col-auto">
-                            <div class="avatar-lg">
-                                <img src="../public/assets/images/users/avatar-8.jpg" alt="user-img" class="img-thumbnail rounded-circle" />
-                            </div>
-                        </div>
                         <!--end col-->
-                        <div class="col">
+                        <div class="col-xxl-12">
                             <div class="p-2">
-                                <h3 class="text-white mb-1">Nombre del cliente</h3>
-                                <p class="text-white-75">Nivel del cliente:</p>
+                                <h3 class="text-white mb-1"><?= $client->name ?></h3>
+                                <p class="text-white-75">Nivel del cliente: <?= $client->level->name ?></p>
                             </div>
                         </div>
                     </div>
@@ -47,82 +49,34 @@ include_once "../app/config.php";
                             <div class="tab-content pt-4 text-muted">
                                 <div class="tab-pane active" id="overview-tab" role="tabpanel">
                                     <div class="row">
-                                        <div class="col-xxl-3">
+                                        <div class="col-xxl-12">
                                             <div class="card">
 
                                             </div>
 
                                             <div class="card">
                                                 <div class="card-body">
-                                                    <h5 class="card-title mb-3">Informacion</h5>
+                                                    <h5 class="card-title mb-3">Información</h5>
                                                     <div class="table-responsive">
                                                         <table class="table table-borderless mb-0">
                                                             <tbody>
                                                                 <tr>
                                                                     <th class="ps-0" scope="row">Nombre Completo:</th>
-                                                                    <td class="text-muted">Nombre completo del cliente</td>
+                                                                    <td class="text-muted"><?= $client->name ?></td>
                                                                 </tr>
 
                                                                 <tr>
                                                                     <th class="ps-0" scope="row">E-mail:</th>
-                                                                    <td class="text-muted">Correo del cliente</td>
+                                                                    <td class="text-muted"><?= $client->email ?></td>
                                                                 </tr>
 
                                                                 <tr>
                                                                     <th class="ps-0" scope="row">Numero de telefono</th>
-                                                                    <td class="text-muted">Numero de telefono del cliente
-                                                                    </td>
+                                                                    <td class="text-muted"><?= $client->phone_number ?></td>
                                                                 </tr>
                                                             </tbody>
                                                         </table>
-                                                        <h5 class="card-title mb-3">Direccion</h5>
-                                                        <div class="col-sm-auto">
-
-                                                            <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal" id="create-btn" data-bs-target="#añadirModal"><i class="ri-add-line align-bottom me-1"></i>Añadir direccion</button>
-                                                            <button class="btn btn-warning " data-bs-toggle="modal" data-bs-target="#añadirModal">Editar</button>
-                                                            <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="">Remover</button>
-                                                        </div>
-
-                                                        <table class="table table-borderless mb-0">
-                                                            <tbody>
-                                                                <tr>
-                                                                    <th class="ps-0" scope="row">Calle:</th>
-                                                                    <td class="text-muted">Nombre de la calle del cliente</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <th class="ps-0" scope="row">Codigo Postal:</th>
-                                                                    <td class="text-muted">Codigo postal del cliente</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <th class="ps-0" scope="row">Ciudad:</th>
-                                                                    <td class="text-muted">Nombre de la ciudad del cliente</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <th class="ps-0" scope="row">Provinica:</th>
-                                                                    <td class="text-muted">Nombre de la provincia del cliente</td>
-                                                                </tr>
-                                                            </tbody>
-
-                                                        </table>
-                                                        <h5 class="card-title mb-3">Ordenes</h5>
-                                                        <table class="table table-striped">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th scope="col">Nombre del producto</th>
-                                                                    <th scope="col">Descripcion del producto</th>
-                                                                    <th scope="col">Monto</th>
-                                                                    <th scope="col">Status</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                <tr>
-                                                                    <td>Aqui val la descripcion del producto</td>
-                                                                    <td>Aqui val la descripcion del producto</td>
-                                                                    <td>Precio del producto</td>
-                                                                    <td><span class="badge bg-success">Estatus del producto</span></td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
+                                                        <hr>
                                                         <h5 class="card-title mb-3">Widget total de compras</h5>
                                                         <table class="table table-borderless mb-0">
                                                             <div class="col-xl-3 col-md-6">
@@ -133,7 +87,7 @@ include_once "../app/config.php";
                                                                             <div class="flex-grow-1">
                                                                                 <p class="text-uppercase fw-medium text-white-50 mb-0">Total de compras</p>
                                                                             </div>
-
+                                                                            
                                                                         </div>
                                                                         <div class="d-flex align-items-end justify-content-between mt-4">
                                                                             <div>
@@ -150,31 +104,54 @@ include_once "../app/config.php";
                                                                 </div><!-- end card -->
                                                             </div><!-- end col -->
                                                         </table>
-
+                                                        <hr>
+                                                        <h5 class="card-title mb-3">Ordenes</h5>
+                                                        <table class="table table-striped">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th scope="col">#ID</th>
+                                                                    <th scope="col">Folio</th>
+                                                                    <th scope="col">Total</th>
+                                                                    <th scope="col">Action</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <?php foreach ($client->orders as $order): ?>
+                                                                    <tr>
+                                                                        <td><?= $order->id ?></td>
+                                                                        <td><?= $order->folio ?></td>
+                                                                        <td><?= $order->total ?></td>
+                                                                        <td><button class="btn btn-info">Ver</button></td>
+                                                                    </tr>
+                                                                <?php endforeach; ?>
+                                                            </tbody>
+                                                        </table> 
                                                         <h5 class="card-title mb-3">Direcciones registradas</h5>
                                                         <table class="table table-borderless mb-0">
                                                             <thead>
                                                                 <tr>
-                                                                    <th scope="col">Calle y num</th>
+                                                                    <th scope="col">Calle y número</th>
                                                                     <th scope="col">Codigo postal</th>
                                                                     <th scope="col">Ciudad</th>
                                                                     <th scope="col">Provincia</th>
+                                                                    <th scope="col">Action</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
-                                                                <tr>
-                                                                    <td>Calle y numero del cliente</td>
-                                                                    <td>Codigo postal del cliente</td>
-                                                                    <td>Ciudad del cliente</td>
-                                                                    <td>Provincia del cliente</td>
-                                                                </tr>
+                                                                <?php foreach ($client->addresses as $address): ?>
+                                                                    <tr>
+                                                                        <td><?= $address->street_and_use_number ?></td>
+                                                                        <td><?= $address->postal_code ?></td>
+                                                                        <td><?= $address->city ?></td>
+                                                                        <td><?= $address->province ?></td>
+                                                                        <td><button class="btn btn-info">Ver</button></td>
+                                                                    </tr>
+                                                                <?php endforeach; ?>
                                                             </tbody>
                                                         </table>
                                                     </div>
                                                 </div>
                                             </div>
-
-                                       
                                         </div>
                                     </div>
                                 </div>
