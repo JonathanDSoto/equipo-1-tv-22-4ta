@@ -76,7 +76,7 @@
                                                         <td>
                                                             <div class="d-flex gap-3">
                                                                 <div class="view">
-                                                                    <a href="detalles.php?slug=<?= $product->slug ?>" class="btn btn-info">Ver</a>
+                                                                    <a href="<?= BASE_PATH ?>prod/<?= $product->slug ?>" class="btn btn-info">Ver</a>
                                                                 </div>
                                                                 <div class="edit">
                                                                     <button data-product='<?= json_encode($product) ?>' onclick="editar_producto(this)" class="btn btn-warning " data-bs-toggle="modal" data-bs-target="#añadirModal">Edit</button>
@@ -107,9 +107,6 @@
             </div>
                 <!-- Footer de la pagina -->
                 <?php include "../layouts/footer.template.php" ?>
-        </div>
-        <!-- end main content-->
-    </div>
 
     <!--Modal Alta Product-->
     <div class="modal fade" id="añadirModal">
@@ -119,7 +116,7 @@
                     <h5 class="modal-title" id="añadirModalLabel"> Nuevo Producto </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form method="POST" action="<?= BASE_PATH?>app/productController.php" enctype="multipart/form-data" id="formu" >
+                <form method="POST" action="<?= BASE_PATH?>prod" enctype="multipart/form-data" id="formu" >
                     <div class="modal-body">
                         <span class="input-group-text" id="addon-wrapping">Imagen del producto</span>
                         <input type="file" id="img_product" name="img_producto" accept="image/*"  >

@@ -150,7 +150,7 @@ $presentation = $presentationController->GetPresentation($product->id);
                                                                 <td>
                                                                     <div class="d-flex gap-3">
                                                                         <div class="view">
-                                                                            <a href="detallesPresentaciones.php?id=<?= $p->id ?>" class="btn btn-info">
+                                                                            <a href="<?= BASE_PATH ?>presentacion/<?= $p->id ?>" class="btn btn-info">
                                                                                 <i class="bx bx-show"></i>
                                                                             </a>
                                                                         </div>
@@ -191,7 +191,7 @@ $presentation = $presentationController->GetPresentation($product->id);
                     <h5 class="modal-title" id="añadirModalLabel"> Datos de la presentacion</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form method="POST" action="<?= BASE_PATH?>app/PresentationController.php" enctype="multipart/form-data" id="presentation_form">
+                <form method="POST" action="<?= BASE_PATH?>presentacion" enctype="multipart/form-data" id="presentation_form">
                     <div class="modal-body">
 
                         <span class="input-group-text" id="label_img">Imagen de la presentación</span>
@@ -304,19 +304,20 @@ $presentation = $presentationController->GetPresentation($product->id);
                             timer: 1500
                             })
                             function greet() {
-                                location.href = "detalles.php?slug=" + slug.value
+                               
+                                location.reload();
                             }
                             setTimeout(greet, 1800);
                     } else if (response.message != "") {
                             Swal.fire({
                             position: 'top-center',
                             icon: 'success',
-                            title: 'Presentacion actualizada exitosamente',
+                            title: 'Presentacion Editada exitosamente',
                             showConfirmButton: false,
                             timer: 1500
                             })
                             function greet() {
-                                location.href = "detalles.php?slug=" + slug.value
+                                location.reload();
                             }
                             setTimeout(greet, 1800); 
                     } else {

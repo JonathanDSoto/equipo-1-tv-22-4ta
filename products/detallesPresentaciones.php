@@ -221,7 +221,7 @@ if (is_null($presentation->current_price->amount)) {
 						timer: 1500
 						})
 						function greet() {
-							location.href = "detallesPresentaciones.php?id=" + id.value
+							location.reload();
 						}
 						setTimeout(greet, 1800);
 					} else if (res.data[0].code > 0 && res.data.update) {
@@ -233,7 +233,7 @@ if (is_null($presentation->current_price->amount)) {
 						timer: 1500
 						})
 						function greet() {
-							location.href = "detallesPresentaciones.php?id=" + id.value
+							location.reload();
 						}
 						setTimeout(greet, 1800);
 					} else {

@@ -77,7 +77,7 @@
                                                             <td>
                                                                 <div class="d-flex gap-3">
                                                                     <div class="view">
-                                                                        <a href="detalles.php?id=<?= $user->id ?>" class="btn btn-info">Ver</a>
+                                                                        <a href="<?= BASE_PATH ?>user/<?= $user->id ?>" class="btn btn-info">Ver</a>
                                                                     </div>
                                                                     <div class="edit">
                                                                         <button data-user='<?= json_encode($user) ?>' onclick="editar_usuario(this)" class="btn btn-warning " data-bs-toggle="modal" data-bs-target="#añadirModal">Edit</button>
@@ -226,7 +226,7 @@
                         timer: 1500
                     })
                     function greet() {
-                        location.href = "index.php";
+                        location.reload();
                     }
                     setTimeout(greet, 1800);
                 } else if (res.data[0].code > 0 && res.data.update) {
@@ -238,7 +238,7 @@
                         timer: 1500
                     })
                     function greet() {
-                        location.href = "index.php";
+                        location.reload();
                     }
                     setTimeout(greet, 1800);
                 } else {
@@ -288,7 +288,7 @@
                         swal("Poof! Your imaginary file has been deleted!", {
                             icon: "success",
                         });
-                        location.href = base_path+'users/index.php'
+                        location.href = base_path+'usuarios/'
                     } else {
                         swal("Error", {
                             icon: "error",

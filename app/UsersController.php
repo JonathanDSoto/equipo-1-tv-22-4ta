@@ -260,7 +260,7 @@ class UsersController {
         echo $response;
         $response = json_decode($response);
         if (isset($response->code) &&  $response->code > 0) {
-            header("location:" . BASE_PATH . "users/detalles.php?id=" . $id);
+            header("location:" . BASE_PATH . "user/" . $id);
         }
     }
 
