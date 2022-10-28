@@ -30,10 +30,9 @@ if (isset($_POST['action'])) {
                 $stock_max = strip_tags($_POST['stock_max']);
                 $product_id = strip_tags($_POST['product_id']);
                 $presentation_id = strip_tags($_POST['presentation_id']);
-                $slug = strip_tags($_POST['slug']);
 
                 $presentationController = new PresentationController();
-                $presentationController->EditPresentation($description, $code, $weight_in_grams, $status, $stock, $stock_min, $stock_max, $product_id, $presentation_id, $slug);
+                $presentationController->EditPresentation($description, $code, $weight_in_grams, $status, $stock, $stock_min, $stock_max, $product_id, $presentation_id);
                 break;
             case 'create_amount':
                 $amount = strip_tags($_POST['amount']);

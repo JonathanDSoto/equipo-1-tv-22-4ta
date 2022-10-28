@@ -1,5 +1,10 @@
 <?php
     include_once "../app/config.php";
+    include("../app/ClientsController.php");
+
+    $clientsController = new ClientsController();
+    $clients = $clientsController->GetClientes();
+
 ?>
 <!doctype html>
 <head>
@@ -44,7 +49,7 @@
                                         <div class="row g-4 mb-3">
                                             <div class="col-sm-auto">
                                                 <div>
-                                                    <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal" id="create-btn" data-bs-target="#añadirModal"><i class="ri-add-line align-bottom me-1"></i>Añadir Cliente</button>
+                                                    <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal" id="add-btn" data-bs-target="#añadirClientModal"><i class="ri-add-line align-bottom me-1"></i>Añadir Cliente</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -60,25 +65,30 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody class="list form-check-all">
-                                                    <tr>
-                                                        <th scope="row">
-                                                        </th>
-                                                        <td >Nombre del cliente</td>
-                                                        <td >Correo del cliente</td>
-                                                        <td>
-                                                            <div class="d-flex gap-3">
-                                                                <div class="view">
-                                                                    <a href="" class="btn btn-info " data-bs-toggle="modal" data-bs-target="">Ver</a>
+                                                    <?php foreach ($clients as $client): ?>
+                                                        <tr>
+                                                            <th scope="row">
+                                                            </th>
+                                                            <td ><?= $client->name ?></td>
+                                                            <td ><?= $client->email ?></td>
+                                                            <td>
+                                                                <div class="d-flex gap-3">
+                                                                    <div class="view">
+                                                                        <a href="detalles.php?id=<?= $client->id ?>" class="btn btn-info">Ver</a>
+                                                                    </div>
+                                                                    <div class="edit">
+                                                                        <button data-client='<?= json_encode($client) ?>' onclick="editar_cliente(this)"class="btn btn-warning " data-bs-toggle="modal" data-bs-target="#añadirClientModal" id="edit-btn">Edit</button>
+                                                                    </div>
+                                                                    <div class="remove">
+                                                                        <button onclick="eliminar_cliente(<?= $client->id ?>)" class="btn btn-danger">Remove</button>
+
+                                                                        <input type="hidden" id="super_token" value="<?= $_SESSION['super_token']?>">
+                                                                        <input type="hidden" id="bp" value="<?= BASE_PATH ?>">
+                                                                    </div>
                                                                 </div>
-                                                                <div class="edit">
-                                                                    <button class="btn btn-warning " data-bs-toggle="modal" data-bs-target="#añadirModal">Edit</button>
-                                                                </div>
-                                                                <div class="remove">
-                                                                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="">Remove</button>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
+                                                            </td>
+                                                        </tr>
+                                                    <?php endforeach; ?>
                                                 </tbody>
                                             </table>           
                                         </div>
@@ -97,25 +107,39 @@
     </div>
 
     <!--Modal Alta Product-->
-    <div class="modal fade" id="añadirModal">
+    <div class="modal fade" id="añadirClientModal">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="añadirModalLabel"> Datos del cliente </h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form method="" action="" enctype="multipart/form-data">
+                <form method="POST" action="<?= BASE_PATH?>app/ClientsController.php" enctype="multipart/form-data" id="clients_form">
                     <div class="modal-body">
-                        <span class="input-group-text" id="name">Nombre Completo</span>
-                        <input type="text" id="name" name="name" class="form-control" placeholder="">
-                        <span class="input-group-text" id="email">Correo</span>
-                        <input type="text" id="email" name="email" class="form-control" placeholder="">  
-                        <span class="input-group-text" id="password">Contraseña</span>
-                        <input type="text" id="password" name="password" class="form-control" placeholder="">       
-                        <span class="input-group-text" id="phone_number">Numero de telefono</span>
-                        <input type="text" id="phone_number" name="phone_number" class="form-control" placeholder="">       
+
+                        <span class="input-group-text">Nombre Completo</span>
+                        <input type="text" id="name" name="name" class="form-control">
+
+                        <span class="input-group-text">Correo</span>
+                        <input type="text" id="email" name="email" class="form-control">
+
+                        <span class="input-group-text">Contraseña</span>
+                        <input type="password" id="password" name="password" class="form-control">
+
+                        <span class="input-group-text">Teléfono</span>
+                        <input type="text" id="phone_number" name="phone_number" class="form-control">
+
+                        <span class="input-group-text">¿Está subscrito?</span>
+                        <input type="text" id="is_suscribed" name="is_suscribed" class="form-control">
+
+                        <span class="input-group-text">Nivel de id</span>
+                        <input type="text" id="level_id" name="level_id" class="form-control">
+                        
+                        <input id="action" name="action" type="hidden" value="create">
+                        <input type="hidden" name="client_id" id="client_id" value="">
+                        <input type="hidden" name="super_token" id="super_token" value="<?= $_SESSION['super_token'] ?>">
+
                     </div>
-                    <input type="hidden" name="action" value="create">
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                         <button type="submit" class="btn btn-primary">Guardar cambios</button>
@@ -126,5 +150,160 @@
     </div>
     <!-- JAVASCRIPT -->
     <?php include "../layouts/scripts.template.php" ?>
+    <script>
+            let clients_form = document.getElementById("clients_form")
+            let add_btn = document.getElementById("add-btn")
+            let edit_btn = document.getElementById("edit-btn")
+
+            let name = document.getElementById("name")
+            let email = document.getElementById("email")
+            let password = document.getElementById("password")
+            let phone_number = document.getElementById("phone_number")
+            let is_suscribed = document.getElementById("is_suscribed")
+            let level_id = document.getElementById("level_id")
+
+            let action = document.getElementById("action")
+            let client_id = document.getElementById("client_id")
+            let super_token = document.getElementById("super_token")
+
+            add_btn.addEventListener('click', () => {
+                label_level_id.style.display = "none"
+                level_id.style.display = "none"
+            });
+
+            edit_btn.addEventListener('click', () => {
+                label_level_id.style.display = "block"
+                level_id.style.display = "block"
+            });
+
+            clients_form.addEventListener("submit", (e) => {
+                e.preventDefault();
+
+                const data = new FormData();
+                data.append("name", name.value);
+                data.append("email", email.value);
+                data.append("password", password.value);
+                data.append("phone_number", phone_number.value);
+                data.append("is_suscribed", is_suscribed.value);
+                data.append("level_id", level_id.value);
+                data.append("client_id", client_id.value);
+                data.append("action", action.value);
+                data.append("super_token", super_token.value);
+
+                axios({
+                    method: "POST",
+                    url: "../app/ClientsController.php",
+                    data,
+                    headers: {
+                    "Content-Type": "multipart/form-data",
+                    },
+                }).then((response)=> {
+
+                    let res = JSON.stringify(response)
+                    res = JSON.parse(res)
+
+                    if (res.data[0].code > 0 && res.data.update == false) {
+                        Swal.fire({
+                        position: 'top-center',
+                        icon: 'success',
+                        title: 'Cliente añadido con exito',
+                        showConfirmButton: false,
+                        timer: 1500
+                        })
+                        function greet() {
+                            location.href = "index.php"
+                        }
+                        setTimeout(greet, 1800);
+                    } else if (res.data[0].code > 0 && res.data.update) {
+                        Swal.fire({
+                        position: 'top-center',
+                        icon: 'success',
+                        title: 'Cliente actualizado con exito',
+                        showConfirmButton: false,
+                        timer: 1500
+                        })
+                        function greet() {
+                            location.href = "index.php"
+                        }
+                        setTimeout(greet, 1800);
+                    } else {
+                        console.log(response.message);
+
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'error',
+                            title: 'Error',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                    } 
+                    }).catch((error) => {
+                    if (error.response) {
+                        console.log(error.message);
+                    }
+                    });
+
+            });
+
+            function editar_cliente(target) {
+
+                let client = JSON.parse( target.dataset.client )
+
+                name.value = client.name
+                email.value = client.email 
+                password.value = ""
+                phone_number.value = client.phone_number
+                is_suscribed.value = client.is_suscribed
+                level_id.value = client.level_id
+                client_id.value = client.id
+                action.value = 'update'
+
+            }
+
+            function eliminar_cliente(id) {
+                
+                swal({
+                    title: "Are you sure?",
+                    text: "Once deleted, you will not be able to recover this imaginary file!",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+
+                    let super_token = document.getElementById('super_token').value;
+                    let base_path = document.getElementById('bp').value;
+
+                    var bodyFormData = new FormData();
+                    bodyFormData.append('id', id);
+                    bodyFormData.append('action', 'delete');
+                    bodyFormData.append('sprtoken', super_token);
+
+                    axios.post('../app/ClientsController.php', bodyFormData)
+                    .then(function (response) {
+
+                        if (response.data) {
+                            swal("Poof! Your imaginary file has been deleted!", {
+                                icon: "success",
+                            });
+                            location.href = "index.php"
+                        } else {
+                            swal("Error", {
+                                icon: "error",
+                            });;
+                        }
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+
+                    } else {
+                    swal("Your imaginary file is safe!");
+                    }
+                });
+            }
+
+        </script>
 </body>
 </html>

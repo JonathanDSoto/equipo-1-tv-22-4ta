@@ -55,7 +55,7 @@
 
                                                 <button data-coupon='<?= json_encode($coupon) ?>' onclick="editar_cupon(this)" class="btn btn-warning btn-border" data-bs-target="#añadirCouponModal" data-bs-toggle="modal" id="edit-btn">Editar</button> 
 
-                                                <button onclick="eliminar_cupon(<?= $coupon->id ?>)"class="btn btn-danger btn-border">Eliminar</button>
+                                                <button onclick="eliminar_cupon(<?= $coupon->id ?>)" class="btn btn-danger btn-border">Eliminar</button>
 
                                                 <input type="hidden" id="super_token" value="<?= $_SESSION['super_token']?>">
                                                 <input type="hidden" id="bp" value="<?= BASE_PATH ?>">
