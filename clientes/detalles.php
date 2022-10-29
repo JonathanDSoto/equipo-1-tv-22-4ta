@@ -106,12 +106,14 @@ $client = $clientsController->SpecifictClient($id);
                                                         </table>
                                                         <hr>
                                                         <h5 class="card-title mb-3">Ordenes</h5>
+                                                        
                                                         <table class="table table-striped">
                                                             <thead>
                                                                 <tr>
                                                                     <th scope="col">#ID</th>
                                                                     <th scope="col">Folio</th>
                                                                     <th scope="col">Total</th>
+                                                                    <th scope="col">Estado del pago</th>
                                                                     <th scope="col">Action</th>
                                                                 </tr>
                                                             </thead>
@@ -121,12 +123,16 @@ $client = $clientsController->SpecifictClient($id);
                                                                         <td><?= $order->id ?></td>
                                                                         <td><?= $order->folio ?></td>
                                                                         <td><?= $order->total ?></td>
-                                                                        <td><button class="btn btn-info">Ver</button></td>
+                                                                        <td><span class="badge bg-success">Estado del pago</span></td>
+                                                                        <td><button class="btn btn-info">Ver</button>
+                                                                       
+                                                                    </td>
                                                                     </tr>
                                                                 <?php endforeach; ?>
                                                             </tbody>
                                                         </table> 
                                                         <h5 class="card-title mb-3">Direcciones registradas</h5>
+                                                        <button class="btn btn-primary btn-label waves-effect waves-light mb-3" data-bs-target="#añadirDireccion" data-bs-toggle="modal" type="button" id="add-btn"><i class="bx bx-plus label-icon align-middle fs-16 me-2"></i> Añadir direccion</button>
                                                         <table class="table table-borderless mb-0">
                                                             <thead>
                                                                 <tr>
@@ -144,7 +150,9 @@ $client = $clientsController->SpecifictClient($id);
                                                                         <td><?= $address->postal_code ?></td>
                                                                         <td><?= $address->city ?></td>
                                                                         <td><?= $address->province ?></td>
-                                                                        <td><button class="btn btn-info">Ver</button></td>
+                                                                        <td><button class="btn btn-info">Ver</button>
+                                                                        <button class="btn btn-warning " data-bs-toggle="modal" data-bs-target="#añadirModal">Editar</button>
+                                                                        <button class="btn btn-danger" onclick="">Eliminar</button></td>
                                                                     </tr>
                                                                 <?php endforeach; ?>
                                                             </tbody>
@@ -166,6 +174,47 @@ $client = $clientsController->SpecifictClient($id);
         </div>
        
     </div>
+
+    <div class="modal fade" id="añadirDireccion">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="añadirDireccion">Introduzca los datos</h5><button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+                    </div>
+                    <form method="POST" action="" enctype="multipart/form-data" id="coupon_form">
+                        <div class="modal-body">
+
+                            <span class="input-group-text">Nombre</span>
+                            <input class="form-control" id="name" name="name" type="text">
+
+                            <span class="input-group-text">Apellido</span>
+                            <input class="form-control" id="code" name="code" type="text">
+
+                            <span class="input-group-text">Nombre de calle y numero</span>
+                            <input class="form-control" id="percentage_discount" name="percentage_discount" type="text">
+
+                            <span class="input-group-text">Codigo postal</span>
+                            <input class="form-control" id="min_amount_required" name="min_amount_required" type="text">
+
+                            <span class="input-group-text">Ciudad</span>
+                            <input class="form-control" id="min_product_required" name="min_product_required" type="text">
+
+                            <span class="input-group-text">Provincia</span>
+                            <input class="form-control" id="start_date" name="start_date" type="text">
+
+                            <span class="input-group-text">Numero de celular</span>
+                            <input class="form-control" id="end_date" name="end_date" type="text">
+    
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Cancelar</button>
+                            <button class="btn btn-primary" type="submit">Guardar cambios</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
     <div class="modal fade" id="añadirModal">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -194,13 +243,13 @@ $client = $clientsController->SpecifictClient($id);
         </div>
     </div>
     <!-- Modal ELIMINAR -->
-    <div aria-hidden="true" class="modal fade flip" id="deleteOrder" tabindex="-1">
+    <div aria-hidden="true" class="modal fade flip" id="eliminarDireccion" tabindex="-1">
 									<div class="modal-dialog modal-dialog-centered">
 										<div class="modal-content">
 											<div class="modal-body p-5 text-center">
 												<div class="mt-4 text-center">
-													<h4>¿Estas seguro de eliminar esta orden?</h4>
-													<p class="text-muted fs-15 mb-4">Eliminar esta orden borrara sus datos de la base de datos</p>
+													<h4>¿Estas seguro de eliminar esta direccion?</h4>
+													<p class="text-muted fs-15 mb-4">Eliminar esta direccion borrara sus datos de la base de datos</p>
 													<div class="hstack gap-2 justify-content-center remove">
 														<button class="btn btn-link link-success fw-medium text-decoration-none" data-bs-dismiss="modal" id="deleteRecord-close"><i class="ri-close-line me-1 align-middle"></i> Close</button> <button class="btn btn-danger" id="delete-record">Yes, Delete It</button>
 													</div>
