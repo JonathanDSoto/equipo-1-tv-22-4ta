@@ -4,7 +4,6 @@
 
     $clientsController = new ClientsController();
     $clients = $clientsController->GetClientes();
-
 ?>
 <!doctype html>
 <head>

@@ -116,13 +116,13 @@
                             <span class="input-group-text" id="label_status">Estado</span>
                             <input class="form-control" id="estado" name="status" type="text">
                             
-                            <input id="action" name="action" type="hidden" value="create">
+                            <input id="action" id="name" name="action" type="hidden" value="create">
+                            <input type="hidden" name="coupon_id" id="coupon_id" value="">
                             <input type="hidden" name="super_token" id="super_token" value="<?= $_SESSION['super_token'] ?>">
 
                         </div>
                         <div class="modal-footer">
                             <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Cancelar</button>
-                            <input type="hidden" name="coupon_id" id="coupon_id" value="">
                             <button class="btn btn-primary" type="submit">Guardar cambios</button>
                         </div>
                     </form>

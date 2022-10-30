@@ -1,12 +1,11 @@
 <?php
-include_once "../app/config.php";
-include ("../app/ClientsController.php");
+    include_once "../app/config.php";
+    include ("../app/ClientsController.php");
 
-$id = $_GET['id'];
+    $id = $_GET['id'];
 
-$clientsController = new ClientsController();
-$client = $clientsController->SpecifictClient($id);
-
+    $clientsController = new ClientsController();
+    $client = $clientsController->SpecifictClient($id);
 ?>
 <!doctype html>
 
@@ -50,10 +49,6 @@ $client = $clientsController->SpecifictClient($id);
                                 <div class="tab-pane active" id="overview-tab" role="tabpanel">
                                     <div class="row">
                                         <div class="col-xxl-12">
-                                            <div class="card">
-
-                                            </div>
-
                                             <div class="card">
                                                 <div class="card-body">
                                                     <h5 class="card-title mb-3">Información</h5>
@@ -123,16 +118,15 @@ $client = $clientsController->SpecifictClient($id);
                                                                         <td><?= $order->id ?></td>
                                                                         <td><?= $order->folio ?></td>
                                                                         <td><?= $order->total ?></td>
-                                                                        <td><span class="badge bg-success">Estado del pago</span></td>
-                                                                        <td><button class="btn btn-info">Ver</button>
-                                                                       
+                                                                        <td><span class="badge bg-success"><?= $order->order_status_id ?></span></td>
+                                                                        <td><a href="<?= BASE_PATH ?>ordenes/detalles.php?id=<?= $order->id ?>" class="btn btn-info">Ver</a></td>
                                                                     </td>
                                                                     </tr>
                                                                 <?php endforeach; ?>
                                                             </tbody>
                                                         </table> 
                                                         <h5 class="card-title mb-3">Direcciones registradas</h5>
-                                                        <button class="btn btn-primary btn-label waves-effect waves-light mb-3" data-bs-target="#añadirDireccion" data-bs-toggle="modal" type="button" id="add-btn"><i class="bx bx-plus label-icon align-middle fs-16 me-2"></i> Añadir direccion</button>
+                                                        <button class="btn btn-primary btn-label waves-effect waves-light mb-3" data-bs-target="#añadirAddressModal" data-bs-toggle="modal" type="button" id="add-btn"><i class="bx bx-plus label-icon align-middle fs-16 me-2"></i> Añadir direccion</button>
                                                         <table class="table table-borderless mb-0">
                                                             <thead>
                                                                 <tr>
@@ -150,9 +144,17 @@ $client = $clientsController->SpecifictClient($id);
                                                                         <td><?= $address->postal_code ?></td>
                                                                         <td><?= $address->city ?></td>
                                                                         <td><?= $address->province ?></td>
-                                                                        <td><button class="btn btn-info">Ver</button>
-                                                                        <button class="btn btn-warning " data-bs-toggle="modal" data-bs-target="#añadirModal">Editar</button>
-                                                                        <button class="btn btn-danger" onclick="">Eliminar</button></td>
+                                                                        <td>
+                                                                            <a href="<?= BASE_PATH ?>ordenes/detallesDireccion.php?id=<?= $address->id ?>" class="btn btn-info">Ver</a>
+                                                                            
+                                                                            <button data-address='<?= json_encode($address) ?>' onclick="editar_address(this)" class="btn btn-warning btn-border" data-bs-target="#añadirAddressModal" data-bs-toggle="modal" id="edit-btn">Editar</button> 
+
+                                                                            <button onclick="eliminar_address(<?= $address->id ?>)" class="btn btn-danger btn-border">Eliminar</button>
+
+                                                                            <input type="hidden" id="super_token" value="<?= $_SESSION['super_token']?>">
+                                                                            <input type="hidden" id="bp" value="<?= BASE_PATH ?>">
+                                                                        </td>
+
                                                                     </tr>
                                                                 <?php endforeach; ?>
                                                             </tbody>
@@ -175,93 +177,221 @@ $client = $clientsController->SpecifictClient($id);
        
     </div>
 
-    <div class="modal fade" id="añadirDireccion">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="añadirDireccion">Introduzca los datos</h5><button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
-                    </div>
-                    <form method="POST" action="" enctype="multipart/form-data" id="coupon_form">
-                        <div class="modal-body">
-
-                            <span class="input-group-text">Nombre</span>
-                            <input class="form-control" id="name" name="name" type="text">
-
-                            <span class="input-group-text">Apellido</span>
-                            <input class="form-control" id="code" name="code" type="text">
-
-                            <span class="input-group-text">Nombre de calle y numero</span>
-                            <input class="form-control" id="percentage_discount" name="percentage_discount" type="text">
-
-                            <span class="input-group-text">Codigo postal</span>
-                            <input class="form-control" id="min_amount_required" name="min_amount_required" type="text">
-
-                            <span class="input-group-text">Ciudad</span>
-                            <input class="form-control" id="min_product_required" name="min_product_required" type="text">
-
-                            <span class="input-group-text">Provincia</span>
-                            <input class="form-control" id="start_date" name="start_date" type="text">
-
-                            <span class="input-group-text">Numero de celular</span>
-                            <input class="form-control" id="end_date" name="end_date" type="text">
-    
-                        </div>
-                        <div class="modal-footer">
-                            <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Cancelar</button>
-                            <button class="btn btn-primary" type="submit">Guardar cambios</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-    <div class="modal fade" id="añadirModal">
+    <div class="modal fade" id="añadirAddressModal">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="añadirModalLabel"> Datos de la direccion</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title" id="añadirAddressModal">Introduzca los datos</h5><button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
                 </div>
-                <form method="" action="" enctype="multipart/form-data">
+                <form method="POST" action="<?= BASE_PATH?>app/AddressController.php" enctype="multipart/form-data" id="address_form">
                     <div class="modal-body">
-                        <span class="input-group-text" id="description">Calle y numero</span>
-                        <input type="text" id="description" name="description" class="form-control" placeholder="">
-                        <span class="input-group-text" id="code">Codigo postal</span>
-                        <input type="text" id="code" name="code" class="form-control" placeholder="">
-                        <span class="input-group-text" id="estatus">Ciudad</span>
-                        <input type="text" id="estatus" name="estatus" class="form-control" placeholder="">
-                        <span class="input-group-text" id="stock">Provincia</span>
-                        <input type="text" id="stock" name="stock" class="form-control" placeholder="">
+
+                        <span class="input-group-text">Nombre</span>
+                        <input class="form-control" id="first_name" name="first_name" type="text">
+
+                        <span class="input-group-text">Apellido</span>
+                        <input class="form-control" id="last_name" name="last_name" type="text">
+
+                        <span class="input-group-text">Nombre de calle y numero</span>
+                        <input class="form-control" id="street_and_use_number" name="street_and_use_number" type="text">
+
+                        <span class="input-group-text">Codigo postal</span>
+                        <input class="form-control" id="postal_code" name="postal_code" type="text">
+
+                        <span class="input-group-text">Ciudad</span>
+                        <input class="form-control" id="city" name="city" type="text">
+
+                        <span class="input-group-text">Provincia</span>
+                        <input class="form-control" id="province" name="province" type="text">
+
+                        <span class="input-group-text">Numero de celular</span>
+                        <input class="form-control" id="phone_number" name="phone_number" type="text">
+
+                        <span class="input-group-text" id="billing">¿Billing?</span>
+                        <input class="form-control" id="is_billing" name="is_billing" type="text">
+
+                        <input id="action" id="" name="action" type="hidden" value="create">
+                        <input type="hidden" name="client_id" id="client_id" value="<?= $client->id ?>">
+                        <input type="hidden" name="address_id" id="address_id" value="<?= $address->id ?>">
+                        <input type="hidden" name="super_token" id="super_token" value="<?= $_SESSION['super_token'] ?>">
+
                     </div>
-                    <input type="hidden" name="action" value="create">
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                        <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Cancelar</button>
+                        <button class="btn btn-primary" type="submit">Guardar cambios</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-    <!-- Modal ELIMINAR -->
-    <div aria-hidden="true" class="modal fade flip" id="eliminarDireccion" tabindex="-1">
-									<div class="modal-dialog modal-dialog-centered">
-										<div class="modal-content">
-											<div class="modal-body p-5 text-center">
-												<div class="mt-4 text-center">
-													<h4>¿Estas seguro de eliminar esta direccion?</h4>
-													<p class="text-muted fs-15 mb-4">Eliminar esta direccion borrara sus datos de la base de datos</p>
-													<div class="hstack gap-2 justify-content-center remove">
-														<button class="btn btn-link link-success fw-medium text-decoration-none" data-bs-dismiss="modal" id="deleteRecord-close"><i class="ri-close-line me-1 align-middle"></i> Close</button> <button class="btn btn-danger" id="delete-record">Yes, Delete It</button>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
    
     <?php include "../layouts/footer.template.php" ?>
     <!-- JAVASCRIPT -->
     <?php include "../layouts/scripts.template.php" ?>
-</body>
+    <script>
+        let address_form = document.getElementById("address_form")
+        let add_btn = document.getElementById("add-btn")
+        let edit_btn = document.getElementById("edit-btn")
 
+        let first_name = document.getElementById("first_name")
+        let last_name = document.getElementById("last_name")
+        let street_and_use_number = document.getElementById("street_and_use_number")
+        let postal_code = document.getElementById("postal_code")
+        let city = document.getElementById("city")
+        let province = document.getElementById("province")
+        let phone_number = document.getElementById("phone_number")
+
+        let billing = document.getElementById("billing")
+        let is_billing = document.getElementById("is_billing")
+        
+        let client_id = document.getElementById("client_id")
+        let address_id = document.getElementById("address_id")
+        let action = document.getElementById("action")
+        let super_token = document.getElementById("super_token")
+
+        add_btn.addEventListener('click', () => {
+            billing.style.display = "none"
+            is_billing.style.display = "none"
+        });
+
+        edit_btn.addEventListener('click', () => {
+            billing.style.display = "block"
+            is_billing.style.display = "block"
+        });
+
+        address_form.addEventListener("submit", (e) => {
+            e.preventDefault();
+
+            const data = new FormData();
+            data.append("first_name", first_name.value);
+            data.append("last_name", last_name.value);
+            data.append("street_and_use_number", street_and_use_number.value);
+            data.append("postal_code", postal_code.value);
+            data.append("city", city.value);
+            data.append("province", province.value);
+            data.append("phone_number", phone_number.value);
+            data.append("is_billing", is_billing.value);
+            data.append("client_id", client_id.value);
+            data.append("address_id", address_id.value);
+            data.append("action", action.value);
+            data.append("super_token", super_token.value);
+
+            axios({
+                method: "POST",
+                url: "../app/AddressController.php",
+                data,
+                headers: {
+                "Content-Type": "multipart/form-data",
+                },
+            }).then((response)=> {
+
+                let res = JSON.stringify(response)
+                res = JSON.parse(res)
+
+                if (res.data[0].code > 0 && res.data.update == false) {
+                    Swal.fire({
+                    position: 'top-center',
+                    icon: 'success',
+                    title: 'Dirección añadida con exito',
+                    showConfirmButton: false,
+                    timer: 1500
+                    })
+                    function greet() {
+                        location.href = "detalles.php?id=" + client_id.value
+                    }
+                    setTimeout(greet, 1800);
+                } else if (res.data[0].code > 0 && res.data.update) {
+                    Swal.fire({
+                    position: 'top-center',
+                    icon: 'success',
+                    title: 'Dirección actualizada con exito',
+                    showConfirmButton: false,
+                    timer: 1500
+                    })
+                    function greet() {
+                        location.href = "index.php"
+                    }
+                    setTimeout(greet, 1800);
+                } else {
+                    console.log(response.message);
+
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: 'Error',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                } 
+                }).catch((error) => {
+                if (error.response) {
+                    console.log(error.message);
+                }
+                });
+
+
+        });
+
+        function editar_address(target) {
+
+            let address = JSON.parse( target.dataset.address )
+
+            first_name.value = address.first_name
+            last_name.value = address.last_name 
+            street_and_use_number.value = address.street_and_use_number
+            postal_code.value = address.postal_code
+            city.value = address.city
+            province.value = address.province
+            phone_number.value = address.phone_number
+            is_billing.value = address.is_billing_address
+            action.value = 'update'
+
+        }
+
+        function eliminar_address(id) {
+            
+            swal({
+                title: "Are you sure?",
+                text: "Once deleted, you will not be able to recover this imaginary file!",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((willDelete) => {
+                if (willDelete) {
+
+                let super_token = document.getElementById('super_token').value;
+                let base_path = document.getElementById('bp').value;
+
+                var bodyFormData = new FormData();
+                bodyFormData.append('id', id);
+                bodyFormData.append('action', 'delete');
+                bodyFormData.append('sprtoken', super_token);
+
+                axios.post('../app/AddressController.php', bodyFormData)
+                .then(function (response) {
+
+                    if (response.data) {
+                        swal("Poof! Your imaginary file has been deleted!", {
+                            icon: "success",
+                        });
+                        location.href = "detalles.php?id=" + client_id.value
+                    } else {
+                        swal("Error", {
+                            icon: "error",
+                        });;
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+
+                } else {
+                swal("Your imaginary file is safe!");
+                }
+            });
+        }
+
+    </script>
+</body>
 </html>
