@@ -105,7 +105,6 @@
                                                         <table class="table table-striped">
                                                             <thead>
                                                                 <tr>
-                                                                    <th scope="col">#ID</th>
                                                                     <th scope="col">Folio</th>
                                                                     <th scope="col">Total</th>
                                                                     <th scope="col">Estado del pago</th>
@@ -115,11 +114,10 @@
                                                             <tbody>
                                                                 <?php foreach ($client->orders as $order): ?>
                                                                     <tr>
-                                                                        <td><?= $order->id ?></td>
                                                                         <td><?= $order->folio ?></td>
                                                                         <td><?= $order->total ?></td>
                                                                         <td><span class="badge bg-success"><?= $order->order_status_id ?></span></td>
-                                                                        <td><a href="<?= BASE_PATH ?>ordenes/detalles.php?id=<?= $order->id ?>" class="btn btn-info">Ver</a></td>
+                                                                        <td><a href="<?= BASE_PATH ?>ordenes/detalles.php?id<?= $order->id ?>" class="btn btn-info">Ver</a></td>
                                                                     </td>
                                                                     </tr>
                                                                 <?php endforeach; ?>
@@ -145,7 +143,7 @@
                                                                         <td><?= $address->city ?></td>
                                                                         <td><?= $address->province ?></td>
                                                                         <td>
-                                                                            <a href="<?= BASE_PATH ?>ordenes/detallesDireccion.php?id=<?= $address->id ?>" class="btn btn-info">Ver</a>
+                                                                            <a href="<?= BASE_PATH ?>clientes/detallesDirecciones.php?id=<?= $address->id ?>" class="btn btn-info">Ver</a>
                                                                             
                                                                             <button data-address='<?= json_encode($address) ?>' onclick="editar_address(this)" class="btn btn-warning btn-border" data-bs-target="#añadirAddressModal" data-bs-toggle="modal" id="edit-btn">Editar</button> 
 

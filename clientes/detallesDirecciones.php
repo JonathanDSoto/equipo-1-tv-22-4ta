@@ -1,5 +1,12 @@
 <?php
-include_once "../app/config.php";
+    include_once "../app/config.php";
+    include ("../app/AddressController.php");
+
+    $id = $_GET['id'];
+
+    $addressController = new AddressController();
+    $address = $addressController->GetAddress($id);
+
 ?>
 <!doctype html>
 
@@ -29,7 +36,7 @@ include_once "../app/config.php";
                 <div class="pt-4 ">
                     <div class="row g-4">
                         <div class="col">
-                            <div class="p-2">           
+                            <div class="p-2">
                             </div>
                         </div>
                     </div>
@@ -49,31 +56,43 @@ include_once "../app/config.php";
                                                             <tbody>
                                                                 <tr>
                                                                     <th class="ps-0" scope="row">Nombre:</th>
-                                                                    <td class="text-muted">Nombre del cliente</td>
+                                                                    <td class="text-muted"><?= $address->first_name ?></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <th class="ps-0" scope="row">Apellidos :</th>
-                                                                    <td class="text-muted">Apellidos del cliente</td>
+                                                                    <td class="text-muted"><?= $address->last_name ?></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th class="ps-0" scope="row">Calle y número:</th>
+                                                                    <td class="text-muted"><?= $address->street_and_use_number ?></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <th class="ps-0" scope="row">Apartamento:</th>
-                                                                    <td class="text-muted">Calle y numero de casa del cliente</td>
+                                                                    <td class="text-muted"><?= $address->apartment ?></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <th class="ps-0" scope="row">Codigo Postal:</th>
-                                                                    <td class="text-muted">Codigo postal del cliente</td>
+                                                                    <td class="text-muted"><?= $address->postal_code ?></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <th class="ps-0" scope="row">Ciudad:</th>
-                                                                    <td class="text-muted">Ciudad del cliente</td>
+                                                                    <td class="text-muted"><?= $address->city ?>s</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <th class="ps-0" scope="row">Provincia:</th>
-                                                                    <td class="text-muted">Provincia del cliente</td>
+                                                                    <td class="text-muted"><?= $address->province ?></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <th class="ps-0" scope="row">Numero de telefono:</th>
-                                                                    <td class="text-muted">Codigo postal del cliente</td>
+                                                                    <td class="text-muted"><?= $address->phone_number ?></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th class="ps-0" scope="row">Dirección de facturación</th>
+                                                                    <?php if($address->is_billing_address == 0): ?>
+                                                                        <td class="text-muted">No</td>
+                                                                    <?php else: ?>
+                                                                        <td class="text-muted">Si</td>
+                                                                    <?php endif; ?>
                                                                 </tr>
                                                             </tbody>
                                                         </table>
