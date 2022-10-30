@@ -76,7 +76,7 @@
                                                         <td>
                                                             <div class="d-flex gap-3 edit justify-content-end me-3">
                                                                 <div class="view">
-                                                                <a href="detalles.php?id=<?= $categorie->id ?>&type=categoria" class="btn btn-info">
+                                                                <a href="<?= BASE_PATH ?>categoria/<?= $categorie->id ?>" class="btn btn-info">
                                                                     <i class="bx bx-show"></i>
                                                                 </a>
                                                                 </div>
@@ -137,7 +137,7 @@
                                                             <td>
                                                                 <div class="d-flex gap-3 edit justify-content-end me-3">
                                                                     <div class="view">
-                                                                        <a href="detalles.php?id=<?= $brand->id ?>&type=marca" class="btn btn-info "><i class="bx bx-show"></i></a>
+                                                                        <a href="<?= BASE_PATH ?>marca/<?= $brand->id ?>" class="btn btn-info "><i class="bx bx-show"></i></a>
                                                                     </div>
                                                                     <div class="edit">
                                                                         <button data-marca='<?= json_encode($brand) ?>' onclick="editar_marca(this)" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#añadirBrandModal">
@@ -196,7 +196,7 @@
                                                             <td>
                                                                 <div class="d-flex gap-3 edit justify-content-end me-3">
                                                                     <div class="view">
-                                                                        <a href="detalles.php?id=<?= $tag->id ?>&type=etiqueta" class="btn btn-info "><i class="bx bx-show"></i></a>
+                                                                        <a href="<?= BASE_PATH ?>tag/<?= $tag->id ?>" class="btn btn-info "><i class="bx bx-show"></i></a>
                                                                     </div>
                                                                     <div class="edit">
                                                                         <button data-tag='<?= json_encode($tag) ?>' onclick="editar_tag(this)" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#añadirTagModal">
@@ -234,7 +234,7 @@
                     <h5 class="modal-title" id="añadirModalLabel"> Introdusca los datos</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form method="POST" action="<?= BASE_PATH?>app/CategorieController.php" enctype="multipart/form-data" id="categories_form">
+                <form method="POST" action="<?= BASE_PATH?>catc" enctype="multipart/form-data" id="categories_form">
                     <div class="modal-body">
 
                         <span class="input-group-text">Nombre</span>
@@ -269,7 +269,7 @@
                     <h5 class="modal-title" id="añadirModalLabel"> Introduzca los datos de la marca</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form method="POST" action="<?= BASE_PATH?>app/BrandController.php" enctype="multipart/form-data" id="brands_form">
+                <form method="POST" action="<?= BASE_PATH?>brand" enctype="multipart/form-data" id="brands_form">
                     <div class="modal-body">
 
                         <span class="input-group-text">Nombre</span>
@@ -301,7 +301,7 @@
                     <h5 class="modal-title" id="añadirModalLabel"> Introduzca los datos de la etiqueta</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form method="POST" action="<?= BASE_PATH?>app/TagsController.php" enctype="multipart/form-data" id="tags_form">
+                <form method="POST" action="<?= BASE_PATH?>tagc" enctype="multipart/form-data" id="tags_form">
                     <div class="modal-body">
 
                         <span class="input-group-text">Nombre</span>
@@ -397,7 +397,7 @@
                         timer: 1500
                         })
                         function greet() {
-                            location.href = "index.php"
+                            location.reload();
                         }
                         setTimeout(greet, 1800);
                 } else if (response.data) {
@@ -409,7 +409,7 @@
                         timer: 1500
                         })
                         function greet() {
-                            location.href = "index.php"
+                            location.reload();
                         }
                         setTimeout(greet, 1800);                
                 } else {
@@ -458,7 +458,7 @@
                         swal("Poof! Your imaginary file has been deleted!", {
                             icon: "success",
                         });
-                        location.href = base_path+"catalogos/index.php"
+                        location.href = base_path+"catalogos/"
                     } else {
                         swal("Error", {
                             icon: "error",
@@ -517,7 +517,7 @@
                             timer: 1500
                             })
                             function greet() {
-                                location.href = "index.php"
+                                location.reload();
                             }
                             setTimeout(greet, 1800);                
                     } else {
@@ -564,7 +564,7 @@
                             timer: 1500
                             })
                             function greet() {
-                                location.href = "index.php"
+                                location.reload();
                             }
                             setTimeout(greet, 1800);
                     } else {
@@ -626,7 +626,7 @@
                         swal("Poof! Your imaginary file has been deleted!", {
                             icon: "success",
                         });
-                        location.href = base_path+"catalogos/index.php"
+                        location.reload();
                     } else {
                         swal("Error", {
                             icon: "error",
@@ -675,7 +675,7 @@
                     timer: 1500
                     })
                     function greet() {
-                        location.href = "index.php"
+                        location.reload();
                     }
                     setTimeout(greet, 1800);
                 } else if (res.data[0].code > 0 && res.data.update) {
@@ -687,7 +687,7 @@
                     timer: 1500
                     })
                     function greet() {
-                        location.href = "index.php"
+                        location.reload();
                     }
                     setTimeout(greet, 1800);
                 } else {
@@ -747,7 +747,7 @@
                         swal("Poof! Your imaginary file has been deleted!", {
                             icon: "success",
                         });
-                        location.href = "index.php"
+                        location.reload();
                     } else {
                         swal("Error", {
                             icon: "error",

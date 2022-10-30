@@ -82,7 +82,7 @@ if ($type == "categoria") {
 														<td><?= $p->name ?></td>
 														<td><?= $p->description ?></td>
 														<td>
-															<a class="btn btn-info" href="../products/detalles.php?slug=<?= $p->slug ?>">Ver</a>
+															<a class="btn btn-info" href="<?= BASE_PATH ?>prod/<?= $p->slug ?>">Ver</a>
 														</td>
 													</tr>
 												<?php endforeach; ?>
