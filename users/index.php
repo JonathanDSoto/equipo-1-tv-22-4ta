@@ -77,7 +77,7 @@
                                                             <td>
                                                                 <div class="d-flex gap-3">
                                                                     <div class="view">
-                                                                        <a href="<?= BASE_PATH ?>user/<?= $user->id ?>" class="btn btn-info">Ver</a>
+                                                                        <a href="detalles.php?id=<?= $user->id ?>" class="btn btn-info">Ver</a>
                                                                     </div>
                                                                     <div class="edit">
                                                                         <button data-user='<?= json_encode($user) ?>' onclick="editar_usuario(this)" class="btn btn-warning " data-bs-toggle="modal" data-bs-target="#añadirModal">Edit</button>
@@ -119,28 +119,28 @@
                 <form method="POST" action="<?= BASE_PATH?>users/" enctype="multipart/form-data" id="user_form">
                     <div class="modal-body">
                     <span class="input-group-text" id="label_img">Imagen del usuario</span>
-                        <input type="file" id="img_usuario" name="img_usuario" accept="image/*">
+                        <input type="file" id="img_usuario" name="img_usuario" accept="image/*" >
 
                         <span class="input-group-text">Nombre</span>
-                        <input type="text" id="name" name="name" class="form-control">
+                        <input type="text" id="name" name="name" class="form-control" required placeholder="...">
                         
                         <span class="input-group-text">Apellidos</span>
-                        <input type="text" id="last_name" name="last_name" class="form-control">
+                        <input type="text" id="last_name" name="last_name" class="form-control" required placeholder="...">
                         
                         <span class="input-group-text">Correo</span>
-                        <input type="text" id="email" name="email" class="form-control">
+                        <input type="text" id="email" name="email" class="form-control" required placeholder="Example: email@example.com">
                         
                         <span class="input-group-text">Password</span>
-                        <input type="password" class="form-control" id="password" name="password">
+                        <input type="password" class="form-control" id="password" name="password" required placeholder="Password 4-16 characters">
                         
                         <span class="input-group-text">Telefono</span>
-                        <input type="text" id="phone_number" name="phone_number" class="form-control">
+                        <input type="text" id="phone_number" name="phone_number" class="form-control" required placeholder="Example:6122435751">
 
                         <span class="input-group-text" id="label_rol">Rol</span>
-                        <input type="text" id="rol" name="rol" class="form-control">
+                        <input type="text" id="rol" name="rol" class="form-control" >
 
                         <span class="input-group-text" id="label_created">Creado por</span>
-                        <input type="text" id="created_by" name="created_by" class="form-control">
+                        <input type="text" id="created_by" name="created_by" class="form-control" >
 
                     </div>
 
@@ -181,6 +181,9 @@
         let label_created = document.getElementById('label_created');
         let created_by = document.getElementById("created_by")
 
+      
+       
+
         create_btn.addEventListener("click", () => {
             label_img.style.display = "block";
             img_usuario.style.display = "block";
@@ -189,7 +192,7 @@
             label_created.style.display = "none";
             created_by.style.display = "none";
         })
-
+            
         form.addEventListener("submit", (e) => {
             e.preventDefault();
 
@@ -203,62 +206,91 @@
             data.append("phone_number", phone_number.value);
             data.append("id", id_user.value);
             data.append("created_by", created_by_user.value);
-            data.append("action", action.value);
+            data.append("action", action.value);    
             data.append("super_token", super_token.value);
 
-            axios({
-                method: "POST",
-                url: "../app/UsersController.php",
-                data,
-                headers: {
-                "Content-Type": "multipart/form-data",
-                },
-            }).then((response)=> {
-                let res = JSON.stringify(response)
-				res = JSON.parse(res)
+            var nombre= /^[a-zA-ZÀ-ÿ\s]+$/; // Letras y espacios, pueden llevar acentos
+            var apellido= /^[a-zA-ZÀ-ÿ\s]+$/; // Letras y espacios, pueden llevar acentos.
+            var pwd= /^.{4,16}$/; // 4 a 12 digitos.
+            var correo= /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+            var telefono= /^\d{10,14}$/ ;// 7 a 14 numeros.
+            aux=true;
+            if(!nombre.test(name.value) && !apellido.test(last_name.value) && !correo.test(email.value)
+                && !telefone.test(phone_number.value)){
+                Swal.fire({ 
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Error Campos incorretos',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+                ent=false;
+            }
+            if(ent){
+                axios({
+                    method: "POST",
+                    url: "../app/UsersController.php",
+                    data,
+                    headers: {
+                    "Content-Type": "multipart/form-data",
+                    },
+                }).then((response)=> {
+                    let res = JSON.stringify(response)
+                    res = JSON.parse(res)
+                    
+                    if (res.data[0].code > 0 && res.data.update == false) {
+                        Swal.fire({
+                            position: 'top-center',
+                            icon: 'success',
+                            title: 'Usuario creado',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                        function greet() {
+                            location.href = "index.php";
+                        }
+                        setTimeout(greet, 1800);
 
-                if (res.data[0].code > 0 && res.data.update == false) {
-                    Swal.fire({
-                        position: 'top-center',
-                        icon: 'success',
-                        title: 'Usuario creado',
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
-                    function greet() {
-                        location.reload();
+          
+                    }else if(!nombre.test(name.value) || !apellido.test(last_name.value)
+                        || !correo.test(email.value)
+                        || !telefono.test(phone_number.value)){
+                            
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'error',
+                                title: 'Error en actualizar',
+                                showConfirmButton: false,
+                                timer: 1500
+                            })
+                            aux=false;
+                    }else if (aux && res.data[0].code > 0 && res.data.update ) {
+                        Swal.fire({
+                            position: 'top-center',
+                            icon: 'success',
+                            title: 'Usuario actualizado',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
                     }
-                    setTimeout(greet, 1800);
-                } else if (res.data[0].code > 0 && res.data.update) {
-                    Swal.fire({
-                        position: 'top-center',
-                        icon: 'success',
-                        title: 'Usuario actualizado',
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
-                    function greet() {
-                        location.reload();
+                    else {
+                        console.log(response.message);
+    
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'error',
+                            title: 'Error en campos',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                    } 
+                    
+                }).catch((error) => {
+                    if (error.response) {
+                        console.log(error.message);
                     }
-                    setTimeout(greet, 1800);
-                } else {
-                    console.log(response.message);
-
-                    Swal.fire({
-                        position: 'center',
-                        icon: 'error',
-                        title: 'Error',
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
-                } 
-            }).catch((error) => {
-                if (error.response) {
-                    console.log(error.message);
-                }
-            });
-
-
+                });
+            }
         });
 
         function eliminar(id) {
@@ -288,7 +320,7 @@
                         swal("Poof! Your imaginary file has been deleted!", {
                             icon: "success",
                         });
-                        location.href = base_path+'usuarios/'
+                        location.href = base_path+'users/index.php'
                     } else {
                         swal("Error", {
                             icon: "error",
@@ -317,7 +349,6 @@
             created_by.setAttribute('disabled', '');
 
             let user = JSON.parse( target.dataset.user )
-
             id_user.value = user.id 
             name.value = user.name
             last_name.value = user.lastname
@@ -328,7 +359,7 @@
             rol.value = user.role
             created_by.value = user.created_by
             action.value = 'update'
-
+                
         }
     </script>
 </body>
