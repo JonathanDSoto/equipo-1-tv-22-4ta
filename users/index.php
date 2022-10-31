@@ -77,7 +77,7 @@
                                                             <td>
                                                                 <div class="d-flex gap-3">
                                                                     <div class="view">
-                                                                        <a href="detalles.php?id=<?= $user->id ?>" class="btn btn-info">Ver</a>
+                                                                        <a href="<?= BASE_PATH ?>user/<?= $user->id ?>" class="btn btn-info">Ver</a>
                                                                     </div>
                                                                     <div class="edit">
                                                                         <button data-user='<?= json_encode($user) ?>' onclick="editar_usuario(this)" class="btn btn-warning " data-bs-toggle="modal" data-bs-target="#añadirModal">Edit</button>
