@@ -108,6 +108,55 @@ include_once "../app/config.php";
 										</table>
 									</div>
 								</div>
+								<table class="table table-nowrap align-middle" id="orderTable">
+											<thead class="text-muted table-light">
+												<tr class="text-uppercase">
+													<th scope="col" style="width: 25px;">
+														<div class="form-check">
+															<input class="form-check-input" id="checkAll" type="checkbox" value="option">
+														</div>
+													</th>
+													<th class="sort" data-sort="id">No.Folio</th>
+													<th class="sort" data-sort="customer_name">Cliente</th>
+													<th class="sort" data-sort="product_name">Producto</th>
+													<th class="sort" data-sort="date">Fecha de orden</th>
+													<th class="sort" data-sort="amount">Monto</th>
+													<th class="sort" data-sort="status">Estado del producto</th>
+													<th class="sort" data-sort="city">Accion</th>
+												</tr>
+											</thead>
+											<tbody class="list form-check-all">
+												<tr>
+													<th scope="row">
+														<div class="form-check">
+															<input class="form-check-input" name="checkAll" type="checkbox" value="option1">
+														</div>
+													</th>
+													<td class="id">
+														<a class="fw-medium link-primary" href="apps-ecommerce-order-details.html">#NMFOLIO</a>
+													</td>
+													<td class="customer_name">Nombre del cliente</td>
+													<td class="product_name">Nombre del producto</td>
+													<td class="date">Fecha del pedido</td>
+													<td class="amount">Monto</td>
+													<td class="status"><span class="badge badge-soft-warning text-uppercase">Estado del producto</span></td>
+													<td>
+														<ul class="list-inline hstack gap-2 mb-0">
+															<li class="list-inline-item" data-bs-placement="top" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Ver detalles">
+																<a class="text-primary d-inline-block" href="apps-ecommerce-order-details.html"><i class="ri-eye-fill fs-16"></i></a>
+															</li>
+															<li class="list-inline-item edit" data-bs-placement="top" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Editar">
+																<a class="text-primary d-inline-block edit-item-btn" data-bs-toggle="modal" href="#showModal"><i class="ri-pencil-fill fs-16"></i></a>
+															</li>
+															<li class="list-inline-item" data-bs-placement="top" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Eliminar orden">
+																<a class="text-danger d-inline-block remove-item-btn" data-bs-toggle="modal" href="#deleteOrder"><i class="ri-delete-bin-5-fill fs-16"></i></a>
+															</li>
+														</ul>
+													</td>
+												</tr>
+											</tbody>
+										</table>						
+
 								<div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade" id="showModal" tabindex="-1">
 									<div class="modal-dialog modal-dialog-centered">
 										<div class="modal-content">
