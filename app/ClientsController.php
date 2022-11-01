@@ -21,8 +21,15 @@ if (isset($_POST['action'])) {
                 break;
             case 'delete':
                 $id = strip_tags($_POST['id']);
+
                 $clientsController = new ClientsController();
                 $clientsController->DeleteClient($id);
+                break;
+            case 'specified':
+                $client_id = strip_tags($_POST['client_id']);
+
+                $clientsController = new ClientsController();
+                $clientsController->SpecifictClient($client_id);
                 break;
             case 'update':
                 $name = strip_tags($_POST['name']);
@@ -69,12 +76,12 @@ class ClientsController {
 
     }
 
-    public function SpecifictClient($id) {
+    public function SpecifictClient($client_id) {
 
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://crud.jonathansoto.mx/api/clients/' . $id,
+            CURLOPT_URL => 'https://crud.jonathansoto.mx/api/clients/' . $client_id,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -89,6 +96,7 @@ class ClientsController {
 
         $response = curl_exec($curl);
         curl_close($curl);
+        echo $response;
         $response = json_decode($response);
 
         if (isset($response->code) && $response->code > 0) {

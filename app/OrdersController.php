@@ -5,36 +5,24 @@ if (isset($_POST['action'])) {
     if (isset($_POST['super_token']) && $_POST['super_token'] == $_SESSION['super_token']) {
         switch ($_POST['action']) {
             case 'create':
+
                 $folio = strip_tags($_POST['folio']);
                 $total = strip_tags($_POST['total']);
                 $is_paid = strip_tags($_POST['is_paid']);
                 $client_id = strip_tags($_POST['client_id']);
-                $address_id = strip_tags($_POST['address_id']);
+                $address_id = strip_tags($_POST['address']);
                 $order_status_id = strip_tags($_POST['order_status_id']);
                 $payment_type_id = strip_tags($_POST['payment_type_id']);
                 $coupon_id = strip_tags($_POST['coupon_id']);
-                $presentations = strip_tags($_POST['presentations']);
-                $presentations2 = strip_tags($_POST['presentations2']);
-                $presentations3 = strip_tags($_POST['presentations3']);
-                $presentations4 = strip_tags($_POST['presentations4']);
+                $presentation = strip_tags($_POST['presentation']);
+                $quantity = strip_tags($_POST['quantity']);
+
                 $ordersController = new OrdersController();
-                $ordersController->CreateOrders(
-                    $folio,
-                    $total,
-                    $is_paid,
-                    $client_id,
-                    $address_id,
-                    $order_status_id,
-                    $payment_type_id,
-                    $coupon_id,
-                    $presentations,
-                    $presentations2,
-                    $presentations3,
-                    $presentations4
-                );
+                $ordersController->CreateOrders($folio, $total, $is_paid, $client_id, $address_id, $order_status_id, $payment_type_id, $coupon_id, $presentation, $quantity);
                 break;
             case 'delete': 
                 $id = strip_tags($_POST['id']);
+
                 $ordersController = new OrdersController();
                 $ordersController->DeleteOrders($id);
                 break;
@@ -65,11 +53,10 @@ if (isset($_POST['action'])) {
         }
     }
 }
-class OrdersController
-{
+class OrdersController {
 
-    public function GetOrders()
-    {
+    public function GetOrders() {
+
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
@@ -87,23 +74,21 @@ class OrdersController
         ));
 
         $response = curl_exec($curl);
-
         curl_close($curl);
-        echo $response;
         $response = json_decode($response);
+
         if (isset($response->code) && $response->code > 0) {
             return $response->data;
         }
+
     }
 
-    public function GetOrdersBetweenDates(
-        $fate,
-        $fate2
-    ) {
+    public function GetOrdersBetweenDates($date, $date2) {
+
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://crud.jonathansoto.mx/api/orders/' . $fate . '/' . $fate2,
+            CURLOPT_URL => 'https://crud.jonathansoto.mx/api/orders/' . $date . '/' . $date2,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -117,17 +102,16 @@ class OrdersController
         ));
 
         $response = curl_exec($curl);
-
         curl_close($curl);
         echo $response;
+
         $response = json_decode($response);
         if (isset($response->code) && $response->code > 0) {
             return $response->data;
         }
     }
 
-    public function GetSpecifict($id)
-    {
+    public function GetSpecifict($id) {
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
@@ -153,21 +137,7 @@ class OrdersController
             return $response->data;
         }
     }
-    public function CreateOrders(
-        $folio,
-        $total,
-        $is_paid,
-        $client_id,
-        $address_id,
-        $order_status_id,
-        $payment_type_id,
-        $coupon_id,
-        $presentations,
-        $presentations2,
-        $presentations3,
-        $presentations4
-    )
-    {
+    public function CreateOrders($folio, $total, $is_paid, $client_id, $address_id, $order_status_id, $payment_type_id, $coupon_id, $presentation, $quantity) {
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
@@ -180,11 +150,16 @@ class OrdersController
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'POST',
             CURLOPT_POSTFIELDS => array(
-                'folio' => $folio, 'total' => $total,
-                'is_paid' => $is_paid, 'client_id' => $client_id, 'address_id' => $address_id,
-                'order_status_id' => $order_status_id, 'payment_type_id' => $payment_type_id, 'coupon_id' => $coupon_id,
-                'presentations[0][id]' => $presentations, 'presentations[0][quantity]' => $presentations2,
-                'presentations[1][id]' => $presentations3, 'presentations[1][quantity]' => $presentations4
+                'folio' => $folio, 
+                'total' => $total,
+                'is_paid' => $is_paid, 
+                'client_id' => $client_id, 
+                'address_id' => $address_id,
+                'order_status_id' => $order_status_id, 
+                'payment_type_id' => $payment_type_id, 
+                'coupon_id' => $coupon_id,
+                'presentations[0][id]' => $presentation, 
+                'presentations[0][quantity]' => $quantity
             ),
             CURLOPT_HTTPHEADER => array(
                 'Authorization: Bearer ' . $_SESSION['token'],
@@ -196,15 +171,24 @@ class OrdersController
         curl_close($curl);
         echo $response;
         $response = json_decode($response);
-        if (isset($response->code) &&  $response->code > 0) {
 
-            header("location:" . BASE_PATH . "index");
+        if (isset($response->code) &&  $response->code > 0) {
+            $response = json_encode([
+                $response,
+                "update" => false
+            ]);
+            echo $response;
+        } else {
+
+            $response = [
+                "message" => "Error al crear la orden",
+            ];
+            $response = json_encode($response);
+            echo $response;
         }
     }
-    public function EditCreate(
-        $id,
-        $order_status_id
-    ) {
+    public function EditCreate($id, $order_status_id) {
+        
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
@@ -225,7 +209,6 @@ class OrdersController
             
 
         $response = curl_exec($curl);
-
         curl_close($curl);
         echo $response;
         $response = json_decode($response);
@@ -235,8 +218,7 @@ class OrdersController
         }
     }
 
-    public function DeleteOrders($id)
-    {
+    public function DeleteOrders($id) {
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
@@ -254,13 +236,14 @@ class OrdersController
         ));
 
         $response = curl_exec($curl);
-
         curl_close($curl);
         $response = json_decode($response);
+
         if (isset($response->code) &&  $response->code > 0) {
             return true;
         } else {
             return false;
         }
+
     }
 }

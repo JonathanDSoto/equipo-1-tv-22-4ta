@@ -26,7 +26,8 @@
     <div id="scrollbar">
         <div class="container-fluid">
             <ul class="navbar-nav " id="navbar-nav">
-               
+                <div id="two-column-menu">
+                </div>
 
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="<?= BASE_PATH ?>products/" role="button" aria-expanded="false" aria-controls="sidebarApps">

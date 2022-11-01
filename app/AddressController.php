@@ -37,6 +37,12 @@ if (isset($_POST['action'])) {
                 $addressController = new AddressController();
                 $addressController->EditAddress($first_name, $last_name, $street_and_use_number, $postal_code, $city, $province, $phone_number, $is_billing, $address_id, $client_id);
                 break;
+            case 'newRequest':
+                $id = strip_tags($_POST['id']);
+
+                $addressController = new AddressController();
+                $addressController->NewRequest($id);
+                break;
             case 'delete':
                 $id = strip_tags($_POST['id']);
 
@@ -49,12 +55,12 @@ if (isset($_POST['action'])) {
 
 class AddressController {
 
-    public function NewRequest() {
+    public function NewRequest($id) {
 
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-          CURLOPT_URL => 'https://crud.jonathansoto.mx/api/addresses/clients/1',
+          CURLOPT_URL => 'https://crud.jonathansoto.mx/api/addresses/clients/' . $id,
           CURLOPT_RETURNTRANSFER => true,
           CURLOPT_ENCODING => '',
           CURLOPT_MAXREDIRS => 10,
@@ -69,6 +75,7 @@ class AddressController {
 
         $response = curl_exec($curl);
         curl_close($curl);
+        echo $response;
         $response = json_decode($response);
 
         if (isset($response->code) && $response->code > 0) {

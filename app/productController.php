@@ -48,6 +48,7 @@ class ProductsController {
   public function getProducts() {
 
     $curl = curl_init();
+    
     curl_setopt_array($curl, array(
       CURLOPT_URL => 'https://crud.jonathansoto.mx/api/products',
       CURLOPT_RETURNTRANSFER => true,
