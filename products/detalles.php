@@ -1,6 +1,6 @@
 <?php
 include_once "../app/config.php";
-
+include "../layouts/Authentication.templade.php";
 include("../app/ProductController.php");
 include("../app/PresentationController.php");
 

@@ -85,5 +85,12 @@ class AuthController {
             header("location:".BASE_PATH);
         }
     }
+    public function logged_In()
+    {
+        if (isset($_SESSION['token'])) {
+            return false;
+        }
+        return true;
+    }
 
 }
