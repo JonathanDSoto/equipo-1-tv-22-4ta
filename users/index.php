@@ -216,7 +216,7 @@
             var telefono= /^\d{10,14}$/ ;// 7 a 14 numeros.
             aux=true;
             if(!nombre.test(name.value) && !apellido.test(last_name.value) && !correo.test(email.value)
-                && !telefone.test(phone_number.value)){
+                && !telefono.test(phone_number.value)){
                 Swal.fire({ 
                     position: 'center',
                     icon: 'error',

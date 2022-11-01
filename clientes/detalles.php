@@ -184,6 +184,7 @@
                 <form method="POST" action="<?= BASE_PATH?>app/AddressController.php" enctype="multipart/form-data" id="address_form">
                     <div class="modal-body">
 
+                        
                         <span class="input-group-text">Nombre</span>
                         <input class="form-control" id="first_name" name="first_name" type="text">
 
@@ -208,11 +209,17 @@
                         <span class="input-group-text" id="billing">¿Billing?</span>
                         <input class="form-control" id="is_billing" name="is_billing" type="text">
 
-                        <input id="action" id="" name="action" type="hidden" value="create">
+                        <input id="action"  name="action" type="hidden" value="create">
                         <input type="hidden" name="client_id" id="client_id" value="<?= $client->id ?>">
-                        <input type="hidden" name="address_id" id="address_id" value="<?= $address->id ?>">
-                        <input type="hidden" name="super_token" id="super_token" value="<?= $_SESSION['super_token'] ?>">
 
+                        <?php  if(is_null($client->addresses)): ?>
+                            <input type="hidden" name="address_id" id="address_id" value="">
+                        <?php  else: ?>
+                            <?php foreach ($client->addresses as $address):?>   
+                            <input type="hidden" name="address_id" id="address_id" value="<?= $address->id?>">
+                            <?php endforeach; ?>
+                        <?php  endif; ?>
+                        <input type="hidden" name="super_token" id="super_token" value="<?= $_SESSION['super_token'] ?>">
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Cancelar</button>
@@ -273,7 +280,23 @@
             data.append("address_id", address_id.value);
             data.append("action", action.value);
             data.append("super_token", super_token.value);
-
+            var texto= /^[a-zA-ZÀ-ÿ\s]+$/; // Letras y espacios, pueden llevar acentos
+            var telefono= /^\d{10,14}$/ ;// 7 a 14 numeros.
+            var postal= /^\d{5,5}$/ ;// 7 a 14 numeros.
+            ent =true;
+            
+            if(!texto.test(first_name.value) || !texto.test(last_name.value) || !postal.test(postal_code.value)
+                || !texto.test(province.value) || !telefono.test(phone_number.value)){
+                Swal.fire({ 
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Error Campos incorretos',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+                ent=false;
+            }
+            if(ent){
             axios({
                 method: "POST",
                 url: "../app/AddressController.php",
@@ -295,7 +318,7 @@
                     timer: 1500
                     })
                     function greet() {
-                        location.href = "detalles.php?id=" + client_id.value
+                        location.reload();
                     }
                     setTimeout(greet, 1800);
                 } else if (res.data[0].code > 0 && res.data.update) {
@@ -307,7 +330,7 @@
                     timer: 1500
                     })
                     function greet() {
-                        location.href = "index.php"
+                        location.reload();
                     }
                     setTimeout(greet, 1800);
                 } else {
@@ -327,7 +350,7 @@
                 }
                 });
 
-
+            }
         });
 
         function editar_address(target) {
