@@ -1,5 +1,6 @@
 <?php
     include_once "../app/config.php";
+    include "../layouts/Authentication.templade.php";
     include("../app/ClientsController.php");
 
     $clientsController = new ClientsController();
@@ -117,22 +118,22 @@
                     <div class="modal-body">
 
                         <span class="input-group-text">Nombre Completo</span>
-                        <input type="text" id="name" name="name" class="form-control">
+                        <input type="text" id="name" name="name" class="form-control" required  placeholder="...">
 
                         <span class="input-group-text">Correo</span>
-                        <input type="text" id="email" name="email" class="form-control">
+                        <input type="text" id="email" name="email" class="form-control" required  placeholder="...">
 
                         <span class="input-group-text">Contraseña</span>
-                        <input type="password" id="password" name="password" class="form-control">
+                        <input type="password" id="password" name="password" class="form-control"  required placeholder="...">
 
                         <span class="input-group-text">Teléfono</span>
-                        <input type="text" id="phone_number" name="phone_number" class="form-control">
+                        <input type="text" id="phone_number" name="phone_number" class="form-control" required  placeholder="10 Digitos">
 
                         <span class="input-group-text">¿Está subscrito?</span>
-                        <input type="text" id="is_suscribed" name="is_suscribed" class="form-control">
+                        <input type="text" id="is_suscribed" name="is_suscribed" class="form-control" value="1">
 
                         <span class="input-group-text">Nivel de id</span>
-                        <input type="text" id="level_id" name="level_id" class="form-control">
+                        <input type="text" id="level_id" name="level_id" class="form-control" value="1">
                         
                         <input id="action" name="action" type="hidden" value="create">
                         <input type="hidden" name="client_id" id="client_id" value="">
@@ -165,6 +166,11 @@
             let client_id = document.getElementById("client_id")
             let super_token = document.getElementById("super_token")
 
+            var nombres= /^[a-zA-ZÀ-ÿ\s]+$/; // Letras y espacios, pueden llevar acentos
+            var pwd= /^.{4,16}$/; // 4 a 12 digitos.
+            var correo= /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+            var telefono= /^\d{10,14}$/ ;// 7 a 14 numeros.
+
             add_btn.addEventListener('click', () => {
                 label_level_id.style.display = "none"
                 level_id.style.display = "none"
@@ -189,58 +195,73 @@
                 data.append("action", action.value);
                 data.append("super_token", super_token.value);
 
-                axios({
-                    method: "POST",
-                    url: "../app/ClientsController.php",
-                    data,
-                    headers: {
-                    "Content-Type": "multipart/form-data",
-                    },
-                }).then((response)=> {
+                ent = true;
 
-                    let res = JSON.stringify(response)
-                    res = JSON.parse(res)
-
-                    if (res.data[0].code > 0 && res.data.update == false) {
-                        Swal.fire({
-                        position: 'top-center',
-                        icon: 'success',
-                        title: 'Cliente añadido con exito',
+                if(!nombres.test(name.value) || !correo.test(email.value)
+                    || !telefono.test(phone_number.value) || is_suscribed.value != 1 &&  level_id.value != 1){
+                    Swal.fire({ 
+                        position: 'center',
+                        icon: 'error',
+                        title: 'Error Campos incorretos',
                         showConfirmButton: false,
                         timer: 1500
-                        })
-                        function greet() {
-                            location.href = "index.php"
-                        }
-                        setTimeout(greet, 1800);
-                    } else if (res.data[0].code > 0 && res.data.update) {
-                        Swal.fire({
-                        position: 'top-center',
-                        icon: 'success',
-                        title: 'Cliente actualizado con exito',
-                        showConfirmButton: false,
-                        timer: 1500
-                        })
-                        function greet() {
-                            location.href = "index.php"
-                        }
-                        setTimeout(greet, 1800);
-                    } else {
-                        console.log(response.message);
-
-                        Swal.fire({
-                            position: 'center',
-                            icon: 'error',
-                            title: 'Error',
+                    })
+                    ent=false;
+                }
+                if(ent){
+                    axios({
+                        method: "POST",
+                        url: "../app/ClientsController.php",
+                        data,
+                        headers: {
+                        "Content-Type": "multipart/form-data",
+                        },
+                    }).then((response)=> {
+    
+                        let res = JSON.stringify(response)
+                        res = JSON.parse(res)
+    
+                        if (res.data[0].code > 0 && res.data.update == false) {
+                            Swal.fire({
+                            position: 'top-center',
+                            icon: 'success',
+                            title: 'Cliente añadido con exito',
                             showConfirmButton: false,
                             timer: 1500
-                        })
-                    } 
-                    }).catch((error) => {
-                    if (error.response) {
-                        console.log(error.message);
-                    }
-                    });
+                            })
+                            function greet() {
+                                location.href = "index.php"
+                            }
+                            setTimeout(greet, 1800);
+                        } else if (res.data[0].code > 0 && res.data.update) {
+                            Swal.fire({
+                            position: 'top-center',
+                            icon: 'success',
+                            title: 'Cliente actualizado con exito',
+                            showConfirmButton: false,
+                            timer: 1500
+                            })
+                            function greet() {
+                                location.href = "index.php"
+                            }
+                            setTimeout(greet, 1800);
+                        } else {
+                            console.log(response.message);
+    
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'error',
+                                title: 'Error',
+                                showConfirmButton: false,
+                                timer: 1500
+                            })
+                        } 
+                        }).catch((error) => {
+                            if (error.response) {
+                                console.log(error.message);
+                            }
+                        });
+                }
 
             });
 

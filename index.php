@@ -1,6 +1,10 @@
 <?php
     include_once "app/config.php";
-
+    include "app/AuthController.php";
+    $user = new AuthController; 
+    if(!$user->logged_In()){
+        header("Location:".BASE_PATH."products");
+    }
 ?>
 
 <!doctype html>

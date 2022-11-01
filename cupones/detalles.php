@@ -1,5 +1,6 @@
 <?php
     include_once "../app/config.php";
+	include "../layouts/Authentication.templade.php";
 	include("../app/CouponesController.php");
 	
 	$id = $_GET['id'];
@@ -42,8 +43,7 @@
 							<div class="tab-content pt-4 text-muted">
 								<div class="tab-pane active" id="overview-tab" role="tabpanel">
 									<div class="row">
-										<div class="col-xxl-3">
-											<div class="card"></div>
+										
 											<div class="card">
 												<div class="card-body">
 													<h5 class="card-title mb-3">Informacion del cupon</h5>
@@ -142,7 +142,6 @@
 													</div>
 												</div>
 											</div>
-										</div>
 									</div>
 								</div>
 							</div>

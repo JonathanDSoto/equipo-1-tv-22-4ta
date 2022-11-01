@@ -1,5 +1,6 @@
 <?php
     include_once "../app/config.php";
+    include "../layouts/Authentication.templade.php";
     include("../app/CouponesController.php");
 
     $couponesController = new CouponesController();
@@ -21,7 +22,7 @@
     <?php include "../layouts/side.template.php" ?>
     <div class="main-content">
         <div class="page-content">
-            <div class="container-fluid">
+            <div class="container-fluid" >
                 <div class="row">
                     <div class="col-12">
                         <div class="page-title-box d-sm-flex align-items-center justify-content-between">
@@ -30,42 +31,39 @@
                     </div>
                 </div><!-- Buttons with Label -->
                 <button class="btn btn-primary btn-label waves-effect waves-light mb-3" data-bs-target="#añadirCouponModal" data-bs-toggle="modal" type="button" id="add-btn"><i class="bx bx-plus label-icon align-middle fs-16 me-2"></i> Añadir cupon</button>
-                <div class="row">
-                    <div class="col-6">
-                        <div class="row">
-                            <div class="col-4">
-
-                                <?php foreach ($coupones as $coupon): ?>
-                                    <div class="card card-primary">
-                                        <div class="card-body">
-                                            <div class="d-flex align-items-center">
-                                                <div class="flex-shrink-0"><img alt="" class="avatar-md" src="../public/assets/images/cupones.png"></div>
-                                                <div class="flex-grow-1 ms-3">
-                                                    <h5 class="card-title"><?= $coupon->name ?></h5>
-                                                    <h3 class="text-muted"><?= $coupon->code ?></h3>
-                                                    <p class="text-muted"><?= $coupon->start_date ?></p>  
-                                                    <p class="text-muted"><?= $coupon->end_date ?></p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="card-footer">
-                                            <!-- Border Buttons -->
-                                            <div class="hstack flex-wrap gap-2 mb-3 mb-lg-0">
-                                                <a href="detalles.php?id=<?= $coupon->id ?>" class="btn btn-success btn-border">Ver</a>
-
-                                                <button data-coupon='<?= json_encode($coupon) ?>' onclick="editar_cupon(this)" class="btn btn-warning btn-border" data-bs-target="#añadirCouponModal" data-bs-toggle="modal" id="edit-btn">Editar</button> 
-
-                                                <button onclick="eliminar_cupon(<?= $coupon->id ?>)" class="btn btn-danger btn-border">Eliminar</button>
-
-                                                <input type="hidden" id="super_token" value="<?= $_SESSION['super_token']?>">
-                                                <input type="hidden" id="bp" value="<?= BASE_PATH ?>">
+                <div class="container-fluid text-center">
+                    <div class="justify-content-center row row-cols-1 row-cols-lg-5 g-3 g-lg-3" >
+                        
+                            <?php foreach ($coupones as $coupon): ?>
+                                <div class="card card-primary m-1" style="width:600px;">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center">
+                                            <div class="flex-shrink-0"><img alt="" class="avatar-md" src="../public/assets/images/cupones.png"></div>
+                                            <div class="flex-grow-1 ms-3">
+                                                <h5 class="card-title"><?= $coupon->name ?></h5>
+                                                <h3 class="text-muted"><?= $coupon->code ?></h3>
+                                                <p class="text-muted">fecha de lanzamiento</p>
+                                                <p class="text-muted"><?= $coupon->start_date ?></p>  
+                                                <p class="text-muted">fecha de caducidad</p>
+                                                <p class="text-muted"><?= $coupon->end_date ?></p>
                                             </div>
                                         </div>
                                     </div>
-                                <?php endforeach; ?>
+                                    <div class="card-footer">
+                                        <!-- Border Buttons -->
+                                        <div class="hstack flex-wrap justify-content-center gap-2 mb-3 mb-lg-0">
+                                            <a href="detalles.php?id=<?= $coupon->id ?>" class="btn  btn-success btn-border">Ver</a>
 
-                            </div>
-                        </div>
+                                            <button data-coupon='<?= json_encode($coupon) ?>' onclick="editar_cupon(this)" class="btn  btn-warning btn-border" data-bs-target="#añadirCouponModal" data-bs-toggle="modal" id="edit-btn">Editar</button> 
+
+                                            <button onclick="eliminar_cupon(<?= $coupon->id ?>)" class="btn  btn-danger btn-border">Eliminar</button>
+
+                                            <input type="hidden" id="super_token" value="<?= $_SESSION['super_token']?>">
+                                            <input type="hidden" id="bp" value="<?= BASE_PATH ?>">
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
                     </div>
                 </div>
             </div>
@@ -82,35 +80,35 @@
                         <div class="modal-body">
 
                             <span class="input-group-text">Nombre</span>
-                            <input class="form-control" id="name" name="name" type="text">
+                            <input class="form-control" id="name" name="name" type="text" required placeholder="...">
 
                             <span class="input-group-text">Codigo</span>
-                            <input class="form-control" id="code" name="code" type="text">
+                            <input class="form-control" id="code" name="code" type="text" required  placeholder="0000">
 
                             <span class="input-group-text">Porcentaje de descuento</span>
-                            <input class="form-control" id="percentage_discount" name="percentage_discount" type="text">
+                            <input class="form-control" id="percentage_discount" name="percentage_discount" type="text" required placeholder="50">
 
                             <span class="input-group-text">Monto minimo requerido</span>
-                            <input class="form-control" id="min_amount_required" name="min_amount_required" type="text">
+                            <input class="form-control" id="min_amount_required" name="min_amount_required" type="text" required placeholder="100">
 
                             <span class="input-group-text">Monto minimo de productos</span>
-                            <input class="form-control" id="min_product_required" name="min_product_required" type="text">
+                            <input class="form-control" id="min_product_required" name="min_product_required" type="text" required placeholder="2">
 
                             <span class="input-group-text">Fecha de inicio</span>
-                            <input class="form-control" id="start_date" name="start_date" type="date">
+                            <input class="form-control" id="start_date" name="start_date" type="date" required>
 
                             <span class="input-group-text">Fecha de vencimiento</span>
-                            <input class="form-control" id="end_date" name="end_date" type="date">
+                            <input class="form-control" id="end_date" name="end_date" type="date" required>
 
                             <span class="input-group-text">Cantidad maxima de usos</span>
-                            <input class="form-control" id="max_uses" name="max_uses" type="text">
+                            <input class="form-control" id="max_uses" name="max_uses" type="text" required placeholder="10">
                             
                             <!-- Solo en editar -->
                             <span class="input-group-text" id="label_count_uses">Cantidad de usos</span>
                             <input class="form-control" id="count_uses" name="count_uses" type="text">
 
                             <span class="input-group-text">Valido unicamente en la primera compra?</span>
-                            <input class="form-control" id="valid" name="valid" type="text">
+                            <input class="form-control" id="valid" name="valid" type="text" value="1">
 
                             <!-- Solo en editar -->
                             <span class="input-group-text" id="label_status">Estado</span>
@@ -192,60 +190,81 @@
                 data.append("action", action.value);
                 data.append("super_token", super_token.value);
 
-                axios({
-                    method: "POST",
-                    url: "../app/CouponesController.php",
-                    data,
-                    headers: {
-                    "Content-Type": "multipart/form-data",
-                    },
-                }).then((response)=> {
+                var txt= /^[a-zA-Z0-9\s]+$/; // Letras y espacios, pueden llevar acentos
+                var porcentaje= /^.{1,100}$/; // 4 a 12 digitos.
+                ent=true;
 
-                    let res = JSON.stringify(response)
-                    res = JSON.parse(res)
-
-                    if (res.data[0].code > 0 && res.data.update == false) {
-                        Swal.fire({
-                        position: 'top-center',
-                        icon: 'success',
-                        title: 'Cupon añadido con exito',
-                        showConfirmButton: false,
-                        timer: 1500
-                        })
-                        function greet() {
-                            location.href = "index.php"
-                        }
-                        setTimeout(greet, 1800);
-                    } else if (res.data[0].code > 0 && res.data.update) {
-                        Swal.fire({
-                        position: 'top-center',
-                        icon: 'success',
-                        title: 'Cupon actualizado con exito',
-                        showConfirmButton: false,
-                        timer: 1500
-                        })
-                        function greet() {
-                            location.href = "index.php"
-                        }
-                        setTimeout(greet, 1800);
-                    } else {
-                        console.log(response.message);
-
+                if(!txt.test(name.value) 
+                    || !porcentaje.test(percentage_discount.value) 
+                    || !porcentaje.test(min_product_required.value)
+                    || !porcentaje.test(min_amount_required.value) 
+                    || !txt.test(code.value)
+                    || !porcentaje.test(max_uses.value) 
+                    || valid.value != 1){
                         Swal.fire({
                             position: 'center',
                             icon: 'error',
-                            title: 'Error',
+                            title: 'Error en campos',
                             showConfirmButton: false,
                             timer: 1500
                         })
-                    } 
-                    }).catch((error) => {
-                    if (error.response) {
-                        console.log(error.message);
-                    }
-                    });
+                        ent=false;
+                }
+                if(ent){
 
-
+                    axios({
+                        method: "POST",
+                        url: "../app/CouponesController.php",
+                        data,
+                        headers: {
+                        "Content-Type": "multipart/form-data",
+                        },
+                    }).then((response)=> {
+    
+                        let res = JSON.stringify(response)
+                        res = JSON.parse(res)
+    
+                        if (res.data[0].code > 0 && res.data.update == false) {
+                            Swal.fire({
+                            position: 'top-center',
+                            icon: 'success',
+                            title: 'Cupon añadido con exito',
+                            showConfirmButton: false,
+                            timer: 1500
+                            })
+                            function greet() {
+                                location.href = "index.php"
+                            }
+                            setTimeout(greet, 1800);
+                        } else if (res.data[0].code > 0 && res.data.update) {
+                            Swal.fire({
+                            position: 'top-center',
+                            icon: 'success',
+                            title: 'Cupon actualizado con exito',
+                            showConfirmButton: false,
+                            timer: 1500
+                            })
+                            function greet() {
+                                location.href = "index.php"
+                            }
+                            setTimeout(greet, 1800);
+                        } else {
+                            console.log(response.message);
+    
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'error',
+                                title: 'Error',
+                                showConfirmButton: false,
+                                timer: 1500
+                            })
+                        } 
+                        }).catch((error) => {
+                        if (error.response) {
+                            console.log(error.message);
+                        }
+                        });
+                }
             });
 
             function editar_cupon(target) {
