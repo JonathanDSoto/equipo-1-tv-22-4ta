@@ -1,5 +1,6 @@
 <?php
 include_once "../app/config.php";
+include "../layouts/Authentication.templade.php";
 ?>
 <!DOCTYPE html>
 <html>
