@@ -2,10 +2,14 @@
 include_once "config.php";
 
 if (isset($_POST['action'])) {
-    if (isset($_POST['super_token']) && $_POST['super_token'] == $_SESSION['super_token']) {
+    if (
+        isset($_POST['super_token']) ||
+        isset($_POST['sprtoken']) &&
+        $_POST['super_token'] == $_SESSION['super_token'] ||
+        $_POST['sprtoken'] == $_SESSION['super_token']
+    ) {
         switch ($_POST['action']) {
             case 'create':
-
                 $folio = strip_tags($_POST['folio']);
                 $total = strip_tags($_POST['total']);
                 $is_paid = strip_tags($_POST['is_paid']);
@@ -20,12 +24,6 @@ if (isset($_POST['action'])) {
                 $ordersController = new OrdersController();
                 $ordersController->CreateOrders($folio, $total, $is_paid, $client_id, $address_id, $order_status_id, $payment_type_id, $coupon_id, $presentation, $quantity);
                 break;
-            case 'delete': 
-                $id = strip_tags($_POST['id']);
-
-                $ordersController = new OrdersController();
-                $ordersController->DeleteOrders($id);
-                break;
             case 'between': 
                 $fate = strip_tags($_POST['fate']);
                 $fate2 = strip_tags($_POST['fate2']);
@@ -36,19 +34,22 @@ if (isset($_POST['action'])) {
                 );
                 break;
             case 'update': 
-                $name = strip_tags($_POST['name']);
-                $description = strip_tags($_POST['description']);
-                $id = strip_tags($_POST['id']);
+                $id = strip_tags($_POST['id_order']);
+                $order_status_id = strip_tags($_POST['order_status']);
+
                 $ordersController = new OrdersController();
-                $ordersController->EditCreate(
-                    $id,
-                    $order_status_id
-                );
+                $ordersController->EditCreate($id, $order_status_id);
                 break;
             case 'specifict': 
                 $id = strip_tags($_POST['id']);
                 $ordersController = new OrdersController();
                 $ordersController->GetSpecifict($id);
+                break;
+            case 'delete': 
+                $id = strip_tags($_POST['id']);
+
+                $ordersController = new OrdersController();
+                $ordersController->DeleteOrders($id);
                 break;
         }
     }
@@ -167,9 +168,7 @@ class OrdersController {
         ));
 
         $response = curl_exec($curl);
-
         curl_close($curl);
-        echo $response;
         $response = json_decode($response);
 
         if (isset($response->code) &&  $response->code > 0) {
@@ -186,7 +185,9 @@ class OrdersController {
             $response = json_encode($response);
             echo $response;
         }
+
     }
+
     public function EditCreate($id, $order_status_id) {
         
         $curl = curl_init();
@@ -208,35 +209,47 @@ class OrdersController {
             ));
             
 
-        $response = curl_exec($curl);
-        curl_close($curl);
-        echo $response;
-        $response = json_decode($response);
-        if (isset($response->code) &&  $response->code > 0) {
-
-            header("location:" . BASE_PATH . "index");
-        }
+            $response = curl_exec($curl);
+            curl_close($curl);
+            $response = json_decode($response);
+    
+            if (isset($response->code) &&  $response->code > 0) {
+                $response = json_encode([
+                    $response,
+                    "update" => true
+                ]);
+                echo $response;
+            } else {
+    
+                $response = [
+                    "message" => "Error al actualizar la orden",
+                ];
+                $response = json_encode($response);
+                echo $response;
+            }
     }
 
     public function DeleteOrders($id) {
+
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://crud.jonathansoto.mx/api/orders/' . $id,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => '',
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => 'DELETE',
-            CURLOPT_HTTPHEADER => array(
-                'Authorization: Bearer ' . $_SESSION['token'],
-            ),
+          CURLOPT_URL => 'https://crud.jonathansoto.mx/api/orders/' . $id,
+          CURLOPT_RETURNTRANSFER => true,
+          CURLOPT_ENCODING => '',
+          CURLOPT_MAXREDIRS => 10,
+          CURLOPT_TIMEOUT => 0,
+          CURLOPT_FOLLOWLOCATION => true,
+          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+          CURLOPT_CUSTOMREQUEST => 'DELETE',
+          CURLOPT_HTTPHEADER => array(
+            'Authorization: Bearer ' . $_SESSION['token'],
+          ),
         ));
-
-        $response = curl_exec($curl);
+        
+        $response = curl_exec($curl);        
         curl_close($curl);
+        echo $response;
         $response = json_decode($response);
 
         if (isset($response->code) &&  $response->code > 0) {

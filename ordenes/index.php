@@ -131,11 +131,14 @@
 																	<a class="text-primary d-inline-block" href="detalles.php?id=<?= $order->id ?>"><i class="ri-eye-fill fs-16"></i></a>
 																</li>
 																<li class="list-inline-item edit" data-bs-placement="top" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Editar">
-																	<a data-order='<?= json_encode($order) ?>' onclick="editar_orden(this)" class="text-primary d-inline-block edit-item-btn" data-bs-toggle="modal" href="#añadirClientModal" id="edit-btn"><i class="ri-pencil-fill fs-16"></i></a>
+																	<a data-order='<?= json_encode($order) ?>' onclick="editar_orden(this)" class="text-primary d-inline-block edit-item-btn" id="edit-btn">
+																		<i class="ri-pencil-fill fs-16"></i>
+																	</a>
 																</li>
 																<li class="list-inline-item" data-bs-placement="top" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Eliminar orden">
 																	<a class="text-danger d-inline-block remove-item-btn" onclick="eliminar_orden(<?= $order->id ?>)"><i class="ri-delete-bin-5-fill fs-16"></i></a>
 																	
+																	<input type="hidden" id="id_orden" value="">
 																	<input type="hidden" id="super_token" value="<?= $_SESSION['super_token']?>">
                                                                     <input type="hidden" id="bp" value="<?= BASE_PATH ?>">
 																</li>
@@ -259,6 +262,40 @@
 										</div>
 									</div>
 								</div>
+								<div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade" id="editModal" tabindex="-1">
+									<div class="modal-dialog modal-dialog-centered">
+										<div class="modal-content">
+											<div class="modal-header bg-light p-3">
+												<h5 class="modal-title" id="exampleModalLabel"></h5><button aria-label="Close" class="btn-close" data-bs-dismiss="modal" id="close-modal" type="button"></button>
+											</div>
+											<form method="POST" action="<?= BASE_PATH?>app/OrdersController.php" id="edit_order_form">
+												<div class="modal-body">
+													<input id="id-field" type="hidden">
+													<div class="mb-3">
+														<label class="form-label" for="customername-field">Estado de orden</label> 
+														<select class="form-control" id="order_status" name="order_status">
+															<option value="1">Pendiente de pago</option>
+															<option value="2">Pagada</option>
+															<option value="3">Enviada</option>
+															<option value="4">Abandonada</option>
+															<option value="5">Pendiente de enviar</option>
+															<option value="6">Cancelada</option>
+														</select>
+													</div>
+
+													<input type="hidden" id="super_token" name="super_token" value="<?= $_SESSION['super_token'] ?>">
+
+												</div>
+												<div class="modal-footer">
+													<div class="hstack gap-2 justify-content-end">
+														<button class="btn btn-light" data-bs-dismiss="modal" type="button">Close</button> 
+														<button class="btn btn-success" id="add-btn" type="submit">Add Order</button> 
+													</div>
+												</div>
+											</form>
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -276,7 +313,9 @@
 		let add_btn = document.getElementById("add-btn")
 		let edit_btn = document.getElementById("edit-btn")
 		let client_select = document.getElementById("client_select")
-		
+
+		let id_orden = document.getElementById("id_orden")
+		let order_status = document.getElementById("order_status")
 		let folio = document.getElementById("folio")
 		let total = document.getElementById("total")
 		let is_paid = document.getElementById("is_paid")
@@ -290,15 +329,9 @@
 		let action = document.getElementById("action")
 		let super_token = document.getElementById("super_token")
 
-/* 		add_btn.addEventListener('click', () => {
-			label_level_id.style.display = "none"
-			level_id.style.display = "none"
+		add_btn.addEventListener('click', () => {
+			orders_form.reset();
 		});
-
-		edit_btn.addEventListener('click', () => {
-			label_level_id.style.display = "block"
-			level_id.style.display = "block"
-		}); */
 
 		orders_form.addEventListener("submit", (e) => {
             e.preventDefault();
@@ -340,7 +373,7 @@
 					Swal.fire({
 					position: 'top-center',
 					icon: 'success',
-					title: 'Orden añadida con exito',
+					title: 'Orden creada con exito',
 					showConfirmButton: false,
 					timer: 1500
 					})
@@ -348,11 +381,52 @@
 						location.href = "index.php"
 					}
 					setTimeout(greet, 1800);
-				} else if (res.data[0].code > 0 && res.data.update) {
+				} else {
+					console.log(response.message);
+
+					Swal.fire({
+						position: 'center',
+						icon: 'error',
+						title: 'Error',
+						showConfirmButton: false,
+						timer: 1500
+					})
+				} 
+				}).catch((error) => {
+				if (error.response) {
+					console.log(error.message);
+				}
+				});
+
+
+        });
+
+		edit_order_form.addEventListener("submit", (e) => {
+            e.preventDefault();
+
+            const data = new FormData();
+            data.append("id_order", id_orden.value);
+            data.append("order_status", order_status.value);
+            data.append("action", 'update');
+            data.append("super_token", super_token.value);
+
+            axios({
+                method: "POST",
+                url: "../app/OrdersController.php",
+                data,
+                headers: {
+                "Content-Type": "multipart/form-data",
+                },
+            }).then((response)=> {
+
+				let res = JSON.stringify(response)
+				res = JSON.parse(res)
+
+				if (res.data[0].code > 0 && res.data.update == true) {
 					Swal.fire({
 					position: 'top-center',
 					icon: 'success',
-					title: 'Orden actualizada con exito',
+					title: 'Orden Actualizada con exito',
 					showConfirmButton: false,
 					timer: 1500
 					})
@@ -382,16 +456,14 @@
 
 		function editar_orden(target) {
 
-			let client = JSON.parse( target.dataset.client )
+			let order = JSON.parse( target.dataset.order )
+			
+			order_status.text = order.order_status.name
+			order_status.value = order.order_status.id
 
-			name.value = client.name
-			email.value = client.email 
-			password.value = ""
-			phone_number.value = client.phone_number
-			is_suscribed.value = client.is_suscribed
-			level_id.value = client.level_id
-			client_id.value = client.id
-			action.value = 'update'
+			id_orden.value = order.id
+
+			$('#editModal').modal('show');
 
 		}
 
@@ -441,6 +513,7 @@
 
 		function obtener_usuario() {
 			let selectValue = document.getElementById('client_select')
+			id_cliente.value = selectValue.value
 			addresses_select.innerHTML = ""
 
 			const data = new FormData();
