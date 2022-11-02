@@ -96,7 +96,6 @@ class ClientsController {
 
         $response = curl_exec($curl);
         curl_close($curl);
-        echo $response;
         $response = json_decode($response);
 
         if (isset($response->code) && $response->code > 0) {
