@@ -239,13 +239,13 @@
                     <div class="modal-body">
 
                         <span class="input-group-text">Nombre</span>
-                        <input type="text" id="name" name="name" class="form-control">
+                        <input type="text" id="name" name="name" class="form-control" required placeholder="...">
 
                         <span class="input-group-text">Descripción</span>
-                        <input type="text" id="description" name="description" class="form-control">
+                        <input type="text" id="description" name="description" class="form-control" required placeholder="...">
 
                         <span class="input-group-text">Id Categoría</span>
-                        <input type="text" id="category_id" name="category_id" class="form-control">
+                        <input type="text" id="category_id" name="category_id" class="form-control"  placeholder="Auto incrementando">
 
                     </div>
 
@@ -274,10 +274,10 @@
                     <div class="modal-body">
 
                         <span class="input-group-text">Nombre</span>
-                        <input type="text" id="brand_name" name="name" class="form-control">
+                        <input type="text" id="brand_name" name="name" class="form-control" required placeholder="...">
 
                         <span class="input-group-text">Descripción</span>
-                        <input type="text" id="brand_description" name="description" class="form-control">
+                        <input type="text" id="brand_description" name="description" class="form-control" required placeholder="...">
 
                     </div>
 
@@ -306,10 +306,10 @@
                     <div class="modal-body">
 
                         <span class="input-group-text">Nombre</span>
-                        <input type="text" id="tag_name" name="name" class="form-control">
+                        <input type="text" id="tag_name" name="name" class="form-control" required placeholder="...">
 
                         <span class="input-group-text">Descripción</span>
-                        <input type="text" id="tag_description" name="description" class="form-control">
+                        <input type="text" id="tag_description" name="description" class="form-control" required placeholder="...">
 
                     </div>
 
@@ -367,7 +367,7 @@
         add_tag.addEventListener("click", () => {
             tags_form.reset();
         })
-
+        var text= /^[a-zA-ZÀ-ÿ\s]+$/; 
         // C A T E G O R I E S
         categories_form.addEventListener("submit", (e) => {
             e.preventDefault();
@@ -379,55 +379,68 @@
             data.append("action", action.value);
             data.append("id", id.value);
             data.append("super_token", super_token.value);
+            ent=true;
 
-            axios({
-                method: "POST",
-                url: "../app/CategorieController.php",
-                data,
-                headers: {
-                "Content-Type": "multipart/form-data",
-                },
-            }).then((response)=> {
-
-                if (response.data.code > 0) {
+            if(!text.test(name.value) || !text.test(description.value)){
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Error en campos , favor de revisar bien',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+                ent=false;
+            }   
+            if(ent){
+                axios({
+                    method: "POST",
+                    url: "../app/CategorieController.php",
+                    data,
+                    headers: {
+                    "Content-Type": "multipart/form-data",
+                    },
+                }).then((response)=> {
+    
+                    if (response.data.code > 0) {
+                            Swal.fire({
+                            position: 'top-center',
+                            icon: 'success',
+                            title: 'Categoría creada con éxito',
+                            showConfirmButton: false,
+                            timer: 1500
+                            })
+                            function greet() {
+                                location.reload();
+                            }
+                            setTimeout(greet, 1800);
+                    } else if (response.data) {
                         Swal.fire({
-                        position: 'top-center',
-                        icon: 'success',
-                        title: 'Categoría creada con éxito',
-                        showConfirmButton: false,
-                        timer: 1500
+                            position: 'top-center',
+                            icon: 'success',
+                            title: 'Categoría actualizada con éxito',
+                            showConfirmButton: false,
+                            timer: 1500
+                            })
+                            function greet() {
+                                location.reload();
+                            }
+                            setTimeout(greet, 1800);                
+                    } else {
+                        console.log(response.message);
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'error',
+                            title: 'Error',
+                            showConfirmButton: false,
+                            timer: 1500
                         })
-                        function greet() {
-                            location.reload();
-                        }
-                        setTimeout(greet, 1800);
-                } else if (response.data) {
-                    Swal.fire({
-                        position: 'top-center',
-                        icon: 'success',
-                        title: 'Categoría actualizada con éxito',
-                        showConfirmButton: false,
-                        timer: 1500
-                        })
-                        function greet() {
-                            location.reload();
-                        }
-                        setTimeout(greet, 1800);                
-                } else {
-                    console.log(response.message);
-                    Swal.fire({
-                        position: 'center',
-                        icon: 'error',
-                        title: 'Error',
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
-                } 
-            }).catch((error) => {
-                if (error.response) {
-                    console.log(error.message);
-                }
-            });
+                    } 
+                }).catch((error) => {
+                    if (error.response) {
+                        console.log(error.message);
+                    }
+                });
+            }
 
 
         });
@@ -546,46 +559,57 @@
                 data.append("brand_id", brand_id.value);
                 data.append("action", action.value);
                 data.append("super_token", super_token.value);
-    
-                axios({
-                    method: "POST",
-                    url: "../app/BrandController.php",
-                    data,
-                    headers: {
-                    "Content-Type": "multipart/form-data",
-                    },
-                }).then((response)=> {
-    
-                    if (response.data.code > 0) {
+                ent =true;
+                if(!text.test(brand_name.value) || !text.test(brand_description.value)){
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: 'Error en campos , favor de revisar bien',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                    ent=false;
+                }   
+                if(ent){
+
+                    axios({
+                        method: "POST",
+                        url: "../app/BrandController.php",
+                        data,
+                        headers: {
+                        "Content-Type": "multipart/form-data",
+                        },
+                    }).then((response)=> {
+        
+                        if (response.data.code > 0) {
+                                Swal.fire({
+                                position: 'top-center',
+                                icon: 'success',
+                                title: 'Marca creada con éxito',
+                                showConfirmButton: false,
+                                timer: 1500
+                                })
+                                function greet() {
+                                    location.reload();
+                                }
+                                setTimeout(greet, 1800);
+                        } else {
+                            console.log(response.message);
                             Swal.fire({
-                            position: 'top-center',
-                            icon: 'success',
-                            title: 'Marca creada con éxito',
-                            showConfirmButton: false,
-                            timer: 1500
+                                position: 'center',
+                                icon: 'error',
+                                title: 'Error',
+                                showConfirmButton: false,
+                                timer: 1500
                             })
-                            function greet() {
-                                location.reload();
-                            }
-                            setTimeout(greet, 1800);
-                    } else {
-                        console.log(response.message);
-                        Swal.fire({
-                            position: 'center',
-                            icon: 'error',
-                            title: 'Error',
-                            showConfirmButton: false,
-                            timer: 1500
-                        })
-                    } 
-                }).catch((error) => {
-                    if (error.response) {
-                        console.log(error.message);
-                    }
-                });
+                        } 
+                    }).catch((error) => {
+                        if (error.response) {
+                            console.log(error.message);
+                        }
+                    });
+                }
             }
-
-
 
         });
 
@@ -654,60 +678,71 @@
             data.append("tag_id", tag_id.value);
             data.append("action", action.value);
             data.append("super_token", super_token.value);
-
-            axios({
-                method: "POST",
-                url: "../app/TagsController.php",
-                data,
-                headers: {
-                "Content-Type": "multipart/form-data",
-                },
-            }).then((response)=> {
-
-                let res = JSON.stringify(response)
-                res = JSON.parse(res)
-
-                if (res.data[0].code > 0 && res.data.update == false) {
-                    Swal.fire({
-                    position: 'top-center',
-                    icon: 'success',
-                    title: 'Etiqueta añadida con exito',
+            ent =true;
+            if(!text.test(tag_name.value) || !text.test(tag_description.value)){
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Error en campos , favor de revisar bien',
                     showConfirmButton: false,
                     timer: 1500
-                    })
-                    function greet() {
-                        location.reload();
-                    }
-                    setTimeout(greet, 1800);
-                } else if (res.data[0].code > 0 && res.data.update) {
-                    Swal.fire({
-                    position: 'top-center',
-                    icon: 'success',
-                    title: 'Etiqueta actualizada con exito',
-                    showConfirmButton: false,
-                    timer: 1500
-                    })
-                    function greet() {
-                        location.reload();
-                    }
-                    setTimeout(greet, 1800);
-                } else {
-                    console.log(response.message);
-
-                    Swal.fire({
-                        position: 'center',
-                        icon: 'error',
-                        title: 'Error',
+                })
+                ent=false;
+            }   
+            if(ent){
+                axios({
+                    method: "POST",
+                    url: "../app/TagsController.php",
+                    data,
+                    headers: {
+                    "Content-Type": "multipart/form-data",
+                    },
+                }).then((response)=> {
+    
+                    let res = JSON.stringify(response)
+                    res = JSON.parse(res)
+    
+                    if (res.data[0].code > 0 && res.data.update == false) {
+                        Swal.fire({
+                        position: 'top-center',
+                        icon: 'success',
+                        title: 'Etiqueta añadida con exito',
                         showConfirmButton: false,
                         timer: 1500
-                    })
-                } 
-            }).catch((error) => {
-                if (error.response) {
-                    console.log(error.message);
-                }
-            });
-        
+                        })
+                        function greet() {
+                            location.reload();
+                        }
+                        setTimeout(greet, 1800);
+                    } else if (res.data[0].code > 0 && res.data.update) {
+                        Swal.fire({
+                        position: 'top-center',
+                        icon: 'success',
+                        title: 'Etiqueta actualizada con exito',
+                        showConfirmButton: false,
+                        timer: 1500
+                        })
+                        function greet() {
+                            location.reload();
+                        }
+                        setTimeout(greet, 1800);
+                    } else {
+                        console.log(response.message);
+    
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'error',
+                            title: 'Error',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                    } 
+                }).catch((error) => {
+                    if (error.response) {
+                        console.log(error.message);
+                    }
+                });
+            }
         });
 
         function editar_tag(target) {
