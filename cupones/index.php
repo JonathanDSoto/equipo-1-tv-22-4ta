@@ -52,7 +52,7 @@
                                     <div class="card-footer">
                                         <!-- Border Buttons -->
                                         <div class="hstack flex-wrap justify-content-center gap-2 mb-3 mb-lg-0">
-                                            <a href="detalles.php?id=<?= $coupon->id ?>" class="btn  btn-success btn-border">Ver</a>
+                                            <a href="<?= BASE_PATH ?>cupon/<?= $coupon->id ?>" class="btn  btn-success btn-border">Ver</a>
 
                                             <button data-coupon='<?= json_encode($coupon) ?>' onclick="editar_cupon(this)" class="btn  btn-warning btn-border" data-bs-target="#añadirCouponModal" data-bs-toggle="modal" id="edit-btn">Editar</button> 
 
@@ -76,7 +76,7 @@
                     <div class="modal-header">
                         <h5 class="modal-title" id="añadirModalLabel">Introduzca los datos</h5><button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
                     </div>
-                    <form method="POST" action="<?= BASE_PATH?>app/CouponesController.php" enctype="multipart/form-data" id="coupon_form">
+                    <form method="POST" action="<?= BASE_PATH?>cuponc" enctype="multipart/form-data" id="coupon_form">
                         <div class="modal-body">
 
                             <span class="input-group-text">Nombre</span>
@@ -233,7 +233,7 @@
                             timer: 1500
                             })
                             function greet() {
-                                location.href = "index.php"
+                                location.reload();
                             }
                             setTimeout(greet, 1800);
                         } else if (res.data[0].code > 0 && res.data.update) {
@@ -245,7 +245,7 @@
                             timer: 1500
                             })
                             function greet() {
-                                location.href = "index.php"
+                                location.reload();
                             }
                             setTimeout(greet, 1800);
                         } else {
@@ -314,7 +314,7 @@
                             swal("Poof! Your imaginary file has been deleted!", {
                                 icon: "success",
                             });
-                            location.href = "index.php"
+                            location.reload();
                         } else {
                             swal("Error", {
                                 icon: "error",

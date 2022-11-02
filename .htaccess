@@ -7,15 +7,19 @@ RewriteRule ^auth$ app/AuthController.php
 RewriteRule ^prod$ app/ProductController.php
 RewriteRule ^brand$ app/BrandController.php
 RewriteRule ^conf$ app/config.php
+RewriteRule ^cuponc$ app/CuponesController.php
 RewriteRule ^tagc$ app/TagsController.php
 RewriteRule ^catc$ app/CategorieController.php
-RewriteRule ^product/$ products/index.php
+RewriteRule ^addressc$ app/AddressController.php
+RewriteRule ^clientesc$ app/ClientsController.php
 RewriteRule ^users/$ app/UsersController.php
+RewriteRule ^product/$ products/index.php
 RewriteRule ^cupones/$ cupones/index.php
 RewriteRule ^ordenes/$ ordenes/index.php
 RewriteRule ^usuarios/$ users/index.php
 RewriteRule ^clientes/$ clientes/index.php
 RewriteRule ^catalogos/$ catalogos/index.php
+
 
 #DETALLES
 RewriteRule ^categoria/([a-zA-Z0-9-&]*)$ catalogos/detalles.php?id=$1?&type=categoria
@@ -24,3 +28,8 @@ RewriteRule ^tag/([a-zA-Z0-9-&]*)$ catalogos/detalles.php?id=$1?&type=etiqueta
 RewriteRule ^prod/([a-zA-Z0-9-]*)$ products/detalles.php?slug=$1
 RewriteRule ^user/([a-zA-Z0-9-]*)$ users/detalles.php?id=$1
 RewriteRule ^presentacion/([a-zA-Z0-9-]*)$ products/detallesPresentaciones.php?id=$1
+RewriteRule ^cliente/([a-zA-Z0-9-]*)$ clientes/detalles.php?id=$1
+RewriteRule ^orden/([a-zA-Z0-9-]*)$ ordenes/detalles.php?id=$1
+RewriteRule ^clientedireccion/([a-zA-Z0-9-]*)$ clientes/detallesDirecciones.php?id=$1
+RewriteRule ^perfil/([a-zA-Z0-9-]*)$ users/perfil.php?id=$1
+RewriteRule ^cupon/([a-zA-Z0-9-]*)$ cupones/detalles.php?id=$1

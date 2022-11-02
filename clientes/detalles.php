@@ -144,7 +144,7 @@
                                                                         <td><?= $address->city ?></td>
                                                                         <td><?= $address->province ?></td>
                                                                         <td>
-                                                                            <a href="<?= BASE_PATH ?>clientes/detallesDirecciones.php?id=<?= $address->id ?>" class="btn btn-info">Ver</a>
+                                                                            <a href="<?= BASE_PATH ?>clientedireccion/<?= $address->id ?>" class="btn btn-info">Ver</a>
                                                                             
                                                                             <button data-address='<?= json_encode($address) ?>' onclick="editar_address(this)" class="btn btn-warning btn-border" data-bs-target="#añadirAddressModal" data-bs-toggle="modal" id="edit-btn">Editar</button> 
 
@@ -182,7 +182,7 @@
                 <div class="modal-header">
                     <h5 class="modal-title" id="añadirAddressModal">Introduzca los datos</h5><button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
                 </div>
-                <form method="POST" action="<?= BASE_PATH?>app/AddressController.php" enctype="multipart/form-data" id="address_form">
+                <form method="POST" action="<?= BASE_PATH?>addressc" enctype="multipart/form-data" id="address_form">
                     <div class="modal-body">
 
                         
@@ -397,7 +397,7 @@
                         swal("Poof! Your imaginary file has been deleted!", {
                             icon: "success",
                         });
-                        location.href = "detalles.php?id=" + client_id.value
+                        location.reload();
                     } else {
                         swal("Error", {
                             icon: "error",

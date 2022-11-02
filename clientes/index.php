@@ -27,12 +27,6 @@
                         <div class="col-12">
                             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
                                 <h4 class="mb-sm-0">Clientes</h4>
-                                <div class="page-title-right">
-                                    <ol class="breadcrumb m-0">
-                                        <li class="breadcrumb-item"><a href="">Home</a></li>
-                                        <li class="breadcrumb-item active">Clientes</li>
-                                    </ol>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -74,7 +68,7 @@
                                                             <td>
                                                                 <div class="d-flex gap-3">
                                                                     <div class="view">
-                                                                        <a href="detalles.php?id=<?= $client->id ?>" class="btn btn-info">Ver</a>
+                                                                        <a href="<?= BASE_PATH ?>cliente/<?= $client->id ?>" class="btn btn-info">Ver</a>
                                                                     </div>
                                                                     <div class="edit">
                                                                         <button data-client='<?= json_encode($client) ?>' onclick="editar_cliente(this)"class="btn btn-warning " data-bs-toggle="modal" data-bs-target="#añadirClientModal" id="edit-btn">Edit</button>
@@ -114,7 +108,7 @@
                     <h5 class="modal-title" id="añadirModalLabel"> Datos del cliente </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form method="POST" action="<?= BASE_PATH?>app/ClientsController.php" enctype="multipart/form-data" id="clients_form">
+                <form method="POST" action="<?= BASE_PATH?>clientesc" enctype="multipart/form-data" id="clients_form">
                     <div class="modal-body">
 
                         <span class="input-group-text">Nombre Completo</span>
@@ -230,7 +224,7 @@
                             timer: 1500
                             })
                             function greet() {
-                                location.href = "index.php"
+                                location.reload();
                             }
                             setTimeout(greet, 1800);
                         } else if (res.data[0].code > 0 && res.data.update) {
@@ -242,7 +236,7 @@
                             timer: 1500
                             })
                             function greet() {
-                                location.href = "index.php"
+                                location.reload();
                             }
                             setTimeout(greet, 1800);
                         } else {
@@ -307,7 +301,7 @@
                             swal("Poof! Your imaginary file has been deleted!", {
                                 icon: "success",
                             });
-                            location.href = "index.php"
+                            location.reload();
                         } else {
                             swal("Error", {
                                 icon: "error",
