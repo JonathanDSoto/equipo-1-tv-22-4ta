@@ -1,23 +1,24 @@
 <?php
-    include_once "../app/config.php";
-    include "../layouts/Authentication.templade.php";
-    include "../app/OrdersController.php";
-    include "../app/ClientsController.php";
+include_once "../app/config.php";
+include "../layouts/Authentication.templade.php";
+include "../app/OrdersController.php";
+include "../app/ClientsController.php";
 
-    $id = $_GET['id'];
+$id = $_GET['id'];
 
-    $ordersController = new OrdersController();
-    $order = $ordersController->GetSpecifict($id);
+$ordersController = new OrdersController();
+$order = $ordersController->GetSpecifict($id);
 
-    $idClient = $order->client_id;
+$idClient = $order->client_id;
 
-    $clientsController = new ClientsController();
-    $client = $clientsController->SpecifictClient($idClient);
+$clientsController = new ClientsController();
+$client = $clientsController->SpecifictClient($idClient);
 
 ?>
 
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Detalles de Orden</title>
     <meta charset="UTF-8">
@@ -26,6 +27,7 @@
     <!-- Sweet Alert css-->
     <link href="../public/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css">
 </head>
+
 <body>
     <!-- NAVAR -->
     <?php include "../layouts/nav.template.php" ?>
@@ -66,12 +68,12 @@
                                             <th scope="col">Descripción</th>
                                             <th scope="col">Codigo</th>
                                             <th scope="col">Peso en gramos</th>
-                                            <th scope="col">Estatus</th>                             
+                                            <th scope="col">Estatus</th>
                                             <th scope="col">Accion</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php foreach ($order->presentations as $p): ?>
+                                        <?php foreach ($order->presentations as $p) : ?>
                                             <tr>
                                                 <!-- <td><img class="rounded-2" style="width:130px; height:70px;" src="<?= $p->cover ?>" alt="Card image cap"></td> -->
                                                 <td><?= $p->description ?></td>
@@ -84,7 +86,7 @@
                                             </tr>
                                         <?php endforeach; ?>
                                     </tbody>
-                              
+
                                     <table class="table table-borderless mb-0">
                                         <tbody>
                                             <tr>
@@ -121,9 +123,9 @@
                                     <div class="d-flex align-items-center">
                                         <div class="flex-grow-1 ms-3">
                                             <h6 class="fs-14 mb-1"></h6>
-                                            <?php if(!is_null($client) ): ?>
+                                            <?php if (!is_null($client)) : ?>
                                                 <p class="text-muted mb-0">Nombre: <?= $client->name ?></p>
-                                            <?php else: ?>
+                                            <?php else : ?>
                                                 <p class="text-muted mb-0">Nombre:</p>
                                             <?php endif; ?>
                                         </div>
@@ -133,9 +135,9 @@
                                     <div class="d-flex align-items-center">
                                         <div class="flex-grow-1 ms-3">
                                             <h6 class="fs-14 mb-1"></h6>
-                                            <?php if(!is_null($client) ): ?>
+                                            <?php if (!is_null($client)) : ?>
                                                 <p class="text-muted mb-0">Correo: <?= $client->email ?></p>
-                                            <?php else: ?>
+                                            <?php else : ?>
                                                 <p class="text-muted mb-0">Correo:</p>
                                             <?php endif; ?>
                                         </div>
@@ -145,20 +147,20 @@
                                     <div class="d-flex align-items-center">
                                         <div class="flex-grow-1 ms-3">
                                             <h6 class="fs-14 mb-1"></h6>
-                                            <?php if(!is_null($client) ): ?>
+                                            <?php if (!is_null($client)) : ?>
                                                 <p class="text-muted mb-0">Teléfono: <?= $client->phone_number ?></p>
-                                            <?php else: ?>
+                                            <?php else : ?>
                                                 <p class="text-muted mb-0">Teléfono:</p>
                                             <?php endif; ?>
                                         </div>
                                     </div>
                                 </li>
-                                <?php if(!is_null($client) ): ?>
+                                <?php if (!is_null($client)) : ?>
                                     <a href="<?= BASE_PATH ?>cliente/<?= $client->id ?>" class="btn btn-success col-3">
-                                    <i class="ri-download-2-fill align-middle me-1"></i>Ver Perfil</a>
-                                <?php else: ?>
+                                        <i class="ri-download-2-fill align-middle me-1"></i>Ver Perfil</a>
+                                <?php else : ?>
                                     <a href="#" class="btn btn-success col-3">
-                                    <i class="ri-download-2-fill align-middle me-1"></i>Ver Perfil</a>
+                                        <i class="ri-download-2-fill align-middle me-1"></i>Ver Perfil</a>
                                 <?php endif; ?>
                             </ul>
                         </div>
@@ -176,18 +178,16 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach ($order->address as $a): ?>
-                                <tr>
-                                    <td><?= $a->street_and_use_number ?></td>
-                                    <td><?= $a->postal_code ?></td>
-                                    <td><?= $a->city ?></td>
-                                    <td><?= $a->province ?></td>
-                                    <td><?= $a->phone_number ?></td>
-                                    <td>
-                                        <a href="<?= BASE_PATH ?>/<?= $a->id ?>" class="btn btn-info">Ver</a>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
+                            <tr>
+                                <td><?= $order->address->street_and_use_number ?></td>
+                                <td><?= $order->address->postal_code ?></td>
+                                <td><?= $order->address->city ?></td>
+                                <td><?= $order->address->province ?></td>
+                                <td><?= $order->address->phone_number ?></td>
+                                <td>
+                                    <a href="<?= BASE_PATH ?>/<?= $order->address->id ?>" class="btn btn-info">Ver</a>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>

@@ -34,6 +34,24 @@ if (isset($_POST['action'])) {
                 $presentationController = new PresentationController();
                 $presentationController->EditPresentation($description, $code, $weight_in_grams, $status, $stock, $stock_min, $stock_max, $product_id, $presentation_id);
                 break;
+                case 'updatee':
+                    $description = strip_tags($_POST['description']);
+                    $buystock = strip_tags($_POST['buystock']);
+                    $code = strip_tags($_POST['code']);
+                    $weight_in_grams = strip_tags($_POST['weight']);
+                    $status = strip_tags($_POST['status']);
+                    $stock = strip_tags($_POST['stock_min']);
+                    $stock_min = strip_tags($_POST['stock_min']);
+                    $stock_max = strip_tags($_POST['stock_max']);
+                    $product_id = strip_tags($_POST['product_id']);
+                    $presentation_id = strip_tags($_POST['presentation_id']);
+                    $dato = intval($stock);//convierte en entero
+                    $dato1 = intval($buystock);//convierte en entero
+                    $stock = $dato - $dato1;//restita
+                    $stock = strval($stock);//convierte en string
+                    $presentationController = new PresentationController();
+                    $presentationController->EditPresentation($description, $code, $weight_in_grams, $status, $stock, $stock_min, $stock_max, $product_id, $presentation_id);
+                    break;
             case 'create_amount':
                 $amount = strip_tags($_POST['amount']);
                 $flag = strip_tags($_POST['flag']);
@@ -275,7 +293,7 @@ class PresentationController {
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'DELETE',
             CURLOPT_HTTPHEADER => array(
-                'Authorization: Bearer 665|cUviyAgM8QDBvMJVoLuv2zfXYWAUPuqb2qeKwXEk'
+                'Authorization: Bearer ' . $_SESSION['token'],
             ),
         ));
 

@@ -7,6 +7,7 @@
     $productsController = new ProductsController();
     $products = $productsController->getProducts();
 
+  
     $brandsController = new BrandsController();
     $brands = $brandsController->getBrands();
 ?>
@@ -77,7 +78,7 @@
                                                         <td>
                                                             <div class="d-flex gap-3">
                                                                 <div class="view">
-                                                                    <a href="<?= BASE_PATH ?>prod/<?= $product->slug ?>" class="btn btn-info">Ver</a>
+                                                                    <a href="<?= BASE_PATH ?>prod/<?= $product->id ?>" class="btn btn-info">Ver</a>
                                                                 </div>
                                                                 <div class="edit">
                                                                     <button data-product='<?= json_encode($product) ?>' onclick="editar_producto(this)" class="btn btn-warning " data-bs-toggle="modal" data-bs-target="#añadirModal">Edit</button>

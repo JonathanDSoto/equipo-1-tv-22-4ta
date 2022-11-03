@@ -41,6 +41,27 @@ if (isset($_POST['action'])) {
                 $couponesController->EditCoupones($name, $code, $percentage_discount, $min_amount_required, $min_product_required, $start_date, $end_date, $max_uses, $count_uses, $valid, $status, $coupon_id);
 
                 break;
+                case 'updatee':
+                    $name = strip_tags($_POST['name']);
+                    $code = strip_tags($_POST['code']);
+                    $percentage_discount = strip_tags($_POST['percentage_discount']);
+                    $min_amount_required = strip_tags($_POST['min_amount_required']);
+                    $min_product_required = strip_tags($_POST['min_product_required']);
+                    $start_date = strip_tags($_POST['start_date']);
+                    $end_date = strip_tags($_POST['end_date']);
+                    $max_uses = strip_tags($_POST['max_uses']);
+                    $count_uses = strip_tags($_POST['count_uses']);
+                    $valid = strip_tags($_POST['valid']);
+                    $status = strip_tags($_POST['status']);
+                    $coupon_id = strip_tags($_POST['coupon_id']);
+                    
+                    $dato = intval($count_uses);//convierte en entero
+                    $stock = $dato - 1;//restita
+                    $count_uses = strval($stock);//convierte en string
+                    $couponesController = new CouponesController();
+                    $couponesController->EditCoupones($name, $code, $percentage_discount, $min_amount_required, $min_product_required, $start_date, $end_date, $max_uses, $count_uses, $valid, $status, $coupon_id);
+    
+                    break;
             case 'delete':
             $id = strip_tags($_POST['id']);
             $couponesController = new CouponesController();

@@ -75,11 +75,11 @@ class ProductsController {
 
   }
 
-  public function details($slug) {
+  public function details($id) {
 
     $curl = curl_init();
     curl_setopt_array($curl, array(
-    CURLOPT_URL => 'https://crud.jonathansoto.mx/api/products/slug/'.$slug,
+    CURLOPT_URL => 'https://crud.jonathansoto.mx/api/products/'.$id,
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_ENCODING => '',
     CURLOPT_MAXREDIRS => 10,
