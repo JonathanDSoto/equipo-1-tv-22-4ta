@@ -185,7 +185,7 @@ $client = $clientsController->SpecifictClient($idClient);
                                 <td><?= $order->address->province ?></td>
                                 <td><?= $order->address->phone_number ?></td>
                                 <td>
-                                    <a href="<?= BASE_PATH ?>/<?= $order->address->id ?>" class="btn btn-info">Ver</a>
+                                    <a href="<?= BASE_PATH ?>clientedireccion/<?= $order->address->id ?>" class="btn btn-info">Ver</a>
                                 </td>
                             </tr>
                         </tbody>

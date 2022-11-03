@@ -129,7 +129,7 @@
 														<td>
 															<ul class="list-inline hstack gap-2 mb-0">
 																<li class="list-inline-item" data-bs-placement="top" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Ver detalles">
-																	<a class="text-primary d-inline-block" href="detalles.php?id=<?= $order->id ?>"><i class="ri-eye-fill fs-16"></i></a>
+																	<a class="text-primary d-inline-block" href="<?= BASE_PATH ?>orden/<?= $order->id ?>"><i class="ri-eye-fill fs-16"></i></a>
 																</li>
 																<li class="list-inline-item edit" data-bs-placement="top" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Editar">
 																	<a data-order='<?= json_encode($order) ?>' onclick="editar_orden(this)" class="text-primary d-inline-block edit-item-btn" id="edit-btn">
@@ -392,7 +392,7 @@
 						timer: 1500
 						})
 						function greet() {
-							location.href = "index.php"
+							location.reload();
 						}
 						setTimeout(greet, 1800);
 					} else {
@@ -446,7 +446,7 @@
 					timer: 1500
 					})
 					function greet() {
-						location.href = "index.php"
+						location.reload();
 					}
 					setTimeout(greet, 1800);
 				} else {
@@ -509,7 +509,7 @@
 						swal("Poof! Your imaginary file has been deleted!", {
 							icon: "success",
 						});
-						location.href = "index.php"
+						location.reload();
 					} else {
 						swal("Error", {
 							icon: "error",
