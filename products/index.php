@@ -214,7 +214,7 @@
                 
                 })
                 function tiempo() { // Aqui va la ruta que apunta al index de productos
-                    location.href = "index.php";
+                    location.reload();
                 }
                 setTimeout(tiempo, 1500);
             }
@@ -248,7 +248,7 @@
                         swal("Poof! Your imaginary file has been deleted!", {
                             icon: "success",
                         });
-                        location.href = base_path+'products'
+                        location.reload();
                     } else {
                         swal("Error", {
                             icon: "error",

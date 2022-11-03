@@ -4,9 +4,9 @@ include "../layouts/Authentication.templade.php";
 include("../app/ProductController.php");
 include("../app/PresentationController.php");
 
-$slug = $_GET['slug'];
+$id = $_GET['id'];
 $productController = new ProductsController();
-$product = $productController->details($slug);
+$product = $productController->details($id);
 
 $presentationController = new PresentationController();
 $presentation = $presentationController->GetPresentation($product->id);
@@ -387,8 +387,8 @@ $presentation = $presentationController->GetPresentation($product->id);
                         swal("Poof! Your imaginary file has been deleted!", {
                             icon: "success",
                         });
-                        location.href = base_path+"products/detalles.php?slug=" + slug.value
-                        /* location.href = "detalles.php?slug=" + slug.value */
+                        location.reload();
+
                     } else {
                         swal("Error", {
                             icon: "error",

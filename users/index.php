@@ -248,7 +248,7 @@
                             timer: 1500
                         })
                         function greet() {
-                            location.href = "index.php";
+                            location.reload();
                         }
                         setTimeout(greet, 1800);
 
@@ -321,7 +321,7 @@
                         swal("Poof! Your imaginary file has been deleted!", {
                             icon: "success",
                         });
-                        location.href = base_path+'users/index.php'
+                        location.reload();
                     } else {
                         swal("Error", {
                             icon: "error",
