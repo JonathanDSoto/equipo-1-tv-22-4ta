@@ -333,7 +333,8 @@
 		add_btn.addEventListener('click', () => {
 			orders_form.reset();
 		});
-
+		var txt= /^[a-zA-ZÀ-ÿ0-9\s]+$/; // Letras y espacios, pueden llevar acentos
+		var num= /^\d{1,14}$/ ;// 7 a 14 numeros.
 		orders_form.addEventListener("submit", (e) => {
             e.preventDefault();
 
@@ -358,46 +359,59 @@
             data.append("action", action.value);
             data.append("super_token", super_token.value);
 
-            axios({
-                method: "POST",
-                url: "../app/OrdersController.php",
-                data,
-                headers: {
-                "Content-Type": "multipart/form-data",
-                },
-            }).then((response)=> {
-
-				let res = JSON.stringify(response)
-				res = JSON.parse(res)
-
-				if (res.data[0].code > 0 && res.data.update == false) {
-					Swal.fire({
-					position: 'top-center',
-					icon: 'success',
-					title: 'Orden creada con exito',
+			ent= true;
+			if(!txt.test(folio.value) || !txt.test(total.value)){
+				Swal.fire({
+					position: 'center',
+					icon: 'error',
+					title: 'Error en los campos, favor de verificar',
 					showConfirmButton: false,
 					timer: 1500
-					})
-					function greet() {
-						location.href = "index.php"
-					}
-					setTimeout(greet, 1800);
-				} else {
-					console.log(response.message);
-
-					Swal.fire({
-						position: 'center',
-						icon: 'error',
-						title: 'Error',
+				})
+				ent= false;
+			}
+			if(ent){
+				axios({
+					method: "POST",
+					url: "../app/OrdersController.php",
+					data,
+					headers: {
+					"Content-Type": "multipart/form-data",
+					},
+				}).then((response)=> {
+	
+					let res = JSON.stringify(response)
+					res = JSON.parse(res)
+	
+					if (res.data[0].code > 0 && res.data.update == false) {
+						Swal.fire({
+						position: 'top-center',
+						icon: 'success',
+						title: 'Orden creada con exito',
 						showConfirmButton: false,
 						timer: 1500
-					})
-				} 
-				}).catch((error) => {
-				if (error.response) {
-					console.log(error.message);
-				}
+						})
+						function greet() {
+							location.href = "index.php"
+						}
+						setTimeout(greet, 1800);
+					} else {
+						console.log(response.message);
+	
+						Swal.fire({
+							position: 'center',
+							icon: 'error',
+							title: 'Error',
+							showConfirmButton: false,
+							timer: 1500
+						})
+					} 
+					}).catch((error) => {
+					if (error.response) {
+						console.log(error.message);
+					}
 				});
+			}
 
 
         });
