@@ -60,7 +60,7 @@
                                             </div>
                                         </div>
                                         <div class="table-responsive table-card mt-3 mb-1">
-                                            <table class="table align-middle table-nowrap" id="customerTable">
+                                            <table class="table align-middle table-nowrap" id="product_table">
                                                 <thead class="table-light">
                                                     <tr>
                                                         <th scope="col" style="width: 40px;">
@@ -154,7 +154,7 @@
       
     <!-- JAVASCRIPT -->
     <?php include "../layouts/scripts.template.php" ?>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
 
     <script>
 
@@ -276,6 +276,11 @@
             document.getElementById('action').value = 'update'
 
         }
+
+        $(document).ready(function () {
+            $('#product_table').DataTable();
+        });
+
     </script>
 </body>
 

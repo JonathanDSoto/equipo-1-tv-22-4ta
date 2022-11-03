@@ -40,11 +40,6 @@ if (isset($_POST['action'])) {
                 $ordersController = new OrdersController();
                 $ordersController->EditCreate($id, $order_status_id);
                 break;
-            case 'specifict': 
-                $id = strip_tags($_POST['id']);
-                $ordersController = new OrdersController();
-                $ordersController->GetSpecifict($id);
-                break;
             case 'delete': 
                 $id = strip_tags($_POST['id']);
 
@@ -110,9 +105,11 @@ class OrdersController {
         if (isset($response->code) && $response->code > 0) {
             return $response->data;
         }
+
     }
 
     public function GetSpecifict($id) {
+
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
@@ -130,14 +127,15 @@ class OrdersController {
         ));
 
         $response = curl_exec($curl);
-
         curl_close($curl);
-        echo $response;
         $response = json_decode($response);
+
         if (isset($response->code) && $response->code > 0) {
             return $response->data;
         }
+        
     }
+
     public function CreateOrders($folio, $total, $is_paid, $client_id, $address_id, $order_status_id, $payment_type_id, $coupon_id, $presentation, $quantity) {
         $curl = curl_init();
 

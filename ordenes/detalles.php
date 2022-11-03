@@ -1,10 +1,23 @@
 <?php
-include_once "../app/config.php";
-include "../layouts/Authentication.templade.php";
+    include_once "../app/config.php";
+    include "../layouts/Authentication.templade.php";
+    include "../app/OrdersController.php";
+    include "../app/ClientsController.php";
+
+    $id = $_GET['id'];
+
+    $ordersController = new OrdersController();
+    $order = $ordersController->GetSpecifict($id);
+
+    $idClient = $order->client_id;
+
+    $clientsController = new ClientsController();
+    $client = $clientsController->SpecifictClient($idClient);
+
 ?>
+
 <!DOCTYPE html>
 <html>
-
 <head>
     <title>Detalles de Orden</title>
     <meta charset="UTF-8">
@@ -42,52 +55,50 @@ include "../layouts/Authentication.templade.php";
                         <div class="card">
                             <div class="card-header">
                                 <div class="d-flex align-items-center">
-                                    <h5 class="card-title flex-grow-1 mb-0">Orden #Numero de folio</h5>
-
+                                    <h5 class="card-title flex-grow-1 mb-0">Orden #<?= $order->folio ?></h5>
                                 </div>
                             </div>
                             <div class="card-body">
                                 <table class="table table-nowrap align-middle table-borderless mb-0">
-                                    <table class="table table-striped">
-                                        <thead>
+                                    <thead>
+                                        <tr>
+                                            <!-- <th scope="col">Imagen</th> -->
+                                            <th scope="col">Descripción</th>
+                                            <th scope="col">Codigo</th>
+                                            <th scope="col">Peso en gramos</th>
+                                            <th scope="col">Estatus</th>                             
+                                            <th scope="col">Accion</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php foreach ($order->presentations as $p): ?>
                                             <tr>
-                                                <th scope="col">Imagen</th>
-                                                <th scope="col">Descripcion</th>
-                                                <th scope="col">Codigo</th>
-                                                <th scope="col">Peso en gramos</th>
-                                                <th scope="col">Estatus</th>                             
-                                                <th scope="col">Accion</th>
+                                                <!-- <td><img class="rounded-2" style="width:130px; height:70px;" src="<?= $p->cover ?>" alt="Card image cap"></td> -->
+                                                <td><?= $p->description ?></td>
+                                                <td><?= $p->code ?></td>
+                                                <td><?= $p->weight_in_grams ?></td>
+                                                <td><span class="badge bg-success"><?= $p->status ?></span></td>
+                                                <td>
+                                                    <a href="<?= BASE_PATH ?>presentacion/<?= $p->id ?>" class="btn btn-info">Ver</a>
+                                                </td>
                                             </tr>
-                                        </thead>
+                                        <?php endforeach; ?>
+                                    </tbody>
+                              
+                                    <table class="table table-borderless mb-0">
                                         <tbody>
                                             <tr>
-                                                <td><img class="rounded-2" style="width:130px; height:70px;" src="../public/assets/images/cama.jpg" alt="Card image cap"></td>
-                                                <td>Descripcion del producto</td>
-                                                <td>Codigo del producto</td>
-                                                <td>Peso del producto en gramos</td>
-                                                <td><span class="badge bg-success">Estado</span></td>
-                                                <td><a href="" class="btn btn-info">Ver</a></td>
-                                                </td>
+                                                <td>Sub Total:$SUBTOTAL DE LA ORDEN</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Discount <span class="text-muted">(CODIGO DEL CUPON)</span>:-$MONTO DESCONTADO</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">Total:$TOTAL DE LA ORDEN</th>
                                             </tr>
                                         </tbody>
                                     </table>
-                              
-                                        <table class="table table-borderless mb-0">
-                                            <tbody>
-                                                <tr>
-                                                    <td>Sub Total:$SUBTOTAL DE LA ORDEN</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Discount <span class="text-muted">(CODIGO DEL CUPON)</span>:-$MONTO DESCONTADO</td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row">Total:$TOTAL DE LA ORDEN</th>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                        </td>
-                                  
-                                    </tbody>
+
                                 </table>
                             </div>
                         </div>
@@ -98,39 +109,65 @@ include "../layouts/Authentication.templade.php";
                 </div>
                 <!--end col-->
                 <div class="col-12">
-
                     <div class="card">
                         <div class="card-header pt-2 pb-2">
                             <div class="d-flex">
                                 <h5 class="card-title flex-grow-1 mb-0">Detalles del cliente</h5>
-
                             </div>
                         </div>
                         <div class="card-body ">
                             <ul class="list-unstyled mb-0 vstack gap-3">
                                 <li>
                                     <div class="d-flex align-items-center">
-                                        <div class="flex-shrink-0">
-                                            <img src="../public/assets/images/users/avatar-3.jpg" alt="" class="avatar-sm rounded shadow">
-                                        </div>
                                         <div class="flex-grow-1 ms-3">
-                                            <h6 class="fs-14 mb-1">Nombre del cliente</h6>
-                                            <p class="text-muted mb-0">Cliente</p>
+                                            <h6 class="fs-14 mb-1"></h6>
+                                            <?php if(!is_null($client) ): ?>
+                                                <p class="text-muted mb-0">Nombre: <?= $client->name ?></p>
+                                            <?php else: ?>
+                                                <p class="text-muted mb-0">Nombre:</p>
+                                            <?php endif; ?>
                                         </div>
                                     </div>
                                 </li>
-                                <li><i class="ri-mail-line me-2 align-middle text-muted fs-16"></i>Correo del cliente</li>
-                                <li><i class="ri-phone-line me-2 align-middle text-muted fs-16"></i>Numero de telefono</li>
-
-                                <a href="apps-invoices-details.html" class="btn btn-success col-3"><i class="ri-download-2-fill align-middle me-1"></i> Ver Perfil</a>
+                                <li>
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-grow-1 ms-3">
+                                            <h6 class="fs-14 mb-1"></h6>
+                                            <?php if(!is_null($client) ): ?>
+                                                <p class="text-muted mb-0">Correo: <?= $client->email ?></p>
+                                            <?php else: ?>
+                                                <p class="text-muted mb-0">Correo:</p>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-grow-1 ms-3">
+                                            <h6 class="fs-14 mb-1"></h6>
+                                            <?php if(!is_null($client) ): ?>
+                                                <p class="text-muted mb-0">Teléfono: <?= $client->phone_number ?></p>
+                                            <?php else: ?>
+                                                <p class="text-muted mb-0">Teléfono:</p>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                </li>
+                                <?php if(!is_null($client) ): ?>
+                                    <a href="<?= BASE_PATH ?>cliente/<?= $client->id ?>" class="btn btn-success col-3">
+                                    <i class="ri-download-2-fill align-middle me-1"></i>Ver Perfil</a>
+                                <?php else: ?>
+                                    <a href="#" class="btn btn-success col-3">
+                                    <i class="ri-download-2-fill align-middle me-1"></i>Ver Perfil</a>
+                                <?php endif; ?>
                             </ul>
                         </div>
                     </div>
-                    <h5 class="card-title mb-0"><i class="ri-map-pin-line align-middle me-1 text-muted"></i>Direccion de envio</h5>
+                    <h5 class="card-title mb-0"><i class="ri-map-pin-line align-middle me-1 text-muted"></i>Dirección de envio</h5>
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th scope="col">Calle y numero de casa</th>
+                                <th scope="col">Calle y número de casa</th>
                                 <th scope="col">Codigo postal</th>
                                 <th scope="col">Ciudad</th>
                                 <th scope="col">Provincia</th>
@@ -139,16 +176,18 @@ include "../layouts/Authentication.templade.php";
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Calle y numero del cliente</td>
-                                <td>Codigo postal del cliente</td>
-                                <td>Ciudad del cliente</td>
-                                <td>Provincia del cliente</td>
-                                <td>Numero telefonico del cliente</td>
-                                <td><a href="" class="btn btn-info">Ver</a></td>
-                                </td>
-                            </tr>
-
+                            <?php foreach ($order->address as $a): ?>
+                                <tr>
+                                    <td><?= $a->street_and_use_number ?></td>
+                                    <td><?= $a->postal_code ?></td>
+                                    <td><?= $a->city ?></td>
+                                    <td><?= $a->province ?></td>
+                                    <td><?= $a->phone_number ?></td>
+                                    <td>
+                                        <a href="<?= BASE_PATH ?>/<?= $a->id ?>" class="btn btn-info">Ver</a>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
                         </tbody>
                     </table>
                 </div>
