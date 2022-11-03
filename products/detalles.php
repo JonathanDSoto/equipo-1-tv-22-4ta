@@ -198,25 +198,25 @@ $presentation = $presentationController->GetPresentation($product->id);
                         <input type="file" id="cover" name="cover" accept="image/*">
 
                         <span class="input-group-text">Descripcion</span>
-                        <input type="text" id="description" name="description" class="form-control">
+                        <input type="text" id="description" name="description" class="form-control" required placeholder="...">
 
                         <span class="input-group-text">Codigo</span>
-                        <input type="text" id="code" name="code" class="form-control">
+                        <input type="text" id="code" name="code" class="form-control" required>
 
                         <span class="input-group-text">Peso(g)</span>
-                        <input type="text" id="weight" name="weight" class="form-control">
+                        <input type="text" id="weight" name="weight" class="form-control" required>
                         
                         <span class="input-group-text" id="estado_label">Estado</span>
                         <input type="text" id="estado" name="status" class="form-control">
 
                         <span class="input-group-text">Cantidad de productos</span>
-                        <input type="text" id="stock" name="stock" class="form-control">
+                        <input type="text" id="stock" name="stock" class="form-control" required>
 
                         <span class="input-group-text">Cantidad de productos minimo</span>
-                        <input type="text" id="stock_min" name="stock_min" class="form-control">
+                        <input type="text" id="stock_min" name="stock_min" class="form-control" required>
 
                         <span class="input-group-text">Cantidad de productos maximo</span>
-                        <input type="text" id="stock_max" name="stock_max" class="form-control">
+                        <input type="text" id="stock_max" name="stock_max" class="form-control" required>
                         
                     </div>
 
@@ -267,25 +267,45 @@ $presentation = $presentationController->GetPresentation($product->id);
             status_label.style.display = "none"
             status.style.display = "none"
         })
+
+        var text= /^[a-zA-ZÀ-ÿ0-9\s]+$/; // Letras y espacios, pueden llevar acentos
+        var codigo = /^[a-zA-Z0-9]{4,16}$/;
+        var num= /^\d{1,4}$/ ;// 1 a 4 numeros.
         
         form.addEventListener("submit", (e) => {
             e.preventDefault();
             
             const data = new FormData();
-                data.append("cover", cover.files[0]);
-                data.append("description", description.value);
-                data.append("code", code.value);
-                data.append("weight", weight.value);
-                data.append("stock", stock.value);
-                data.append("stock_min", stock_min.value);
-                data.append("stock_max", stock_max.value);
-                data.append("action", action.value);
-                data.append("product_id", product_id.value);
-                data.append("super_token", super_token.value);
-                data.append("status", status.value);
-                data.append("presentation_id", presentation_id.value);
-                data.append("slug", slug.value);
-    
+            data.append("cover", cover.files[0]);
+            data.append("description", description.value);
+            data.append("code", code.value);
+            data.append("weight", weight.value);
+            data.append("stock", stock.value);
+            data.append("stock_min", stock_min.value);
+            data.append("stock_max", stock_max.value);
+            data.append("action", action.value);
+            data.append("product_id", product_id.value);
+            data.append("super_token", super_token.value);
+            data.append("status", status.value);
+            data.append("presentation_id", presentation_id.value);
+            data.append("slug", slug.value);
+            ent =true;
+            if(!text.test(description.value) 
+                ||!codigo.test(code.value)
+                ||!num.test(weight.value) 
+                ||!num.test(stock.value)
+                ||!num.test(stock_min.value)
+                ||!num.test(stock_max.value)){
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: 'Error en campos, favor de verificar',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                    ent=false;
+            }
+            if(ent){
                 axios({
                     method: "POST",
                     url: "../app/PresentationController.php",
@@ -336,6 +356,7 @@ $presentation = $presentationController->GetPresentation($product->id);
                         console.log(error.message);
                     }
                 });
+            }
 
         });
 

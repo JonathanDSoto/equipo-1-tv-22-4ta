@@ -141,7 +141,7 @@ if (is_null($presentation->current_price->amount)) {
 				<form method="POST" action="<?= BASE_PATH?>app/PresentationController.php" enctype="multipart/form-data" id="amount_form">
 					<div class="modal-body">
 						<span class="input-group-text">Precio</span> 
-						<input class="form-control" id="amount" name="amount" placeholder="" type="text">
+						<input class="form-control" id="amount" name="amount" placeholder="Números enteros" type="text" required>
 					</div>
 					<input id="action" name="action" type="hidden" value="create_amount">
 					<?php if(!is_null($presentation->current_price) ): ?>
@@ -195,12 +195,25 @@ if (is_null($presentation->current_price->amount)) {
 			e.preventDefault();
 			
 			const data = new FormData();
-				data.append("amount", amount.value);
-				data.append("presentation_id", id.value);
-				data.append("flag", flag.value);
-				data.append("action", action.value);
-				data.append("super_token", super_token.value);
+			data.append("amount", amount.value);
+			data.append("presentation_id", id.value);
+			data.append("flag", flag.value);
+			data.append("action", action.value);
+			data.append("super_token", super_token.value);
+			var num= /^\d{1,100000}$/ ;// 1 a 100000 numeros. 
+			ent=true;
 
+			if(!num.test(amount.value) && amount.value <= 0){
+				Swal.fire({
+					position: 'center',
+					icon: 'error',
+					title: 'Error solo números positivos y enteros',
+					showConfirmButton: false,
+					timer: 1500
+				})
+				ent=false;
+			}
+			if(ent){
 				axios({
 					method: "POST",
 					url: "../app/PresentationController.php",
@@ -252,6 +265,7 @@ if (is_null($presentation->current_price->amount)) {
 						console.log(error.message);
 					}
 				});
+			}
 
 		});
 
